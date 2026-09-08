@@ -21,7 +21,9 @@ h1 { max-width: 12ch; margin: 0; font-size: clamp(2.75rem, 8vw, 5rem); line-heig
 .reveal__label { margin: 0 0 1rem; color: var(--color-text-secondary); font-size: .8rem; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; }
 .identity-card { position: relative; width: min(100%, 27rem); aspect-ratio: 4 / 5; display: grid; place-items: center; overflow: hidden; padding: 2rem; color: #fff; background: #ef4444; border: .5rem solid #f7f5f0; border-radius: 1.75rem; box-shadow: 0 1.5rem 4rem rgba(0,0,0,.35); }
 .identity-card::before { content: ''; position: absolute; width: 18rem; height: 18rem; right: -8rem; top: -8rem; border: 2rem solid rgba(255,255,255,.1); border-radius: 50%; }
-.identity-card strong { position: relative; z-index: 1; max-width: 10ch; font-size: clamp(2.6rem, 10vw, 5.5rem); line-height: .95; letter-spacing: -.07em; text-wrap: balance; }
+.identity-card__name { position: relative; z-index: 1; max-width: 10ch; font-size: clamp(2.6rem, 10vw, 5.5rem); line-height: .95; letter-spacing: -.07em; text-wrap: balance; }
+.identity-card__name--medium { max-width: 11ch; font-size: clamp(2.35rem, 8.5vw, 4.6rem); }
+.identity-card__name--long { max-width: 12ch; font-size: clamp(2rem, 7vw, 3.7rem); line-height: 1; letter-spacing: -.055em; }
 .identity-card__corner { position: absolute; left: 1rem; top: .6rem; font-size: 2rem; font-weight: 800; }
 .identity-card__corner--bottom { left: auto; top: auto; right: 1rem; bottom: .6rem; rotate: 180deg; }
 .reveal__instruction { max-width: 31rem; margin: 1.6rem 0; color: var(--color-text-secondary); line-height: 1.6; }

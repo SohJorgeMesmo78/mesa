@@ -31,5 +31,11 @@ export class QuemSouEuComponent {
     this.sessionStore.updatePreferences({ [preference]: !this.preferences()[preference] });
   }
 
+  identitySize(identity: string): 'short' | 'medium' | 'long' {
+    if (identity.length <= 10) return 'short';
+    if (identity.length <= 18) return 'medium';
+    return 'long';
+  }
+
   leaveGame(): void { this.sessionStore.clearActiveGame(); }
 }

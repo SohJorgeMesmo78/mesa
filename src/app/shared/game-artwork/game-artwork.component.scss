@@ -11,7 +11,8 @@
 .art__number--large { right: 16%; bottom: 20%; font-size: 2rem; rotate: 8deg; }
 .art__line { position: absolute; left: 14%; right: 14%; top: 52%; height: 3px; background: #fff; rotate: -8deg; }
 .art--impostor { background: #a855f7; }
-.art__mask { position: absolute; left: 50%; top: 54%; translate: -50% -50%; width: 9rem; height: 7.5rem; border-radius: 48% 48% 40% 40%; background: #171717; rotate: -4deg; }
-.art__eye { position: absolute; z-index: 2; top: 44%; width: 2rem; height: .75rem; background: #fff; border-radius: 100% 0; }
-.art__eye--left { left: calc(50% - 3rem); rotate: 10deg; }
-.art__eye--right { right: calc(50% - 3rem); rotate: 80deg; }
+.art__impostor-symbol { position: absolute; left: 50%; top: 52%; translate: -50% -50%; width: clamp(9rem, 42%, 17rem); aspect-ratio: 6 / 5; }
+.art__mask { position: absolute; inset: 0; border-radius: 48% 48% 40% 40%; background: #171717; rotate: -4deg; }
+.art__eye { position: absolute; z-index: 2; top: 37%; width: 22%; height: 10%; background: #fff; border-radius: 100% 0; }
+.art__eye--left { left: 17%; rotate: 10deg; }
+.art__eye--right { right: 17%; rotate: 80deg; }

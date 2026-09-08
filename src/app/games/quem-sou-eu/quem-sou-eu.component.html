@@ -34,7 +34,7 @@
           <p class="reveal__label">Você é</p>
           <div class="identity-card">
             <span class="identity-card__corner">?</span>
-            <strong>{{ round.identity }}</strong>
+            <strong [class]="'identity-card__name identity-card__name--' + identitySize(round.identity)">{{ round.identity }}</strong>
             <span class="identity-card__corner identity-card__corner--bottom">?</span>
           </div>
           <p class="reveal__instruction">Faça perguntas que a mesa possa responder com “sim” ou “não”.</p>
