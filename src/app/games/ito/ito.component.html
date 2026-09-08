@@ -1,0 +1,82 @@
+<div class="play-page play-page--ito">
+  <header class="play-header shell">
+    <app-brand-logo [compact]="true" />
+    <a routerLink="/jogos/ito" (click)="leaveGame()">Sair</a>
+  </header>
+
+  <main class="play-main shell">
+    @if (activeGame(); as game) {
+      @switch (game.phase) {
+        @case ('setup') {
+          <section class="intro">
+            <p class="eyebrow">Ito</p>
+            <h1>Entrem na mesma sintonia.</h1>
+            <p>Cada pessoa recebe um número secreto. As pistas e a ordem acontecem na conversa.</p>
+          </section>
+          <app-player-setup
+            [players]="game.players"
+            [min]="playerLimits.min"
+            [max]="maxPlayers"
+            (playersChange)="updatePlayers($event)"
+            (confirmed)="startRound($event)"
+          />
+        }
+        @case ('handoff') {
+          @if (currentPlayer(); as player) {
+            <app-private-reveal
+              [player]="player"
+              [current]="game.currentPlayerIndex + 1"
+              [total]="game.players.length"
+              (hidden)="hideCurrent()"
+            >
+              <div class="number-card" [style.--player-color]="player.color">
+                <span>Seu número é</span>
+                <strong>{{ currentNumber() }}</strong>
+              </div>
+            </app-private-reveal>
+          }
+        }
+        @case ('collective') {
+          @if (game.theme; as theme) {
+            <section class="collective">
+              <p class="eyebrow">Tema da rodada</p>
+              <h1>{{ theme.prompt }}</h1>
+              <div class="scale" aria-label="Escala do tema">
+                <span><i>1</i>{{ theme.low }}</span>
+                <div aria-hidden="true"></div>
+                <span><i>100</i>{{ theme.high }}</span>
+              </div>
+              <p class="collective__instruction">Cada pessoa dá uma pista. Depois, organizem as pistas do menor para o maior número.</p>
+              <app-ito-order-editor
+                [players]="game.players"
+                [clues]="game.clues"
+                [order]="game.guessedOrder"
+                (clueChange)="updateClue($event)"
+                (orderMove)="movePlayer($event)"
+              />
+              <div class="actions">
+                <button class="button button--primary button--large" type="button" (click)="showResults()">Revelar números</button>
+                <button class="button button--secondary button--large" type="button" (click)="changeTheme()">Sortear novo tema</button>
+              </div>
+            </section>
+          }
+        }
+        @case ('results') {
+          <app-ito-result
+            [players]="game.players"
+            [assignments]="game.assignments"
+            [clues]="game.clues"
+            [guessedOrder]="game.guessedOrder"
+            [correctOrder]="correctOrder()"
+            [revealedPlayerIds]="game.revealedPlayerIds"
+            [score]="score()"
+            [showCorrectOrder]="game.showCorrectOrder"
+            (revealPlayer)="revealNumber($event)"
+            (correctOrderToggle)="toggleCorrectOrder()"
+            (newRound)="newRound()"
+          />
+        }
+      }
+    }
+  </main>
+</div>

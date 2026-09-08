@@ -1,0 +1,9 @@
+:host { display: block; width: min(100%, 36rem); }
+.private { display: flex; flex-direction: column; align-items: center; text-align: center; }
+.private__progress { margin: 0 0 2.5rem; color: var(--color-text-muted); font-size: .75rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+.private__avatar { display: grid; place-items: center; width: 6rem; height: 6rem; margin-bottom: 1.5rem; color: #171717; background: var(--player-color); border-radius: 50%; font-size: 2rem; font-weight: 800; box-shadow: 0 0 0 .5rem color-mix(in srgb, var(--player-color), transparent 78%); }
+.private > p:not([class]) { margin: 0 0 .4rem; color: var(--color-text-secondary); }
+.private__eyebrow { margin: 0 0 .8rem; color: var(--game-accent, var(--color-primary)); font-size: .72rem; font-weight: 800; letter-spacing: .15em; text-transform: uppercase; }
+h1 { max-width: 14ch; margin: 0; font-size: clamp(2.2rem, 8vw, 3.7rem); line-height: 1; letter-spacing: -.06em; text-wrap: balance; }
+.private__help { max-width: 28rem; margin: 1.3rem 0 2rem; color: var(--color-text-muted); line-height: 1.6; }
+.private__content { width: 100%; margin: .5rem 0 1.5rem; }

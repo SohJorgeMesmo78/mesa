@@ -1,0 +1,39 @@
+<section class="result">
+  <p class="eyebrow">{{ showCorrectOrder() ? 'Ordem correta' : 'Palpite do grupo' }}</p>
+  <h1>Hora de conferir a sintonia.</h1>
+
+  <ol class="result-list">
+    @for (playerId of displayOrder(); track playerId) {
+      @if (playerById().get(playerId); as player) {
+        <li [class.result-card--problem]="isProblematic(player.id)">
+          <i [style.background]="player.color" aria-hidden="true"></i>
+          <div>
+            <strong>{{ player.name }}</strong>
+            <span>{{ clues()[player.id] || 'Sem pista anotada' }}</span>
+          </div>
+          @if (isRevealed(player.id)) {
+            <output [attr.aria-label]="'Número de ' + player.name">{{ numberById().get(player.id) }}</output>
+          } @else {
+            <button type="button" [attr.aria-label]="'Revelar número de ' + player.name" (click)="revealPlayer.emit(player.id)">?</button>
+          }
+        </li>
+      }
+    }
+  </ol>
+
+  @if (allRevealed()) {
+    <div class="score" aria-live="polite">
+      <strong>{{ score().points }} <span>pontos</span></strong>
+      <p>Vocês acertaram {{ score().correctPairs }} de {{ score().totalPairs }} relações.</p>
+      @if (score().points === 100) { <small>Sintonia perfeita.</small> }
+      @else if (score().points >= 70) { <small>Quase na mesma frequência.</small> }
+      @else { <small>A conversa rendeu — e esse é o jogo.</small> }
+    </div>
+    <button class="button button--secondary button--large" type="button" (click)="correctOrderToggle.emit()">
+      {{ showCorrectOrder() ? 'Voltar ao palpite' : 'Ver ordem correta' }}
+    </button>
+    <button class="button button--primary button--large" type="button" (click)="newRound.emit()">Nova rodada <span aria-hidden="true">↻</span></button>
+  } @else {
+    <p class="result__help">Toquem em cada “?” para revelar os números sem mudar a ordem.</p>
+  }
+</section>

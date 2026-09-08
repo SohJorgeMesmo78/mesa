@@ -1,0 +1,21 @@
+<span class="brand">
+  <a class="brand__home" routerLink="/" aria-label="Mesa — página inicial">
+    <svg class="brand__symbol" viewBox="0 0 64 64" aria-hidden="true">
+      <rect x="19" y="19" width="26" height="26" rx="7" />
+      <circle cx="32" cy="8" r="7" />
+      <circle cx="56" cy="32" r="7" />
+      <circle cx="32" cy="56" r="7" />
+      <circle cx="8" cy="32" r="7" />
+    </svg>
+    <span class="brand__word">Mesa</span>
+  </a>
+  @if (!compact()) {
+    <a
+      class="brand__byline"
+      [href]="links.seteOito"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Conhecer a Sete Oito (abre em nova aba)"
+    >por Sete Oito</a>
+  }
+</span>

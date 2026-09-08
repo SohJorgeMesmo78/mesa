@@ -1,0 +1,10 @@
+<header class="play-header shell"><app-brand-logo [compact]="true" /><a routerLink="/">Sair</a></header>
+<main class="unavailable shell">
+  <p class="eyebrow">Ainda estamos arrumando a mesa</p>
+  <h1>{{ game()?.name ?? 'Este jogo' }} chega em breve.</h1>
+  <p>Por enquanto, conheça as regras ou escolha um jogo que já está disponível.</p>
+  <div class="actions">
+    @if (game(); as currentGame) { <a class="button button--secondary" [routerLink]="['/jogos', currentGame.slug]">Ver detalhes</a> }
+    <a class="button button--primary" routerLink="/" fragment="jogos">Ver jogos</a>
+  </div>
+</main>

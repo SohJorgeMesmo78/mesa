@@ -1,0 +1,37 @@
+.hero { min-height: min(47rem, calc(100svh - 4.75rem)); display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: clamp(2rem, 7vw, 7rem); padding-block: clamp(4.5rem, 10vw, 8rem); }
+.hero__copy { position: relative; }
+.eyebrow { margin: 0 0 1rem; color: var(--color-primary); font-size: .76rem; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; }
+.eyebrow a { color: inherit; text-underline-offset: .2rem; }
+h1 { margin: 0; max-width: 11ch; font-size: clamp(3.35rem, 7vw, 6.8rem); line-height: .92; letter-spacing: -.075em; }
+h1 span, .closing h2 span { color: var(--color-primary); }
+.hero__text { max-width: 36rem; margin: 1.75rem 0 2rem; color: var(--color-text-secondary); font-size: clamp(1rem, 1.6vw, 1.18rem); line-height: 1.7; }
+.principle { display: flex; align-items: center; gap: .65rem; margin: 2rem 0 0; color: var(--color-text-muted); font-size: .82rem; font-weight: 700; }
+.principle span { width: .5rem; height: .5rem; border-radius: 50%; background: var(--color-primary); }
+.hero__scene { position: relative; min-height: 34rem; }
+.hero__table { position: absolute; z-index: 2; left: 50%; top: 50%; translate: -50% -50%; width: 9rem; height: 9rem; border: 1rem solid var(--color-primary); border-radius: 2.4rem; rotate: 8deg; }
+.hero__table span { position: absolute; width: 2.6rem; height: 2.6rem; border-radius: 50%; background: var(--color-primary); }
+.hero__table span:nth-child(1) { left: 50%; top: -4.6rem; translate: -50%; }
+.hero__table span:nth-child(2) { right: -4.6rem; top: 50%; translate: 0 -50%; }
+.hero__table span:nth-child(3) { left: 50%; bottom: -4.6rem; translate: -50%; }
+.hero__table span:nth-child(4) { left: -4.6rem; top: 50%; translate: 0 -50%; }
+.hero__tile { position: absolute; z-index: 3; display: grid; place-content: center; width: 5.2rem; height: 7rem; border: .35rem solid rgba(255,255,255,.75); border-radius: 1rem; color: #fff; font-size: 3rem; font-weight: 800; box-shadow: 0 1rem 2.5rem rgba(0,0,0,.3); }
+.hero__tile--red { left: 3%; top: 12%; rotate: -13deg; background: #ef4444; }
+.hero__tile--blue { right: 1%; top: 7%; rotate: 12deg; background: #3b82f6; }
+.hero__tile--purple { right: 4%; bottom: 8%; background: #a855f7; grid-auto-flow: column; gap: .6rem; }
+.hero__tile--purple i { display: block; width: 1.15rem; height: .55rem; border-radius: 100% 0; background: #fff; }
+.section { padding-block: clamp(5rem, 10vw, 8rem); }
+.section-heading { display: flex; align-items: end; justify-content: space-between; gap: 2rem; margin-bottom: 2.75rem; }
+.section-heading h2, .closing h2 { max-width: 16ch; margin: 0; font-size: clamp(2.25rem, 5vw, 4.25rem); line-height: 1.02; letter-spacing: -.06em; }
+.section-heading > p { max-width: 30rem; margin: 0; color: var(--color-text-secondary); line-height: 1.65; }
+.catalog__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+.how { background: var(--color-surface); border-block: 1px solid var(--color-border); }
+.steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; margin: 3rem 0 0; padding: 0; list-style: none; background: var(--color-border); border: 1px solid var(--color-border); border-radius: var(--radius-lg); overflow: hidden; }
+.steps li { display: flex; gap: 1.25rem; min-height: 14rem; padding: 2rem; background: var(--color-surface-raised); }
+.steps > li > span { display: grid; place-content: center; flex: 0 0 2.4rem; width: 2.4rem; height: 2.4rem; color: #171717; background: var(--color-primary); border-radius: 50%; font-weight: 800; }
+.steps h3 { margin: .45rem 0 .7rem; font-size: 1.15rem; }
+.steps p { margin: 0; color: var(--color-text-secondary); font-size: .9rem; line-height: 1.6; }
+.closing { display: flex; flex-direction: column; align-items: center; text-align: center; }
+.closing__mark { color: var(--color-primary); font-size: 2.2rem; }
+.closing h2 { max-width: 13ch; margin-bottom: 2rem; }
+@media (max-width: 56rem) { .hero { grid-template-columns: 1fr; } .hero__scene { min-height: 28rem; } .catalog__grid { grid-template-columns: 1fr 1fr; } .catalog__grid app-game-card:last-child { grid-column: 1 / -1; max-width: calc(50% - .625rem); } .steps { grid-template-columns: 1fr; } .steps li { min-height: auto; } }
+@media (max-width: 38rem) { .hero { padding-top: 4rem; } .hero__scene { min-height: 23rem; } .hero__table { scale: .75; } .hero__tile { scale: .72; } .section-heading { align-items: flex-start; flex-direction: column; } .catalog__grid { grid-template-columns: 1fr; } .catalog__grid app-game-card:last-child { grid-column: auto; max-width: none; } }

@@ -1,0 +1,42 @@
+<section class="player-setup" aria-labelledby="players-title">
+  <div class="player-setup__heading">
+    <div>
+      <p class="player-setup__eyebrow">Participantes</p>
+      <h2 id="players-title">Quem está na Mesa?</h2>
+    </div>
+    <span>{{ players().length }}/{{ max() }}</span>
+  </div>
+
+  <div class="player-list">
+    @for (player of players(); track player.id; let index = $index) {
+      <div class="player-row">
+        <span class="player-row__color" [style.background]="player.color" aria-hidden="true"></span>
+        <label [for]="'player-name-' + player.id">Participante {{ index + 1 }}</label>
+        <input
+          [id]="'player-name-' + player.id"
+          type="text"
+          maxlength="24"
+          autocomplete="off"
+          [placeholder]="'Jogador ' + (index + 1)"
+          [ngModel]="player.name"
+          (ngModelChange)="changeName(index, $event)"
+        >
+        <button
+          class="player-row__remove"
+          type="button"
+          [disabled]="!canRemove()"
+          [attr.aria-label]="'Remover participante ' + (index + 1)"
+          (click)="removePlayer(index)"
+        >×</button>
+      </div>
+    }
+  </div>
+
+  <button class="add-player" type="button" [disabled]="!canAdd()" (click)="addPlayer()">
+    <span aria-hidden="true">＋</span> Adicionar participante
+  </button>
+  <p class="player-setup__note">Os nomes são opcionais. Campos vazios viram “Jogador 1”, “Jogador 2” e assim por diante.</p>
+  <button class="button button--primary button--large" type="button" (click)="confirm()">
+    Continuar <span aria-hidden="true">→</span>
+  </button>
+</section>

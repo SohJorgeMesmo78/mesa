@@ -1,0 +1,19 @@
+<section class="private" [attr.aria-labelledby]="isRevealed() ? 'private-title' : 'private-player'">
+  @if (!isRevealed()) {
+    <p class="private__progress">Pessoa {{ current() }} de {{ total() }}</p>
+    <span class="private__avatar" [style.--player-color]="player().color" aria-hidden="true">{{ player().name.charAt(0) }}</span>
+    <p>Passe o celular para</p>
+    <h1 id="private-player">{{ player().name }}</h1>
+    <p class="private__help">A informação secreta aparece somente depois do toque.</p>
+    <button class="button button--primary button--large" type="button" (click)="reveal()">
+      Revelar minha informação
+    </button>
+  } @else {
+    <p class="private__eyebrow">Só para {{ player().name }}</p>
+    <div id="private-title" class="private__content" aria-live="polite"><ng-content /></div>
+    <p class="private__help">Memorize antes de passar o celular.</p>
+    <button class="button button--primary button--large" type="button" (click)="hide()">
+      Ocultar <span aria-hidden="true">→</span>
+    </button>
+  }
+</section>

@@ -1,0 +1,47 @@
+<div class="play-page">
+  <header class="play-header shell">
+    <app-brand-logo [compact]="true" />
+    <a routerLink="/jogos/quem-sou-eu" (click)="leaveGame()">Sair</a>
+  </header>
+
+  <main class="play-main shell">
+    @if (!activeGame()) {
+      <section class="setup">
+        <p class="eyebrow">Quem Sou Eu</p>
+        <h1>Preparados para descobrir quem é?</h1>
+        <p class="setup__lead">Ao começar, posicione o celular na testa sem olhar para a tela. A mesa vai ver sua identidade.</p>
+
+        <div class="preferences" aria-label="Preferências da experiência">
+          <button type="button" role="switch" [attr.aria-checked]="preferences().countdown" (click)="togglePreference('countdown')">
+            <span><strong>Contagem regressiva</strong><small>Dá tempo de posicionar o celular</small></span><i [class.active]="preferences().countdown"></i>
+          </button>
+          <button type="button" role="switch" [attr.aria-checked]="preferences().sound" (click)="togglePreference('sound')">
+            <span><strong>Som</strong><small>Bipes durante a preparação</small></span><i [class.active]="preferences().sound"></i>
+          </button>
+          <button type="button" role="switch" [attr.aria-checked]="preferences().haptics" (click)="togglePreference('haptics')">
+            <span><strong>Vibração</strong><small>Feedback em aparelhos compatíveis</small></span><i [class.active]="preferences().haptics"></i>
+          </button>
+        </div>
+
+        <button class="button button--primary button--large" type="button" (click)="startRound()">Começar rodada <span aria-hidden="true">→</span></button>
+        <p class="screen-note">Depois disso, olhe mais para as pessoas do que para a tela.</p>
+      </section>
+    } @else if (activeGame()?.phase === 'countdown') {
+      <section class="countdown-stage"><app-countdown (completed)="finishCountdown()" /></section>
+    } @else {
+      @if (activeGame(); as round) {
+        <section class="reveal" aria-live="polite">
+          <p class="reveal__label">Você é</p>
+          <div class="identity-card">
+            <span class="identity-card__corner">?</span>
+            <strong>{{ round.identity }}</strong>
+            <span class="identity-card__corner identity-card__corner--bottom">?</span>
+          </div>
+          <p class="reveal__instruction">Faça perguntas que a mesa possa responder com “sim” ou “não”.</p>
+          <button class="button button--primary button--large" type="button" (click)="startRound()">Nova rodada <span aria-hidden="true">↻</span></button>
+          <button class="text-button" type="button" (click)="leaveGame()">Encerrar partida</button>
+        </section>
+      }
+    }
+  </main>
+</div>

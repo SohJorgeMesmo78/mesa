@@ -1,0 +1,51 @@
+<section class="order-editor" aria-labelledby="guess-title">
+  <div class="order-editor__heading">
+    <div>
+      <p>Palpite do grupo</p>
+      <h2 id="guess-title">Organizem do menor para o maior.</h2>
+    </div>
+    <span>Arraste pela alça</span>
+  </div>
+
+  <ol class="guess-list">
+    @for (playerId of order(); track playerId; let index = $index) {
+      @if (playerById().get(playerId); as player) {
+        <li
+          [attr.data-guess-player]="player.id"
+          (dragover)="allowDrop($event)"
+          (drop)="dropOn($event, player.id)"
+        >
+          <button
+            class="drag-handle"
+            type="button"
+            draggable="true"
+            [attr.aria-label]="'Arrastar ' + player.name"
+            (dragstart)="startDrag($event, player.id)"
+            (dragend)="endDrag()"
+            (pointerdown)="startPointer($event, player.id)"
+            (pointermove)="movePointer($event)"
+            (pointerup)="endPointer()"
+            (pointercancel)="endPointer()"
+          ><span aria-hidden="true">⠿</span></button>
+          <span class="player-dot" [style.background]="player.color" aria-hidden="true"></span>
+          <div class="guess-copy">
+            <label [for]="'clue-' + player.id">{{ player.name }}</label>
+            <input
+              [id]="'clue-' + player.id"
+              type="text"
+              maxlength="80"
+              autocomplete="off"
+              placeholder="Digite a pista"
+              [value]="clues()[player.id]"
+              (input)="updateClue(player.id, $event)"
+            >
+          </div>
+          <div class="move-controls" aria-label="Alterar posição">
+            <button type="button" [disabled]="index === 0" [attr.aria-label]="'Mover ' + player.name + ' para cima'" (click)="moveBy(player.id, -1)">↑</button>
+            <button type="button" [disabled]="index === order().length - 1" [attr.aria-label]="'Mover ' + player.name + ' para baixo'" (click)="moveBy(player.id, 1)">↓</button>
+          </div>
+        </li>
+      }
+    }
+  </ol>
+</section>

@@ -1,0 +1,12 @@
+.card { display: grid; grid-template-rows: 12rem 1fr; min-height: 32rem; overflow: hidden; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); transition: translate 180ms ease, border-color 180ms ease; }
+.card:hover { translate: 0 -.25rem; border-color: color-mix(in srgb, var(--game-accent) 60%, var(--color-border)); }
+.card__art { position: relative; display: block; }
+.status { position: absolute; top: 1rem; right: 1rem; padding: .45rem .7rem; border-radius: 999px; color: #171717; background: var(--color-text); font-size: .72rem; font-weight: 800; text-transform: uppercase; }
+.card__body { display: flex; flex-direction: column; align-items: flex-start; padding: 1.35rem; }
+.tags { display: flex; flex-wrap: wrap; gap: .4rem; }
+.tags span { color: var(--game-accent); border: 1px solid color-mix(in srgb, var(--game-accent) 55%, transparent); border-radius: 999px; padding: .25rem .55rem; font-size: .7rem; font-weight: 800; }
+h3 { margin: 1rem 0 .55rem; font-size: 1.55rem; letter-spacing: -.04em; }
+p { color: var(--color-text-secondary); line-height: 1.55; margin: 0 0 1.25rem; }
+.meta { display: flex; gap: 1rem; color: var(--color-text-muted); font-size: .78rem; font-weight: 700; margin-top: auto; }
+.card__link { display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid var(--color-border); color: var(--color-text); text-decoration: none; font-weight: 800; }
+.card__link span { color: var(--game-accent); font-size: 1.3rem; }

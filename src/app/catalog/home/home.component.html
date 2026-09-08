@@ -1,0 +1,64 @@
+<app-site-header />
+
+<main>
+  <section class="hero shell">
+    <div class="hero__copy">
+      <p class="eyebrow">Jogos para Jogar Junto.</p>
+      <h1>Ainda tem lugar <span>na Mesa.</span></h1>
+      <p class="hero__text">
+        O Mesa ajuda a escolher, preparar e conduzir jogos presenciais.
+        Menos tempo na tela, mais história para contar.
+      </p>
+      <a class="button button--primary" routerLink="/" fragment="jogos">
+        Ver jogos <span aria-hidden="true">↓</span>
+      </a>
+      <p class="principle"><span aria-hidden="true"></span> O app conduz. As pessoas jogam.</p>
+    </div>
+
+    <div class="hero__scene" aria-hidden="true">
+      <div class="hero__table"><span></span><span></span><span></span><span></span></div>
+      <div class="hero__tile hero__tile--red">?</div>
+      <div class="hero__tile hero__tile--blue">42</div>
+      <div class="hero__tile hero__tile--purple"><i></i><i></i></div>
+    </div>
+  </section>
+
+  <section id="jogos" class="catalog section shell">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">Escolha a brincadeira</p>
+        <h2>O que vai pra Mesa hoje?</h2>
+      </div>
+      <p>Três jeitos diferentes de reunir a galera. Escolha o clima da vez e comece a jogar.</p>
+    </div>
+
+    <div class="catalog__grid">
+      @for (game of games; track game.id) { <app-game-card [game]="game" /> }
+    </div>
+  </section>
+
+  <section id="como-funciona" class="how section">
+    <div class="shell">
+      <div class="section-heading section-heading--compact">
+        <div>
+          <p class="eyebrow">Sem complicação</p>
+          <h2>Da escolha à roda em três passos.</h2>
+        </div>
+      </div>
+      <ol class="steps">
+        <li><span>1</span><div><h3>Escolha um jogo.</h3><p>Veja a dinâmica e encontre o clima certo para o grupo.</p></div></li>
+        <li><span>2</span><div><h3>Junta a galera.</h3><p>Um celular é o bastante. A interação continua ao redor dele.</p></div></li>
+        <li><span>3</span><div><h3>O Mesa conduz.</h3><p>Sorteios e etapas ficam com o app. A brincadeira fica com vocês.</p></div></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="closing shell section">
+    <div class="closing__mark" aria-hidden="true">✦</div>
+    <p class="eyebrow">Mesa — por <a [href]="links.seteOito" target="_blank" rel="noopener noreferrer">Sete Oito</a></p>
+    <h2>Ainda tem lugar <span>na Mesa.</span></h2>
+    <a class="button button--primary" routerLink="/" fragment="jogos">Escolher um jogo <span aria-hidden="true">→</span></a>
+  </section>
+</main>
+
+<app-site-footer />

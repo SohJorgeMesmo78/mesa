@@ -1,0 +1,17 @@
+:host { display: block; height: 100%; }
+.art { position: relative; min-height: 12rem; height: 100%; overflow: hidden; background: var(--game-accent, #ef4444); }
+.art::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 75% 20%, rgba(255,255,255,.22), transparent 34%), linear-gradient(135deg, transparent 30%, rgba(0,0,0,.25)); }
+.art__question { position: absolute; z-index: 2; left: 50%; top: 50%; translate: -50% -50%; font-size: 8rem; line-height: 1; font-weight: 800; color: #fff; text-shadow: 0 .4rem 0 rgba(0,0,0,.16); }
+.art__card { position: absolute; width: 4.2rem; height: 5.8rem; border-radius: .65rem; border: 2px solid rgba(255,255,255,.7); background: rgba(255,255,255,.12); }
+.art__card--one { left: 12%; bottom: -1rem; rotate: -15deg; }
+.art__card--two { right: 10%; top: -1rem; rotate: 17deg; }
+.art--ito { background: #3b82f6; }
+.art__number { position: absolute; z-index: 1; color: #fff; font-weight: 800; background: rgba(13,29,58,.7); border: 2px solid rgba(255,255,255,.65); border-radius: 1rem; padding: .55rem .85rem; }
+.art__number--small { left: 15%; top: 22%; rotate: -9deg; }
+.art__number--large { right: 16%; bottom: 20%; font-size: 2rem; rotate: 8deg; }
+.art__line { position: absolute; left: 14%; right: 14%; top: 52%; height: 3px; background: #fff; rotate: -8deg; }
+.art--impostor { background: #a855f7; }
+.art__mask { position: absolute; left: 50%; top: 54%; translate: -50% -50%; width: 9rem; height: 7.5rem; border-radius: 48% 48% 40% 40%; background: #171717; rotate: -4deg; }
+.art__eye { position: absolute; z-index: 2; top: 44%; width: 2rem; height: .75rem; background: #fff; border-radius: 100% 0; }
+.art__eye--left { left: calc(50% - 3rem); rotate: 10deg; }
+.art__eye--right { right: calc(50% - 3rem); rotate: 80deg; }

@@ -1,0 +1,4 @@
+.footer { border-top: 1px solid var(--color-border); }
+.footer__inner { min-height: 8rem; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; }
+p { color: var(--color-text-secondary); font-size: .9rem; margin: 0; }
+@media (max-width: 34rem) { .footer__inner { align-items: flex-start; flex-direction: column; justify-content: center; } }

@@ -1,0 +1,18 @@
+<article class="card" [style.--game-accent]="game().accent">
+  <a class="card__art" [routerLink]="['/jogos', game().slug]" [attr.aria-label]="'Conhecer ' + game().name">
+    <app-game-artwork [slug]="game().slug" />
+    @if (game().availability === 'coming-soon') { <span class="status">Em breve</span> }
+  </a>
+  <div class="card__body">
+    <div class="tags">
+      @for (category of game().categories; track category) { <span>{{ category }}</span> }
+    </div>
+    <h3>{{ game().name }}</h3>
+    <p>{{ game().shortDescription }}</p>
+    <div class="meta">
+      <span aria-label="Participantes">{{ playerLabel() }}</span>
+      @if (game().estimatedMinutes; as minutes) { <span>~{{ minutes }} min</span> }
+    </div>
+    <a class="card__link" [routerLink]="['/jogos', game().slug]">Ver detalhes <span aria-hidden="true">→</span></a>
+  </div>
+</article>

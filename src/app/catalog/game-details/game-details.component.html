@@ -1,0 +1,36 @@
+<app-site-header />
+<main class="shell details-page">
+  @if (game(); as currentGame) {
+    <a class="back-link" routerLink="/" fragment="jogos">← Todos os jogos</a>
+    <section class="game-hero" [style.--game-accent]="currentGame.accent">
+      <div class="game-hero__art"><app-game-artwork [slug]="currentGame.slug" /></div>
+      <div class="game-hero__copy">
+        <div class="tags">
+          @for (category of currentGame.categories; track category) { <span>{{ category }}</span> }
+          @if (currentGame.availability === 'coming-soon') { <span class="tags__status">Em breve</span> }
+        </div>
+        <h1>{{ currentGame.name }}</h1>
+        <p>{{ currentGame.fullDescription }}</p>
+        <div class="meta"><span>{{ playerLabel() }}</span><span>~{{ currentGame.estimatedMinutes }} min</span><span>Um celular</span></div>
+        @if (currentGame.availability === 'available') {
+          <a class="button button--primary" [routerLink]="['/jogar', currentGame.slug]">Jogar agora <span aria-hidden="true">→</span></a>
+        } @else {
+          <span class="button button--disabled" aria-disabled="true">Em breve</span>
+        }
+      </div>
+    </section>
+
+    <section class="rules">
+      <div><p class="eyebrow">Como jogar</p><h2>O app prepara.<br>A roda faz acontecer.</h2></div>
+      <ol>
+        @for (instruction of currentGame.instructions; track $index) {
+          <li><span>{{ $index + 1 }}</span><p>{{ instruction }}</p></li>
+        }
+      </ol>
+    </section>
+    <aside class="boundary"><strong>O app conduz.</strong><p>{{ currentGame.appResponsibility }}</p></aside>
+  } @else {
+    <section class="missing"><p class="eyebrow">Ops</p><h1>Esse jogo não está na Mesa.</h1><a class="button button--primary" routerLink="/">Voltar ao início</a></section>
+  }
+</main>
+<app-site-footer />
