@@ -10,25 +10,17 @@
         @case ('setup') {
           <section class="intro">
             <p class="eyebrow">Impostor</p>
-            <h1>Alguém não sabe a palavra.</h1>
+            <h1>Alguém está fora de sintonia.</h1>
             <p>Todo mundo dá pistas. Quem estiver improvisando tenta passar despercebido.</p>
           </section>
 
-          <section class="round-config" aria-labelledby="round-config-title">
-            <h2 id="round-config-title">Configuração da rodada</h2>
-            <div class="config-row">
-              <span><strong>Impostores</strong><small>O restante recebe a palavra</small></span>
-              <div class="stepper">
-                <button type="button" [disabled]="game.config.impostorCount === 1" aria-label="Diminuir impostores" (click)="decreaseImpostors()">−</button>
-                <output aria-live="polite">{{ game.config.impostorCount }}</output>
-                <button type="button" [disabled]="game.config.impostorCount === maxImpostors()" aria-label="Aumentar impostores" (click)="increaseImpostors()">＋</button>
-              </div>
-            </div>
-            <button class="config-row config-row--button" type="button" role="switch" [attr.aria-checked]="game.config.hintsEnabled" (click)="toggleHints()">
-              <span><strong>Dica para impostores</strong><small>Ajuda sem revelar a palavra</small></span>
-              <i [class.active]="game.config.hintsEnabled" aria-hidden="true"></i>
-            </button>
-          </section>
+          <app-impostor-config
+            [config]="game.config"
+            [maxImpostors]="maxImpostors()"
+            (impostorCountChange)="setImpostorCount($event)"
+            (modeChange)="setMode($event)"
+            (giveHintChange)="setGiveHint($event)"
+          />
 
           <app-player-setup
             [players]="game.players"
@@ -46,22 +38,22 @@
               [total]="game.players.length"
               (hidden)="hideCurrent()"
             >
-              @if (currentIsImpostor()) {
-                <article class="role-card role-card--impostor">
-                  <p>Seu papel</p>
-                  <strong>Você é<br>Impostor</strong>
-                  @if (game.config.hintsEnabled && game.hint) {
-                    <span>Sua dica: <b>{{ game.hint }}</b></span>
-                  } @else {
-                    <span>Descubra a palavra pelas pistas.</span>
-                  }
-                </article>
-              } @else {
-                <article class="role-card">
-                  <p>A palavra da rodada é</p>
-                  <strong>{{ game.word }}</strong>
-                  <span>Dê uma pista sem ser óbvio demais.</span>
-                </article>
+              @if (currentPrivateInfo(); as info) {
+                @if (info.kind === 'impostor') {
+                  <article class="role-card role-card--impostor">
+                    <p>Você é o</p>
+                    <strong>Impostor</strong>
+                    @if (info.hint) {
+                      <div class="hint-block"><span>Sua dica</span><b>{{ info.hint }}</b></div>
+                    }
+                  </article>
+                } @else {
+                  <article class="role-card">
+                    <p>Sua palavra é</p>
+                    <strong>{{ info.word }}</strong>
+                    <span>Dê uma pista sem ser óbvio demais.</span>
+                  </article>
+                }
               }
             </app-private-reveal>
           }
@@ -70,12 +62,12 @@
           <section class="discussion">
             <div class="discussion__icon" aria-hidden="true"><i></i><i></i></div>
             <p class="eyebrow">Celular de lado</p>
-            <h1>Hora das pistas.</h1>
-            <ol>
-              <li>Cada pessoa dá uma pista curta.</li>
-              <li>Conversem sobre as pistas suspeitas.</li>
-              <li>Votem em quem parece ser o impostor.</li>
-            </ol>
+            <h1>{{ game.config.mode === 'classic' ? 'Todo mundo já sabe o que precisa saber.' : 'Todo mundo recebeu uma palavra.' }}</h1>
+            @if (game.config.mode === 'classic') {
+              <p class="discussion__lead">Cada pessoa dá uma associação relacionada à palavra. Descubram quem está improvisando.</p>
+            } @else {
+              <p class="discussion__lead">Conversem, deem pistas e tentem perceber quem recebeu algo diferente.</p>
+            }
             <button class="button button--primary button--large" type="button" (click)="showResults()">Revelar resultado</button>
           </section>
         }
@@ -83,13 +75,19 @@
           <section class="result">
             <p class="eyebrow">Fim da rodada</p>
             <h1>A palavra era <span>{{ game.word }}</span>.</h1>
-            @if (game.config.hintsEnabled && game.hint) { <p class="result__hint">Dica dos impostores: <strong>{{ game.hint }}</strong></p> }
+            @if (game.config.mode === 'classic' && game.hint) { <p class="result__hint">Dica recebida: <strong>{{ game.hint }}</strong></p> }
+            @if (game.config.mode === 'blind') {
+              <div class="alternative-result"><p>A palavra diferente era</p><strong>{{ game.alternativeWord }}</strong></div>
+            }
             <div class="impostor-list">
-              <h2>{{ impostors().length === 1 ? 'O impostor era' : 'Os impostores eram' }}</h2>
+              <h2>{{ game.config.mode === 'blind' ? 'Quem recebeu a palavra diferente' : (impostors().length === 1 ? 'O impostor era' : 'Os impostores eram') }}</h2>
               @for (player of impostors(); track player.id) {
                 <article><i [style.background]="player.color" aria-hidden="true"></i><strong>{{ player.name }}</strong></article>
               }
             </div>
+            @if (game.config.mode === 'blind') {
+              <p class="blind-explanation">{{ impostors().length === 1 ? 'Essa pessoa era a impostora — mesmo sem saber.' : 'Essas pessoas eram as impostoras — mesmo sem saber.' }}</p>
+            }
             <button class="button button--primary button--large" type="button" (click)="newRound()">Nova rodada <span aria-hidden="true">↻</span></button>
           </section>
         }

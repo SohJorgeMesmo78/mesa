@@ -41,35 +41,14 @@ export class ItoOrderEditorComponent {
     }
   }
 
-  startDrag(event: DragEvent, playerId: string): void {
-    this.draggedPlayerId = playerId;
-    event.dataTransfer?.setData('text/plain', playerId);
-    if (event.dataTransfer) event.dataTransfer.effectAllowed = 'move';
-  }
-
-  allowDrop(event: DragEvent): void {
-    event.preventDefault();
-  }
-
-  dropOn(event: DragEvent, targetPlayerId: string): void {
-    event.preventDefault();
-    const playerId = event.dataTransfer?.getData('text/plain') || this.draggedPlayerId;
-    if (playerId) this.moveTo(playerId, targetPlayerId);
-    this.draggedPlayerId = null;
-  }
-
-  endDrag(): void {
-    this.draggedPlayerId = null;
-  }
-
   startPointer(event: PointerEvent, playerId: string): void {
-    if (event.pointerType === 'mouse') return;
+    if (event.button !== 0) return;
     this.draggedPlayerId = playerId;
     (event.currentTarget as HTMLElement).setPointerCapture(event.pointerId);
   }
 
   movePointer(event: PointerEvent): void {
-    if (!this.draggedPlayerId || event.pointerType === 'mouse') return;
+    if (!this.draggedPlayerId) return;
     event.preventDefault();
     const cards = [...this.element.nativeElement.querySelectorAll<HTMLElement>('[data-guess-player]')];
     const target = cards.find((card) => {

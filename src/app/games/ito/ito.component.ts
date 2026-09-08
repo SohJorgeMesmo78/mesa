@@ -35,11 +35,13 @@ export class ItoComponent {
   });
   readonly correctOrder = computed(() => {
     const session = this.activeGame();
-    return session?.assignments.length === session?.players.length ? this.engine.correctOrder(session) : [];
+    return session && session.assignments.length === session.players.length
+      ? this.engine.correctOrder(session)
+      : [];
   });
   readonly score = computed(() => {
     const session = this.activeGame();
-    return session?.assignments.length === session?.players.length
+    return session && session.assignments.length === session.players.length
       ? this.engine.score(session)
       : { correctPairs: 0, totalPairs: 0, points: 0, problematicPlayerIds: [] };
   });

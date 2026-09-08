@@ -12,16 +12,11 @@
       @if (playerById().get(playerId); as player) {
         <li
           [attr.data-guess-player]="player.id"
-          (dragover)="allowDrop($event)"
-          (drop)="dropOn($event, player.id)"
         >
           <button
             class="drag-handle"
             type="button"
-            draggable="true"
             [attr.aria-label]="'Arrastar ' + player.name"
-            (dragstart)="startDrag($event, player.id)"
-            (dragend)="endDrag()"
             (pointerdown)="startPointer($event, player.id)"
             (pointermove)="movePointer($event)"
             (pointerup)="endPointer()"

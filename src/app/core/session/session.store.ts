@@ -85,6 +85,10 @@ export class SessionStore {
       if (!raw) return DEFAULT_SESSION;
       const parsed: unknown = JSON.parse(raw);
       if (isMesaSession(parsed)) return parsed;
+      const migratedVersionThree = migrateVersionThree(parsed);
+      if (migratedVersionThree) return migratedVersionThree;
+      const migratedVersionTwo = migrateVersionTwo(parsed);
+      if (migratedVersionTwo) return migratedVersionTwo;
       const migrated = migrateVersionOne(parsed);
       return migrated ?? DEFAULT_SESSION;
     } catch {
@@ -132,17 +136,33 @@ function isIto(value: unknown): value is ItoSession {
   const phase = value['phase'];
   const theme = value['theme'];
   const assignments = value['assignments'];
-  if (!['setup', 'handoff', 'private', 'collective', 'results'].includes(String(phase))) return false;
+  if (!['setup', 'handoff', 'collective', 'results'].includes(String(phase))) return false;
   if (!Number.isInteger(value['currentPlayerIndex']) || Number(value['currentPlayerIndex']) < 0) return false;
   if (!Number.isInteger(value['round']) || Number(value['round']) < 0) return false;
-  if (phase === 'setup') return theme === null && Array.isArray(assignments) && assignments.length === 0;
+  const clues = value['clues'];
+  const guessedOrder = value['guessedOrder'];
+  const revealedPlayerIds = value['revealedPlayerIds'];
+  const playerIds = new Set(value['players'].map((player) => player.id));
+  if (!isRecord(clues)
+    || Object.keys(clues).length !== playerIds.size
+    || ![...playerIds].every((id) => typeof clues[id] === 'string')) return false;
+  if (!isPlayerIdPermutation(guessedOrder, playerIds)) return false;
+  if (!Array.isArray(revealedPlayerIds)
+    || new Set(revealedPlayerIds).size !== revealedPlayerIds.length
+    || !revealedPlayerIds.every((id) => typeof id === 'string' && playerIds.has(id))) return false;
+  if (typeof value['showCorrectOrder'] !== 'boolean') return false;
+  if (phase === 'setup') {
+    return theme === null
+      && Array.isArray(assignments) && assignments.length === 0
+      && revealedPlayerIds.length === 0
+      && value['showCorrectOrder'] === false;
+  }
   if (!isRecord(theme)
     || typeof theme['id'] !== 'string'
     || typeof theme['prompt'] !== 'string'
     || typeof theme['low'] !== 'string'
     || typeof theme['high'] !== 'string') return false;
   if (!Array.isArray(assignments) || assignments.length !== value['players'].length) return false;
-  const playerIds = new Set(value['players'].map((player) => player.id));
   const assignmentIds = new Set<string>();
   const numbers = new Set<number>();
   for (const assignment of assignments) {
@@ -155,10 +175,14 @@ function isIto(value: unknown): value is ItoSession {
     assignmentIds.add(assignment['playerId']);
     numbers.add(Number(assignment['number']));
   }
+  const resultStateIsValid = phase === 'results'
+    ? (!value['showCorrectOrder'] || revealedPlayerIds.length === value['players'].length)
+    : revealedPlayerIds.length === 0 && value['showCorrectOrder'] === false;
   return assignmentIds.size === value['players'].length
     && numbers.size === value['players'].length
     && Number(value['currentPlayerIndex']) < value['players'].length
-    && Number(value['round']) > 0;
+    && Number(value['round']) > 0
+    && resultStateIsValid;
 }
 
 function isImpostor(value: unknown): value is ImpostorSession {
@@ -167,20 +191,26 @@ function isImpostor(value: unknown): value is ImpostorSession {
   const config = value['config'];
   const impostorIds = value['impostorPlayerIds'];
   const playerCount = value['players'].length;
-  if (!['setup', 'handoff', 'private', 'discussion', 'results'].includes(String(phase))) return false;
+  if (!['setup', 'handoff', 'discussion', 'results'].includes(String(phase))) return false;
   if (!isRecord(config)
     || !Number.isInteger(config['impostorCount'])
     || Number(config['impostorCount']) < 1
     || Number(config['impostorCount']) > Math.floor((playerCount - 1) / 2)
-    || typeof config['hintsEnabled'] !== 'boolean') return false;
+    || (config['mode'] !== 'classic' && config['mode'] !== 'blind')
+    || typeof config['giveHint'] !== 'boolean') return false;
   if (!Number.isInteger(value['currentPlayerIndex']) || Number(value['currentPlayerIndex']) < 0) return false;
   if (!Number.isInteger(value['round']) || Number(value['round']) < 0) return false;
   if (phase === 'setup') {
-    return value['word'] === null && value['hint'] === null
+    return value['word'] === null && value['hint'] === null && value['alternativeWord'] === null
       && Array.isArray(impostorIds) && impostorIds.length === 0;
   }
   if (typeof value['word'] !== 'string' || value['word'].length === 0) return false;
-  if (config['hintsEnabled'] ? typeof value['hint'] !== 'string' : value['hint'] !== null) return false;
+  if (config['mode'] === 'classic') {
+    if (value['alternativeWord'] !== null) return false;
+    if (config['giveHint'] ? typeof value['hint'] !== 'string' : value['hint'] !== null) return false;
+  } else if (value['hint'] !== null
+    || typeof value['alternativeWord'] !== 'string'
+    || value['alternativeWord'].length === 0) return false;
   if (!Array.isArray(impostorIds) || impostorIds.length !== Number(config['impostorCount'])) return false;
   const playerIds = new Set(value['players'].map((player) => player.id));
   return new Set(impostorIds).size === impostorIds.length
@@ -202,6 +232,71 @@ function migrateVersionOne(value: unknown): MesaSession | null {
   const activeGame = value['activeGame'];
   if (activeGame !== null && !isWhoAmI(activeGame)) return null;
   return { version: SESSION_SCHEMA_VERSION, preferences: value['preferences'], activeGame };
+}
+
+function migrateVersionThree(value: unknown): MesaSession | null {
+  if (!isRecord(value) || value['version'] !== 3 || !isPreferences(value['preferences'])) return null;
+  const activeGame = value['activeGame'];
+  if (activeGame === null || isWhoAmI(activeGame) || isIto(activeGame)) {
+    return { version: SESSION_SCHEMA_VERSION, preferences: value['preferences'], activeGame };
+  }
+  const migratedImpostor = migrateLegacyImpostor(activeGame);
+  return migratedImpostor
+    ? { version: SESSION_SCHEMA_VERSION, preferences: value['preferences'], activeGame: migratedImpostor }
+    : null;
+}
+
+function migrateVersionTwo(value: unknown): MesaSession | null {
+  if (!isRecord(value) || value['version'] !== 2 || !isPreferences(value['preferences'])) return null;
+  const activeGame = value['activeGame'];
+  if (activeGame === null || isWhoAmI(activeGame)) {
+    return { version: SESSION_SCHEMA_VERSION, preferences: value['preferences'], activeGame };
+  }
+  if (!isRecord(activeGame)) return null;
+  if (activeGame['game'] === 'ito' && isPlayerList(activeGame['players'], 2, 12)) {
+    const players = activeGame['players'];
+    const candidate: unknown = {
+      ...activeGame,
+      phase: activeGame['phase'] === 'private' ? 'handoff' : activeGame['phase'],
+      clues: Object.fromEntries(players.map((player) => [player.id, ''])),
+      guessedOrder: players.map((player) => player.id),
+      revealedPlayerIds: [],
+      showCorrectOrder: false,
+    };
+    return isIto(candidate)
+      ? { version: SESSION_SCHEMA_VERSION, preferences: value['preferences'], activeGame: candidate }
+      : null;
+  }
+  if (activeGame['game'] === 'impostor') {
+    const migratedImpostor = migrateLegacyImpostor(activeGame);
+    return migratedImpostor
+      ? { version: SESSION_SCHEMA_VERSION, preferences: value['preferences'], activeGame: migratedImpostor }
+      : null;
+  }
+  return null;
+}
+
+function migrateLegacyImpostor(value: unknown): ImpostorSession | null {
+  if (!isRecord(value) || value['game'] !== 'impostor' || !isRecord(value['config'])) return null;
+  const legacyConfig = value['config'];
+  const candidate: unknown = {
+    ...value,
+    phase: value['phase'] === 'private' ? 'handoff' : value['phase'],
+    config: {
+      impostorCount: legacyConfig['impostorCount'],
+      mode: 'classic',
+      giveHint: typeof legacyConfig['hintsEnabled'] === 'boolean' ? legacyConfig['hintsEnabled'] : true,
+    },
+    alternativeWord: null,
+  };
+  return isImpostor(candidate) ? candidate : null;
+}
+
+function isPlayerIdPermutation(value: unknown, playerIds: ReadonlySet<string>): value is string[] {
+  return Array.isArray(value)
+    && value.length === playerIds.size
+    && new Set(value).size === value.length
+    && value.every((id) => typeof id === 'string' && playerIds.has(id));
 }
 
 function isPositiveInteger(value: unknown): value is number {

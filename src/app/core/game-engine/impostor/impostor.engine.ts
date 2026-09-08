@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { RandomService } from '../../random/random.service';
 import { normalizePlayers, Player } from '../../players/player.model';
-import { ImpostorConfig, ImpostorContent, ImpostorSession } from './impostor.models';
+import { ImpostorConfig, ImpostorContent, ImpostorPrivateInfo, ImpostorSession } from './impostor.models';
 
 const IMPOSTOR_MIN_PLAYERS = 3;
 const IMPOSTOR_MAX_PLAYERS = 12;
@@ -16,9 +16,10 @@ export class ImpostorEngine {
       game: 'impostor',
       phase: 'setup',
       players: normalizePlayers(players),
-      config: { impostorCount: 1, hintsEnabled: true },
+      config: { impostorCount: 1, mode: 'classic', giveHint: true },
       word: null,
       hint: null,
+      alternativeWord: null,
       impostorPlayerIds: [],
       currentPlayerIndex: 0,
       round: 0,
@@ -48,13 +49,19 @@ export class ImpostorEngine {
       .shuffle(players)
       .slice(0, session.config.impostorCount)
       .map((player) => player.id);
-    const hint = session.config.hintsEnabled ? this.random.pick(entry.hints) : null;
+    const hint = session.config.mode === 'classic' && session.config.giveHint
+      ? this.random.pick(entry.classicHints)
+      : null;
+    const alternativeWord = session.config.mode === 'blind'
+      ? this.random.pick(entry.blindWords)
+      : null;
     return {
       ...session,
       players,
       phase: 'handoff',
       word: entry.word,
       hint,
+      alternativeWord,
       impostorPlayerIds,
       currentPlayerIndex: 0,
       round: session.round + 1,
@@ -72,6 +79,19 @@ export class ImpostorEngine {
   showResults(session: ImpostorSession): ImpostorSession {
     this.assertPhase(session, 'discussion');
     return { ...session, phase: 'results' };
+  }
+
+  privateInfo(session: ImpostorSession, playerId: string): ImpostorPrivateInfo {
+    if (session.phase !== 'handoff') throw new Error('A informação privada só existe durante a distribuição.');
+    const isImpostor = session.impostorPlayerIds.includes(playerId);
+    if (session.config.mode === 'blind') {
+      const word = isImpostor ? session.alternativeWord : session.word;
+      if (!word) throw new Error('A palavra privada da rodada não está disponível.');
+      return { kind: 'word', word };
+    }
+    if (isImpostor) return { kind: 'impostor', hint: session.hint };
+    if (!session.word) throw new Error('A palavra da rodada não está disponível.');
+    return { kind: 'word', word: session.word };
   }
 
   maxImpostors(playerCount: number): number {
@@ -101,6 +121,9 @@ export class ImpostorEngine {
       || config.impostorCount < 1
       || config.impostorCount > maximum) {
       throw new RangeError(`Escolha entre 1 e ${maximum} impostores.`);
+    }
+    if (config.mode !== 'classic' && config.mode !== 'blind') {
+      throw new Error('Escolha um modo válido para o Impostor.');
     }
   }
 

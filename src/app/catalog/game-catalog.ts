@@ -56,9 +56,9 @@ export const GAME_CATALOG = [
     id: 'impostor',
     slug: 'impostor',
     name: 'Impostor',
-    shortDescription: 'Todo mundo sabe a palavra. Bem… quase todo mundo.',
+    shortDescription: 'Palavras, pistas e uma pessoa fora de sintonia. Será que ela sabe?',
     fullDescription:
-      'O grupo recebe a mesma palavra, mas uma pessoa é o impostor. Cada um dá uma pista curta sem entregar o segredo.',
+      'Informações privadas colocam uma ou mais pessoas fora de sintonia. Escolha se o impostor conhece seu papel ou também joga no escuro.',
     players: { min: 3, max: 12 },
     estimatedMinutes: 15,
     categories: ['Blefe', 'Dedução'],
@@ -75,7 +75,11 @@ export const GAME_CATALOG = [
       'Dê uma pista relacionada ao segredo sem ser óbvio demais.',
       'Debatam e votem em quem parece estar improvisando.',
     ],
-    appResponsibility: 'O Mesa distribui palavra e papel secreto. Pistas, debate e votação são presenciais.',
+    appResponsibility: 'O Mesa distribui as informações privadas. Pistas, debate e votação são presenciais.',
+    modes: [
+      { name: 'Clássico', description: 'O impostor sabe seu papel e pode ou não receber uma dica.' },
+      { name: 'No escuro', description: 'Todos recebem uma palavra e ninguém sabe quem recebeu a diferente.' },
+    ],
   },
 ] as const satisfies readonly GameDefinition[];
 

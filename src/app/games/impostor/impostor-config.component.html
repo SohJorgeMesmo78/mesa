@@ -1,0 +1,34 @@
+<section class="round-config" aria-labelledby="round-config-title">
+  <h2 id="round-config-title">Configuração da rodada</h2>
+
+  <div class="config-section">
+    <div class="config-label"><strong>Modo</strong><small>Como o impostor recebe sua informação</small></div>
+    <div class="mode-options" role="radiogroup" aria-label="Modo do Impostor">
+      <button type="button" role="radio" [attr.aria-checked]="config().mode === 'classic'" [class.active]="config().mode === 'classic'" (click)="modeChange.emit('classic')">
+        <strong>Clássico</strong><span>O impostor sabe que é o impostor.</span>
+      </button>
+      <button type="button" role="radio" [attr.aria-checked]="config().mode === 'blind'" [class.active]="config().mode === 'blind'" (click)="modeChange.emit('blind')">
+        <strong>No escuro</strong><span>Todos recebem uma palavra. Nem o impostor sabe que recebeu a diferente.</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="config-row">
+    <span><strong>Impostores</strong><small>Quem recebe a informação diferente</small></span>
+    <div class="stepper">
+      <button type="button" [disabled]="config().impostorCount === 1" aria-label="Diminuir impostores" (click)="impostorCountChange.emit(config().impostorCount - 1)">−</button>
+      <output aria-live="polite">{{ config().impostorCount }}</output>
+      <button type="button" [disabled]="config().impostorCount === maxImpostors()" aria-label="Aumentar impostores" (click)="impostorCountChange.emit(config().impostorCount + 1)">＋</button>
+    </div>
+  </div>
+
+  @if (config().mode === 'classic') {
+    <div class="config-section config-section--last">
+      <div class="config-label"><strong>Dica para o impostor</strong><small>Ajuda a participar sem revelar a palavra</small></div>
+      <div class="segmented" role="radiogroup" aria-label="Dica para o impostor">
+        <button type="button" role="radio" [attr.aria-checked]="config().giveHint" [class.active]="config().giveHint" (click)="giveHintChange.emit(true)">Com dica</button>
+        <button type="button" role="radio" [attr.aria-checked]="!config().giveHint" [class.active]="!config().giveHint" (click)="giveHintChange.emit(false)">Sem dica</button>
+      </div>
+    </div>
+  }
+</section>

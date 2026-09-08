@@ -1,0 +1,23 @@
+:host { display: block; width: min(100%, 38rem); }
+.round-config { overflow: hidden; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); }
+h2 { margin: 0; padding: 1rem; border-bottom: 1px solid var(--color-border); font-size: .78rem; letter-spacing: .1em; text-transform: uppercase; }
+.config-section, .config-row { border-bottom: 1px solid var(--color-border); }
+.config-section { padding: 1rem; }
+.config-section--last { border-bottom: 0; }
+.config-label { display: grid; gap: .2rem; margin-bottom: .75rem; }
+.config-label strong, .config-row strong { font-size: .9rem; }
+.config-label small, .config-row small { color: var(--color-text-muted); font-size: .72rem; }
+.mode-options { display: grid; gap: .6rem; }
+.mode-options button { display: grid; gap: .25rem; width: 100%; padding: .85rem; color: var(--color-text); background: var(--color-surface-raised); border: 1px solid var(--color-border); border-radius: .7rem; text-align: left; }
+.mode-options button.active { border-color: var(--game-accent); box-shadow: 0 0 0 1px var(--game-accent); }
+.mode-options span { color: var(--color-text-secondary); font-size: .75rem; line-height: 1.4; }
+.config-row { min-height: 4.75rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: .8rem 1rem; }
+.config-row > span { display: grid; gap: .2rem; }
+.stepper { display: grid; grid-template-columns: 2.4rem 2rem 2.4rem; align-items: center; text-align: center; }
+.stepper button { width: 2.4rem; height: 2.4rem; color: var(--color-text); background: var(--color-surface-raised); border: 1px solid var(--color-border); border-radius: .6rem; font-size: 1.2rem; }
+.stepper button:disabled { opacity: .3; cursor: not-allowed; }
+.stepper output { font-weight: 800; }
+.segmented { display: grid; grid-template-columns: 1fr 1fr; padding: .25rem; background: var(--color-background); border-radius: .7rem; }
+.segmented button { min-height: 2.75rem; color: var(--color-text-secondary); background: transparent; border: 0; border-radius: .5rem; font-weight: 750; }
+.segmented button.active { color: #1b1302; background: var(--game-accent); }
+button:focus-visible { outline: 3px solid var(--color-primary); outline-offset: 2px; }

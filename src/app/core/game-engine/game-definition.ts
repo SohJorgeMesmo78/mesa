@@ -29,4 +29,8 @@ export interface GameDefinition {
   readonly accent: string;
   readonly instructions: readonly string[];
   readonly appResponsibility: string;
+  readonly modes?: readonly {
+    readonly name: string;
+    readonly description: string;
+  }[];
 }

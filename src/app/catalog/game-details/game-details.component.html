@@ -20,6 +20,17 @@
       </div>
     </section>
 
+    @if (currentGame.modes; as modes) {
+      <section class="game-modes" [style.--game-accent]="currentGame.accent" aria-labelledby="game-modes-title">
+        <div><p class="eyebrow">Modos de jogo</p><h2 id="game-modes-title">A mesma suspeita.<br>Duas experiências.</h2></div>
+        <div class="game-modes__list">
+          @for (mode of modes; track mode.name) {
+            <article><h3>{{ mode.name }}</h3><p>{{ mode.description }}</p></article>
+          }
+        </div>
+      </section>
+    }
+
     <section class="rules">
       <div><p class="eyebrow">Como jogar</p><h2>O app prepara.<br>A roda faz acontecer.</h2></div>
       <ol>

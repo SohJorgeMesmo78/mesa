@@ -3,15 +3,17 @@ import { RouterLink } from '@angular/router';
 import { findGame } from '../../catalog/game-catalog';
 import { IMPOSTOR_CONTENT } from '../../content/impostor/words';
 import { ImpostorEngine } from '../../core/game-engine/impostor/impostor.engine';
+import { ImpostorMode } from '../../core/game-engine/impostor/impostor.models';
 import { Player, createPlayers } from '../../core/players/player.model';
 import { SessionStore } from '../../core/session/session.store';
 import { BrandLogoComponent } from '../../layout/brand-logo/brand-logo.component';
 import { PlayerSetupComponent } from '../../shared/player-setup/player-setup.component';
 import { PrivateRevealComponent } from '../../shared/private-reveal/private-reveal.component';
+import { ImpostorConfigComponent } from './impostor-config.component';
 
 @Component({
   selector: 'app-impostor',
-  imports: [RouterLink, BrandLogoComponent, PlayerSetupComponent, PrivateRevealComponent],
+  imports: [RouterLink, BrandLogoComponent, PlayerSetupComponent, PrivateRevealComponent, ImpostorConfigComponent],
   templateUrl: './impostor.component.html',
   styleUrl: './impostor.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -26,10 +28,10 @@ export class ImpostorComponent {
     const session = this.activeGame();
     return session?.players[session.currentPlayerIndex];
   });
-  readonly currentIsImpostor = computed(() => {
+  readonly currentPrivateInfo = computed(() => {
     const session = this.activeGame();
     const player = this.currentPlayer();
-    return player ? session?.impostorPlayerIds.includes(player.id) ?? false : false;
+    return session && player ? this.engine.privateInfo(session, player.id) : null;
   });
   readonly maxImpostors = computed(() => this.engine.maxImpostors(this.activeGame()?.players.length ?? 3));
   readonly impostors = computed(() => {
@@ -51,21 +53,21 @@ export class ImpostorComponent {
     }));
   }
 
-  decreaseImpostors(): void {
-    this.changeImpostorCount(-1);
-  }
-
-  increaseImpostors(): void {
-    this.changeImpostorCount(1);
-  }
-
-  toggleHints(): void {
+  setImpostorCount(impostorCount: number): void {
     const session = this.activeGame();
     if (!session) return;
     this.sessionStore.setImpostorSession(this.engine.updateSetup(session, session.players, {
       ...session.config,
-      hintsEnabled: !session.config.hintsEnabled,
+      impostorCount,
     }));
+  }
+
+  setMode(mode: ImpostorMode): void {
+    this.updateConfig({ mode });
+  }
+
+  setGiveHint(giveHint: boolean): void {
+    this.updateConfig({ giveHint });
   }
 
   startRound(players: Player[]): void {
@@ -94,14 +96,12 @@ export class ImpostorComponent {
     this.sessionStore.clearActiveGame();
   }
 
-  private changeImpostorCount(change: number): void {
+  private updateConfig(changes: Partial<{ mode: ImpostorMode; giveHint: boolean }>): void {
     const session = this.activeGame();
     if (!session) return;
-    const impostorCount = Math.min(this.maxImpostors(), Math.max(1, session.config.impostorCount + change));
-    if (impostorCount === session.config.impostorCount) return;
     this.sessionStore.setImpostorSession(this.engine.updateSetup(session, session.players, {
       ...session.config,
-      impostorCount,
+      ...changes,
     }));
   }
 }
