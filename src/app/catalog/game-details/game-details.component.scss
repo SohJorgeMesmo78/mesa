@@ -16,6 +16,7 @@ h1 { margin: 1.4rem 0 1rem; font-size: clamp(3rem, 7vw, 5.8rem); line-height: .9
 .game-modes article { padding: 1.25rem; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-sm); }
 .game-modes h3 { margin: 0 0 .4rem; color: var(--game-accent); }
 .game-modes article p { margin: 0; color: var(--color-text-secondary); line-height: 1.55; }
+.game-example { display: grid; grid-template-columns: .8fr 1.2fr; gap: 5rem; padding-top: 5rem; }.game-example h2 { margin: 0; font-size: clamp(2rem, 4vw, 3.4rem); line-height: 1.04; letter-spacing: -.055em; }.game-example__list { display: grid; gap: .65rem; }.game-example__list p { margin: 0; padding: 1rem 1.2rem; color: var(--color-text); background: var(--color-surface); border: 1px solid var(--color-border); border-left: .3rem solid var(--game-accent); border-radius: var(--radius-sm); font-weight: 800; }
 .rules { display: grid; grid-template-columns: .8fr 1.2fr; gap: 5rem; padding-block: 7rem 4rem; }
 .eyebrow { margin: 0 0 1rem; color: var(--color-primary); font-size: .75rem; font-weight: 800; letter-spacing: .15em; text-transform: uppercase; }
 .rules h2 { margin: 0; font-size: clamp(2rem, 4vw, 3.4rem); line-height: 1.04; letter-spacing: -.055em; }
@@ -28,4 +29,4 @@ h1 { margin: 1.4rem 0 1rem; font-size: clamp(3rem, 7vw, 5.8rem); line-height: .9
 .boundary p { margin: 0; color: var(--color-text-secondary); line-height: 1.6; }
 .missing { min-height: 65svh; display: grid; place-content: center; justify-items: start; }
 .missing h1 { max-width: 11ch; }
-@media (max-width: 48rem) { .game-hero { grid-template-columns: 1fr; } .game-hero__art { min-height: 18rem; } .game-modes, .rules { grid-template-columns: 1fr; gap: 2rem; } .rules { padding-block: 5rem 3rem; } .boundary { grid-template-columns: 1fr; gap: .5rem; } }
+@media (max-width: 48rem) { .game-hero { grid-template-columns: 1fr; } .game-hero__art { min-height: 18rem; } .game-modes, .game-example, .rules { grid-template-columns: 1fr; gap: 2rem; } .rules { padding-block: 5rem 3rem; } .boundary { grid-template-columns: 1fr; gap: .5rem; } }

@@ -3,6 +3,8 @@ import { PLATFORM_ID, computed, effect, inject, Injectable, signal } from '@angu
 import { ImpostorSession } from '../game-engine/impostor/impostor.models';
 import { ItoSession } from '../game-engine/ito/ito.models';
 import { HOT_POTATO_DURATIONS, HotPotatoSession } from '../game-engine/hot-potato/hot-potato.models';
+import { ImpostorQuestionSession } from '../game-engine/impostor-question/impostor-question.models';
+import { TeaOrCoffeeSession } from '../game-engine/tea-or-coffee/tea-or-coffee.models';
 import { Player } from '../players/player.model';
 import {
   ExperiencePreferences,
@@ -42,6 +44,14 @@ export class SessionStore {
     const active = this.sessionState().activeGame;
     return active?.game === 'batata-quente' ? active : null;
   });
+  readonly activeImpostorQuestion = computed(() => {
+    const active = this.sessionState().activeGame;
+    return active?.game === 'pergunta-do-impostor' ? active : null;
+  });
+  readonly activeTeaOrCoffee = computed(() => {
+    const active = this.sessionState().activeGame;
+    return active?.game === 'cha-ou-cafe' ? active : null;
+  });
 
   constructor() {
     if (isPlatformBrowser(this.platformId)) {
@@ -80,6 +90,14 @@ export class SessionStore {
     this.setActiveGame(session);
   }
 
+  setImpostorQuestionSession(session: ImpostorQuestionSession): void {
+    this.setActiveGame(session);
+  }
+
+  setTeaOrCoffeeSession(session: TeaOrCoffeeSession): void {
+    this.setActiveGame(session);
+  }
+
   clearActiveGame(): void {
     this.sessionState.update((current) => ({ ...current, activeGame: null }));
   }
@@ -94,6 +112,12 @@ export class SessionStore {
       if (!raw) return DEFAULT_SESSION;
       const parsed: unknown = JSON.parse(raw);
       if (isMesaSession(parsed)) return parsed;
+      const migratedVersionSeven = migrateVersionSeven(parsed);
+      if (migratedVersionSeven) return migratedVersionSeven;
+      const migratedVersionSix = migrateVersionSix(parsed);
+      if (migratedVersionSix) return migratedVersionSix;
+      const migratedVersionFive = migrateVersionFive(parsed);
+      if (migratedVersionFive) return migratedVersionFive;
       const migratedVersionFour = migrateVersionFour(parsed);
       if (migratedVersionFour) return migratedVersionFour;
       const migratedVersionThree = migrateVersionThree(parsed);
@@ -230,6 +254,14 @@ function isImpostor(value: unknown): value is ImpostorSession {
     && Number(value['round']) > 0;
 }
 
+function isTeaOrCoffee(value: unknown): value is TeaOrCoffeeSession {
+  return isRecord(value)
+    && value['game'] === 'cha-ou-cafe'
+    && ['ready', 'countdown', 'revealed'].includes(String(value['phase']))
+    && typeof value['word'] === 'string' && value['word'].trim().length > 0
+    && isPositiveInteger(value['round']);
+}
+
 function isHotPotato(value: unknown): value is HotPotatoSession {
   if (!isRecord(value) || value['game'] !== 'batata-quente' || !isPlayerList(value['players'], 2, 12)) return false;
   const phase = value['phase'];
@@ -251,12 +283,91 @@ function isHotPotato(value: unknown): value is HotPotatoSession {
   return value['roundStartedAt'] === null && value['loserPlayerId'] === null;
 }
 
+function isImpostorQuestion(value: unknown): value is ImpostorQuestionSession {
+  if (!isRecord(value) || value['game'] !== 'pergunta-do-impostor' || !isPlayerList(value['players'], 3, 12)) return false;
+  const phase = value['phase'];
+  const config = value['config'];
+  const pair = value['pair'];
+  const impostorIds = value['impostorPlayerIds'];
+  const playerCount = value['players'].length;
+  if (!['setup', 'handoff', 'discussion', 'majority-reveal', 'results'].includes(String(phase))) return false;
+  if (!isRecord(config)
+    || !Number.isInteger(config['impostorCount'])
+    || Number(config['impostorCount']) < 1
+    || Number(config['impostorCount']) > Math.floor((playerCount - 1) / 2)
+    || (config['answerMode'] !== 'spoken' && config['answerMode'] !== 'written')) return false;
+  const answers = value['answers'];
+  if (!isRecord(answers)) return false;
+  if (!Number.isInteger(value['currentPlayerIndex']) || Number(value['currentPlayerIndex']) < 0 || Number(value['currentPlayerIndex']) >= playerCount) return false;
+  if (!Number.isInteger(value['round']) || Number(value['round']) < 0) return false;
+  if (phase === 'setup') return pair === null
+    && value['majorityQuestion'] === null
+    && value['impostorQuestion'] === null
+    && Array.isArray(impostorIds) && impostorIds.length === 0
+    && Object.keys(answers).length === 0;
+  if (!isRecord(pair)
+    || typeof pair['id'] !== 'string' || pair['id'].length === 0
+    || typeof pair['questionA'] !== 'string' || pair['questionA'].length === 0
+    || typeof pair['questionB'] !== 'string' || pair['questionB'].length === 0
+    || pair['questionA'] === pair['questionB']) return false;
+  const majorityQuestion = value['majorityQuestion'];
+  const impostorQuestion = value['impostorQuestion'];
+  const orientationIsValid = (majorityQuestion === pair['questionA'] && impostorQuestion === pair['questionB'])
+    || (majorityQuestion === pair['questionB'] && impostorQuestion === pair['questionA']);
+  if (!orientationIsValid || !Array.isArray(impostorIds) || impostorIds.length !== Number(config['impostorCount'])) return false;
+  const playerIds = new Set(value['players'].map((player) => player.id));
+  const answerEntries = Object.entries(answers);
+  const answersAreValid = answerEntries.every(([playerId, answer]) => playerIds.has(playerId)
+    && typeof answer === 'string' && answer.trim().length > 0 && answer.length <= 160);
+  if (!answersAreValid) return false;
+  if (config['answerMode'] === 'spoken' && answerEntries.length > 0) return false;
+  if (config['answerMode'] === 'written') {
+    const expectedAnswers = phase === 'handoff' ? Number(value['currentPlayerIndex']) : playerCount;
+    if (answerEntries.length !== expectedAnswers) return false;
+  }
+  return Number(value['round']) > 0
+    && new Set(impostorIds).size === impostorIds.length
+    && impostorIds.every((id) => typeof id === 'string' && playerIds.has(id));
+}
+
+function migrateVersionSeven(value: unknown): MesaSession | null {
+  if (!isRecord(value) || value['version'] !== 7 || !isPreferences(value['preferences'])) return null;
+  const activeGame = migratePreAnswerModeGame(value['activeGame']);
+  return activeGame === undefined ? null : { version: SESSION_SCHEMA_VERSION, preferences: value['preferences'], activeGame };
+}
+
 function isMesaSession(value: unknown): value is MesaSession {
   if (!isRecord(value) || value['version'] !== SESSION_SCHEMA_VERSION || !isPreferences(value['preferences'])) {
     return false;
   }
   const activeGame = value['activeGame'];
-  return activeGame === null || isWhoAmI(activeGame) || isIto(activeGame) || isImpostor(activeGame) || isHotPotato(activeGame);
+  return activeGame === null || isWhoAmI(activeGame) || isIto(activeGame) || isImpostor(activeGame) || isHotPotato(activeGame) || isImpostorQuestion(activeGame) || isTeaOrCoffee(activeGame);
+}
+
+function migrateVersionSix(value: unknown): MesaSession | null {
+  if (!isRecord(value) || value['version'] !== 6 || !isPreferences(value['preferences'])) return null;
+  const activeGame = migratePreAnswerModeGame(value['activeGame'], false);
+  if (activeGame === undefined) return null;
+  return { version: SESSION_SCHEMA_VERSION, preferences: value['preferences'], activeGame };
+}
+
+function migratePreAnswerModeGame(value: unknown, acceptsTeaOrCoffee = true): MesaSession['activeGame'] | undefined {
+  if (value === null) return null;
+  if (isWhoAmI(value) || isIto(value) || isImpostor(value) || isHotPotato(value) || (acceptsTeaOrCoffee && isTeaOrCoffee(value))) return value;
+  if (!isRecord(value) || value['game'] !== 'pergunta-do-impostor' || !isRecord(value['config'])) return undefined;
+  const candidate: unknown = {
+    ...value,
+    config: { ...value['config'], answerMode: 'spoken' },
+    answers: {},
+  };
+  return isImpostorQuestion(candidate) ? candidate : undefined;
+}
+
+function migrateVersionFive(value: unknown): MesaSession | null {
+  if (!isRecord(value) || value['version'] !== 5 || !isPreferences(value['preferences'])) return null;
+  const activeGame = value['activeGame'];
+  if (activeGame !== null && !isWhoAmI(activeGame) && !isIto(activeGame) && !isImpostor(activeGame) && !isHotPotato(activeGame)) return null;
+  return { version: SESSION_SCHEMA_VERSION, preferences: value['preferences'], activeGame };
 }
 
 function migrateVersionFour(value: unknown): MesaSession | null {

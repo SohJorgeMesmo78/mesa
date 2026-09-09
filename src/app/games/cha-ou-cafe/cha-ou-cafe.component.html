@@ -1,0 +1,52 @@
+<div class="play-page">
+  <header class="play-header shell">
+    <app-brand-logo [compact]="true" />
+    <a routerLink="/jogos/cha-ou-cafe" (click)="leaveGame()">Sair</a>
+  </header>
+
+  <main class="play-main shell">
+    @if (activeGame(); as game) {
+      @switch (game.phase) {
+        @case ('ready') {
+          <section class="setup">
+            <p class="eyebrow">Chá ou Café</p>
+            <h1>Só uma pessoa pode ver.</h1>
+            <p class="setup__lead">Escolha quem vai conduzir a rodada e entregue o celular para ela.</p>
+
+            <div class="preferences" aria-label="Preferências da experiência">
+              <button type="button" role="switch" [attr.aria-checked]="preferences().countdown" (click)="togglePreference('countdown')">
+                <span><strong>Contagem regressiva</strong><small>Dá tempo de entregar o celular</small></span><i [class.active]="preferences().countdown"></i>
+              </button>
+              <button type="button" role="switch" [attr.aria-checked]="preferences().sound" (click)="togglePreference('sound')">
+                <span><strong>Som</strong><small>Bipes durante a preparação</small></span><i [class.active]="preferences().sound"></i>
+              </button>
+              <button type="button" role="switch" [attr.aria-checked]="preferences().haptics" (click)="togglePreference('haptics')">
+                <span><strong>Vibração</strong><small>Feedback em aparelhos compatíveis</small></span><i [class.active]="preferences().haptics"></i>
+              </button>
+            </div>
+
+            <button class="button button--primary button--large" type="button" (click)="revealWord()">Revelar palavra <span aria-hidden="true">→</span></button>
+            <a class="text-button" routerLink="/jogos/cha-ou-cafe" (click)="leaveGame()">Encerrar partida</a>
+          </section>
+        }
+        @case ('countdown') {
+          <section class="countdown-stage"><app-countdown (completed)="finishCountdown()" /></section>
+        }
+        @case ('revealed') {
+          <section class="reveal" aria-live="polite">
+            <p class="reveal__label">Sua palavra é</p>
+            <div class="secret-card">
+              <span class="secret-card__option">A</span>
+              <strong [class]="'secret-card__word secret-card__word--' + wordSize(game.word)">{{ game.word }}</strong>
+              <span class="secret-card__option secret-card__option--bottom">B</span>
+            </div>
+            <p class="reveal__instruction">Comecem com “Chá ou café?” e respondam sempre com a opção que mais se aproxima da palavra.</p>
+            <button class="button button--primary button--large" type="button" (click)="newRound()">Nova rodada <span aria-hidden="true">↻</span></button>
+            <button class="text-button" type="button" (click)="switchLeader()">Trocar pessoa</button>
+            <a class="text-button" routerLink="/jogos/cha-ou-cafe" (click)="leaveGame()">Encerrar partida</a>
+          </section>
+        }
+      }
+    }
+  </main>
+</div>

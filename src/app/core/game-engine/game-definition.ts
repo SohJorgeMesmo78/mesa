@@ -1,7 +1,7 @@
-export type GameCategory = 'Adivinhação' | 'Cooperativo' | 'Dedução' | 'Blefe' | 'Agilidade';
+export type GameCategory = 'Adivinhação' | 'Cooperativo' | 'Dedução' | 'Blefe' | 'Agilidade' | 'Conversa';
 
 export type GameComplexity = 'easy' | 'medium' | 'hard';
-export type GameEngineType = 'identity-reveal' | 'scale-ordering' | 'hidden-role' | 'timed-turns';
+export type GameEngineType = 'identity-reveal' | 'scale-ordering' | 'hidden-role' | 'timed-turns' | 'question-pairs' | 'comparison-reveal';
 export type GameFeature =
   | 'countdown'
   | 'audio'
@@ -30,6 +30,7 @@ export interface GameDefinition {
   readonly accent: string;
   readonly instructions: readonly string[];
   readonly appResponsibility: string;
+  readonly example?: readonly string[];
   readonly modes?: readonly {
     readonly name: string;
     readonly description: string;

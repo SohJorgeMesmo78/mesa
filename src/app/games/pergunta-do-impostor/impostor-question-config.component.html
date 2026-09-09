@@ -1,0 +1,20 @@
+<section class="round-config" aria-labelledby="impostors-title">
+  <span><strong id="impostors-title">Impostores</strong><small>Quantas pessoas recebem a pergunta diferente</small></span>
+  <div class="stepper">
+    <button type="button" [disabled]="config().impostorCount === 1" aria-label="Diminuir impostores" (click)="setImpostorCount(config().impostorCount - 1)">−</button>
+    <output aria-live="polite">{{ config().impostorCount }}</output>
+    <button type="button" [disabled]="config().impostorCount === maxImpostors()" aria-label="Aumentar impostores" (click)="setImpostorCount(config().impostorCount + 1)">＋</button>
+  </div>
+</section>
+
+<fieldset class="answer-config">
+  <legend>Como vocês querem responder?</legend>
+  <label [class.selected]="config().answerMode === 'spoken'">
+    <input type="radio" name="answer-mode" value="spoken" [checked]="config().answerMode === 'spoken'" (change)="setAnswerMode('spoken')">
+    <span><strong>Em voz alta</strong><small>Mais rápido e mais solto. O Mesa não registra as respostas.</small></span>
+  </label>
+  <label [class.selected]="config().answerMode === 'written'">
+    <input type="radio" name="answer-mode" value="written" [checked]="config().answerMode === 'written'" (change)="setAnswerMode('written')">
+    <span><strong>Registrar no Mesa</strong><small>Cada resposta fica escondida até todo mundo terminar.</small></span>
+  </label>
+</fieldset>

@@ -31,6 +31,15 @@
       </section>
     }
 
+    @if (currentGame.example; as examples) {
+      <section class="game-example" [style.--game-accent]="currentGame.accent" aria-labelledby="game-example-title">
+        <div><p class="eyebrow">Exemplo</p><h2 id="game-example-title">Duas opções.<br>Uma escolha.</h2></div>
+        <div class="game-example__list">
+          @for (example of examples; track example) { <p>{{ example }}</p> }
+        </div>
+      </section>
+    }
+
     <section class="rules">
       <div><p class="eyebrow">Como jogar</p><h2>O app prepara.<br>A roda faz acontecer.</h2></div>
       <ol>

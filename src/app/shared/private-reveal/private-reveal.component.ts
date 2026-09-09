@@ -11,6 +11,7 @@ export class PrivateRevealComponent {
   readonly player = input.required<Player>();
   readonly current = input.required<number>();
   readonly total = input.required<number>();
+  readonly hideDisabled = input(false);
   readonly isRevealed = signal(false);
   readonly hidden = output<void>();
 
@@ -28,6 +29,7 @@ export class PrivateRevealComponent {
   }
 
   hide(): void {
+    if (this.hideDisabled()) return;
     this.isRevealed.set(false);
     this.hidden.emit();
   }

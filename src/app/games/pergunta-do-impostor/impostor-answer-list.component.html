@@ -1,0 +1,1 @@
+<section><h2>{{ title() }}</h2>@for (player of players(); track player.id) { <article><i [style.background]="player.color" aria-hidden="true"></i><span><strong>{{ player.name }}</strong><p>{{ answers()[player.id] }}</p></span></article> }</section>

@@ -12,7 +12,7 @@
     <p class="private__eyebrow">Só para {{ player().name }}</p>
     <div id="private-title" class="private__content" aria-live="polite"><ng-content /></div>
     <p class="private__help">Memorize antes de passar o celular.</p>
-    <button class="button button--primary button--large" type="button" (click)="hide()">
+    <button class="button button--primary button--large" type="button" [disabled]="hideDisabled()" (click)="hide()">
       Ocultar <span aria-hidden="true">→</span>
     </button>
   }

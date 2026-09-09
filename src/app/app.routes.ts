@@ -29,6 +29,14 @@ export const routes: Routes = [
       import('./games/ito/ito.component').then((component) => component.ItoComponent),
   },
   {
+    path: 'jogar/cha-ou-cafe',
+    title: 'Chá ou Café — Mesa',
+    loadComponent: () =>
+      import('./games/cha-ou-cafe/cha-ou-cafe.component').then(
+        (component) => component.ChaOuCafeComponent,
+      ),
+  },
+  {
     path: 'jogar/impostor',
     title: 'Impostor — Mesa',
     loadComponent: () =>
@@ -40,6 +48,14 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./games/batata-quente/batata-quente.component').then(
         (component) => component.BatataQuenteComponent,
+      ),
+  },
+  {
+    path: 'jogar/pergunta-do-impostor',
+    title: 'Pergunta do Impostor — Mesa',
+    loadComponent: () =>
+      import('./games/pergunta-do-impostor/pergunta-do-impostor.component').then(
+        (component) => component.PerguntaDoImpostorComponent,
       ),
   },
   {

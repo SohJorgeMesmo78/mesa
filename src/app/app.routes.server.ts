@@ -6,9 +6,11 @@ export const serverRoutes: ServerRoute[] = [
     renderMode: RenderMode.Prerender,
     getPrerenderParams: async () => [
       { slug: 'quem-sou-eu' },
+      { slug: 'cha-ou-cafe' },
       { slug: 'ito' },
       { slug: 'impostor' },
       { slug: 'batata-quente' },
+      { slug: 'pergunta-do-impostor' },
     ],
   },
   {
