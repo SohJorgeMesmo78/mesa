@@ -1,0 +1,3 @@
+<time class="timer" [class]="'timer timer--' + urgency()" [attr.datetime]="'PT' + remaining() + 'S'" [attr.aria-label]="remaining() + ' segundos restantes'">
+  {{ formatted() }}
+</time>

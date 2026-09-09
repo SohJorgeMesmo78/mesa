@@ -1,0 +1,36 @@
+<div class="play-page">
+  <header class="play-header shell"><app-brand-logo [compact]="true" /><a routerLink="/jogos/batata-quente" (click)="leaveGame()">Sair</a></header>
+  <main class="play-main shell">
+    @if (activeGame(); as game) {
+      @switch (game.phase) {
+        @case ('setup') {
+          <section class="intro"><p class="eyebrow">Batata Quente</p><h1>Responda rápido.<br>Passe mais rápido.</h1><p>O tema é da rodada. O ritmo é de vocês.</p></section>
+          <section class="duration" aria-labelledby="duration-title"><div><h2 id="duration-title">Duração</h2><p>Quanto tempo a batata fica rodando?</p></div><div role="radiogroup" aria-label="Duração da rodada">@for (duration of durations; track duration) { <button type="button" role="radio" [attr.aria-checked]="game.durationSeconds === duration" [class.active]="game.durationSeconds === duration" (click)="setDuration(duration)">{{ duration }}s</button> }</div></section>
+          <app-player-setup [players]="game.players" [min]="2" [max]="12" (playersChange)="updatePlayers($event)" (confirmed)="prepare($event)" />
+        }
+        @case ('ready') {
+          <section class="ready">
+            <p class="eyebrow">Tema da rodada</p><h1>{{ game.theme.text }}</h1>
+            <button class="text-button" type="button" (click)="changeTheme()">Sortear outro tema ↻</button>
+            <div class="ready__meta"><strong>{{ game.durationSeconds }} segundos</strong><span>{{ game.players.length }} participantes</span></div>
+            <div class="feedback-options" aria-label="Feedback da rodada"><button type="button" role="switch" [attr.aria-checked]="preferences().sound" (click)="togglePreference('sound')">Som <b>{{ preferences().sound ? 'ligado' : 'desligado' }}</b></button><button type="button" role="switch" [attr.aria-checked]="preferences().haptics" (click)="togglePreference('haptics')">Vibração <b>{{ preferences().haptics ? 'ligada' : 'desligada' }}</b></button></div>
+            <button class="button button--primary button--large" type="button" (click)="startRound()">Começar rodada <span aria-hidden="true">→</span></button>
+          </section>
+        }
+        @case ('playing') {
+          <section class="playing" [class.playing--attention]="false">
+            <div class="playing__theme"><p>Tema</p><h1>{{ game.theme.text }}</h1></div>
+            <app-timer [startedAt]="game.roundStartedAt" [durationSeconds]="game.durationSeconds" (tick)="handleTick($event)" (expired)="finishRound()" />
+            @if (currentPlayer(); as player) {
+              <div class="turn"><p>É a vez de</p><strong [style.color]="player.color">{{ player.name }}</strong></div>
+            }
+            <button class="pass-button" type="button" (click)="passTurn()"><strong>Passei a vez</strong><span>Toque e entregue para a próxima pessoa</span></button>
+          </section>
+        }
+        @case ('result') {
+          <section class="result"><div class="result__burst" aria-hidden="true">✦</div><p class="eyebrow">Fim da rodada</p><h1>A batata explodiu!</h1>@if (loser(); as player) { <p class="result__loser"><strong [style.color]="player.color">{{ player.name }}</strong> ficou com ela.</p> }<div class="result__meta"><span>Tema<strong>{{ game.theme.text }}</strong></span><span>Duração<strong>{{ game.durationSeconds }} segundos</strong></span></div><button class="button button--primary button--large" type="button" (click)="playAgain()">Jogar novamente <span aria-hidden="true">↻</span></button></section>
+        }
+      }
+    }
+  </main>
+</div>

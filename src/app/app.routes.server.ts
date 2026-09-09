@@ -8,6 +8,7 @@ export const serverRoutes: ServerRoute[] = [
       { slug: 'quem-sou-eu' },
       { slug: 'ito' },
       { slug: 'impostor' },
+      { slug: 'batata-quente' },
     ],
   },
   {

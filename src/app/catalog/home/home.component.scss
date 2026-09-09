@@ -33,5 +33,5 @@ h1 span, .closing h2 span { color: var(--color-primary); }
 .closing { display: flex; flex-direction: column; align-items: center; text-align: center; }
 .closing__mark { color: var(--color-primary); font-size: 2.2rem; }
 .closing h2 { max-width: 13ch; margin-bottom: 2rem; }
-@media (max-width: 56rem) { .hero { grid-template-columns: 1fr; } .hero__scene { min-height: 28rem; } .catalog__grid { grid-template-columns: 1fr 1fr; } .catalog__grid app-game-card:last-child { grid-column: 1 / -1; max-width: calc(50% - .625rem); } .steps { grid-template-columns: 1fr; } .steps li { min-height: auto; } }
-@media (max-width: 38rem) { .hero { padding-top: 4rem; } .hero__scene { min-height: 23rem; } .hero__table { scale: .75; } .hero__tile { scale: .72; } .section-heading { align-items: flex-start; flex-direction: column; } .catalog__grid { grid-template-columns: 1fr; } .catalog__grid app-game-card:last-child { grid-column: auto; max-width: none; } }
+@media (max-width: 56rem) { .hero { grid-template-columns: 1fr; } .hero__scene { min-height: 28rem; } .catalog__grid { grid-template-columns: 1fr 1fr; } .steps { grid-template-columns: 1fr; } .steps li { min-height: auto; } }
+@media (max-width: 38rem) { .hero { padding-top: 4rem; } .hero__scene { min-height: 23rem; } .hero__table { scale: .75; } .hero__tile { scale: .72; } .section-heading { align-items: flex-start; flex-direction: column; } .catalog__grid { grid-template-columns: 1fr; } }

@@ -128,6 +128,26 @@ describe('SessionStore', () => {
     expect(store.activeImpostor()?.currentPlayerIndex).toBe(1);
   });
 
+  it('restaura uma rodada ativa de Batata Quente com timestamp e jogador atual', () => {
+    sessionStorage.setItem('mesa.session', JSON.stringify({
+      version: 5,
+      preferences: { countdown: true, sound: false, haptics: true },
+      activeGame: {
+        game: 'batata-quente', phase: 'playing',
+        players: [
+          { id: 'p1', name: 'Ana', color: '#FFAA00' },
+          { id: 'p2', name: 'Beto', color: '#3B82F6' },
+        ],
+        durationSeconds: 60, theme: { text: 'Frutas tropicais' }, currentPlayerIndex: 1,
+        roundStartedAt: 1000, loserPlayerId: null, round: 2,
+      },
+    }));
+    const store = TestBed.inject(SessionStore);
+    expect(store.activeHotPotato()?.phase).toBe('playing');
+    expect(store.activeHotPotato()?.currentPlayerIndex).toBe(1);
+    expect(store.activeHotPotato()?.roundStartedAt).toBe(1000);
+  });
+
   it('descarta dados inválidos em vez de restaurar uma partida quebrada', () => {
     sessionStorage.setItem('mesa.session', JSON.stringify({ version: 2, activeGame: { game: 'ito' } }));
 

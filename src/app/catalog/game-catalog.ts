@@ -81,6 +81,31 @@ export const GAME_CATALOG = [
       { name: 'No escuro', description: 'Todos recebem uma palavra e ninguém sabe quem recebeu a diferente.' },
     ],
   },
+  {
+    id: 'hot-potato',
+    slug: 'batata-quente',
+    name: 'Batata Quente',
+    shortDescription: 'Um tema, respostas rápidas e uma batata que pode explodir a qualquer momento.',
+    fullDescription:
+      'Digam itens relacionados ao tema e passem a vez sem perder tempo. Quando o relógio zerar, quem estiver com a batata perde a rodada.',
+    players: { min: 2, max: 12 },
+    estimatedMinutes: 5,
+    categories: ['Agilidade'],
+    complexity: 'easy',
+    deviceMode: 'single-device',
+    vibe: ['rápido', 'energético', 'improviso'],
+    goodFor: ['amigos', 'família', 'festas'],
+    engine: 'timed-turns',
+    features: ['timer', 'audio', 'haptics', 'player-setup'],
+    availability: 'available',
+    accent: '#F06449',
+    instructions: [
+      'O Mesa sorteia um tema e inicia a contagem regressiva.',
+      'Diga um item válido, toque em “Passei a vez” e entregue o celular.',
+      'Quando o tempo acabar, perde quem estiver com a vez.',
+    ],
+    appResponsibility: 'Tema, tempo e turnos ficam com o Mesa. Vocês dizem as respostas e decidem presencialmente o que vale.',
+  },
 ] as const satisfies readonly GameDefinition[];
 
 export function findGame(slug: string): GameDefinition | undefined {

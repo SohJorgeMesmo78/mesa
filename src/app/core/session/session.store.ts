@@ -2,6 +2,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { PLATFORM_ID, computed, effect, inject, Injectable, signal } from '@angular/core';
 import { ImpostorSession } from '../game-engine/impostor/impostor.models';
 import { ItoSession } from '../game-engine/ito/ito.models';
+import { HOT_POTATO_DURATIONS, HotPotatoSession } from '../game-engine/hot-potato/hot-potato.models';
 import { Player } from '../players/player.model';
 import {
   ExperiencePreferences,
@@ -37,6 +38,10 @@ export class SessionStore {
     const active = this.sessionState().activeGame;
     return active?.game === 'impostor' ? active : null;
   });
+  readonly activeHotPotato = computed(() => {
+    const active = this.sessionState().activeGame;
+    return active?.game === 'batata-quente' ? active : null;
+  });
 
   constructor() {
     if (isPlatformBrowser(this.platformId)) {
@@ -71,6 +76,10 @@ export class SessionStore {
     this.setActiveGame(session);
   }
 
+  setHotPotatoSession(session: HotPotatoSession): void {
+    this.setActiveGame(session);
+  }
+
   clearActiveGame(): void {
     this.sessionState.update((current) => ({ ...current, activeGame: null }));
   }
@@ -85,6 +94,8 @@ export class SessionStore {
       if (!raw) return DEFAULT_SESSION;
       const parsed: unknown = JSON.parse(raw);
       if (isMesaSession(parsed)) return parsed;
+      const migratedVersionFour = migrateVersionFour(parsed);
+      if (migratedVersionFour) return migratedVersionFour;
       const migratedVersionThree = migrateVersionThree(parsed);
       if (migratedVersionThree) return migratedVersionThree;
       const migratedVersionTwo = migrateVersionTwo(parsed);
@@ -219,12 +230,40 @@ function isImpostor(value: unknown): value is ImpostorSession {
     && Number(value['round']) > 0;
 }
 
+function isHotPotato(value: unknown): value is HotPotatoSession {
+  if (!isRecord(value) || value['game'] !== 'batata-quente' || !isPlayerList(value['players'], 2, 12)) return false;
+  const phase = value['phase'];
+  const theme = value['theme'];
+  const playerCount = value['players'].length;
+  if (!['setup', 'ready', 'playing', 'result'].includes(String(phase))) return false;
+  if (!isRecord(theme) || typeof theme['text'] !== 'string' || theme['text'].length === 0) return false;
+  if (!(HOT_POTATO_DURATIONS as readonly unknown[]).includes(value['durationSeconds'])) return false;
+  if (!Number.isInteger(value['currentPlayerIndex']) || Number(value['currentPlayerIndex']) < 0 || Number(value['currentPlayerIndex']) >= playerCount) return false;
+  if (!Number.isInteger(value['round']) || Number(value['round']) < 0) return false;
+  if (phase === 'playing') return typeof value['roundStartedAt'] === 'number' && Number.isFinite(value['roundStartedAt']) && value['loserPlayerId'] === null && Number(value['round']) > 0;
+  if (phase === 'result') {
+    const playerIds = new Set(value['players'].map((player) => player.id));
+    return typeof value['roundStartedAt'] === 'number'
+      && typeof value['loserPlayerId'] === 'string'
+      && playerIds.has(value['loserPlayerId'])
+      && Number(value['round']) > 0;
+  }
+  return value['roundStartedAt'] === null && value['loserPlayerId'] === null;
+}
+
 function isMesaSession(value: unknown): value is MesaSession {
   if (!isRecord(value) || value['version'] !== SESSION_SCHEMA_VERSION || !isPreferences(value['preferences'])) {
     return false;
   }
   const activeGame = value['activeGame'];
-  return activeGame === null || isWhoAmI(activeGame) || isIto(activeGame) || isImpostor(activeGame);
+  return activeGame === null || isWhoAmI(activeGame) || isIto(activeGame) || isImpostor(activeGame) || isHotPotato(activeGame);
+}
+
+function migrateVersionFour(value: unknown): MesaSession | null {
+  if (!isRecord(value) || value['version'] !== 4 || !isPreferences(value['preferences'])) return null;
+  const activeGame = value['activeGame'];
+  if (activeGame !== null && !isWhoAmI(activeGame) && !isIto(activeGame) && !isImpostor(activeGame)) return null;
+  return { version: SESSION_SCHEMA_VERSION, preferences: value['preferences'], activeGame };
 }
 
 function migrateVersionOne(value: unknown): MesaSession | null {

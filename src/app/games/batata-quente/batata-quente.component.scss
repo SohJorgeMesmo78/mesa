@@ -1,0 +1,25 @@
+.play-page { --game-accent: #f06449; min-height: 100svh; background: #141414; }
+.play-header { min-height: 4.75rem; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--color-border); }
+.play-header a { color: var(--color-text-secondary); text-decoration: none; font-size: .85rem; font-weight: 700; }
+.play-main { min-height: calc(100svh - 4.75rem); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2rem; padding-block: 2.5rem; }
+.intro, .ready, .playing, .result { width: min(100%, 38rem); text-align: center; }
+.eyebrow { margin: 0 0 .8rem; color: var(--game-accent); font-size: .74rem; font-weight: 800; letter-spacing: .15em; text-transform: uppercase; }
+h1 { margin: 0; font-size: clamp(2.5rem, 8vw, 4.6rem); line-height: .98; letter-spacing: -.06em; text-wrap: balance; }
+.intro > p:last-child { margin: 1rem 0 0; color: var(--color-text-secondary); }
+.duration { width: min(100%, 38rem); display: grid; gap: 1rem; padding: 1rem; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); }
+.duration h2, .duration p { margin: 0; }.duration p { color: var(--color-text-muted); font-size: .78rem; }
+.duration > div:last-child { display: grid; grid-template-columns: repeat(4, 1fr); gap: .45rem; }
+.duration button { min-height: 3rem; color: var(--color-text-secondary); background: var(--color-surface-raised); border: 1px solid var(--color-border); border-radius: .65rem; font-weight: 800; }
+.duration button.active { color: #251006; background: var(--game-accent); border-color: var(--game-accent); }
+.ready h1 { max-width: 13ch; margin-inline: auto; }.text-button { margin: 1rem 0 2rem; padding: .7rem; color: var(--game-accent); background: transparent; border: 0; font-weight: 800; text-decoration: underline; text-underline-offset: .25rem; }
+.ready__meta { display: flex; justify-content: center; gap: 1rem; margin-bottom: 1rem; color: var(--color-text-secondary); }.ready__meta strong { color: var(--color-text); }
+.feedback-options { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; margin-bottom: 1.5rem; }.feedback-options button { padding: .75rem; color: var(--color-text-secondary); background: var(--color-surface); border: 1px solid var(--color-border); border-radius: .65rem; }.feedback-options b { color: var(--color-text); }
+.playing { min-height: calc(100svh - 9.75rem); display: flex; flex-direction: column; align-items: center; justify-content: space-between; gap: 1.5rem; }
+.playing__theme p, .turn p { margin: 0 0 .4rem; color: var(--color-text-muted); font-size: .7rem; font-weight: 800; letter-spacing: .13em; text-transform: uppercase; }.playing__theme h1 { max-width: 20ch; font-size: clamp(1.4rem, 6vw, 2.2rem); letter-spacing: -.035em; }
+.turn { display: grid; }.turn strong { max-width: 14ch; font-size: clamp(2.2rem, 10vw, 4rem); line-height: 1; text-wrap: balance; }
+.pass-button { width: 100%; min-height: 8rem; display: grid; place-content: center; gap: .35rem; padding: 1.25rem; color: #251006; background: var(--game-accent); border: 0; border-radius: var(--radius-lg); box-shadow: 0 1rem 2.5rem rgb(240 100 73 / .2); }.pass-button strong { font-size: 1.5rem; text-transform: uppercase; }.pass-button span { font-size: .75rem; }
+.result__burst { margin-bottom: 1rem; color: var(--game-accent); font-size: 4rem; }.result__loser { margin: 1.5rem 0; color: var(--color-text-secondary); font-size: 1.25rem; }.result__loser strong { display: block; font-size: 2.4rem; }
+.result__meta { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; margin-bottom: 1.5rem; }.result__meta span { display: grid; gap: .25rem; padding: 1rem; color: var(--color-text-muted); background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-sm); font-size: .72rem; }.result__meta strong { color: var(--color-text); font-size: .85rem; }
+button:focus-visible { outline: 3px solid var(--color-primary); outline-offset: 3px; }
+@media (max-width: 30rem) { .play-main { justify-content: flex-start; }.duration > div:last-child { grid-template-columns: 1fr 1fr; }.ready__meta { flex-direction: column; gap: .25rem; } }
+@media (prefers-reduced-motion: reduce) { .pass-button { transition: none; } }

@@ -8,7 +8,7 @@ interface WebkitAudioWindow extends Window {
 export class AudioService {
   private context: AudioContext | null = null;
 
-  beep(frequency: number, duration = 0.1): void {
+  beep(frequency: number, duration = 0.1, delay = 0): void {
     if (typeof window === 'undefined') return;
     const AudioContextConstructor = window.AudioContext ?? (window as WebkitAudioWindow).webkitAudioContext;
     if (!AudioContextConstructor) return;
@@ -17,13 +17,14 @@ export class AudioService {
       const oscillator = this.context.createOscillator();
       const gain = this.context.createGain();
       oscillator.type = 'sine';
+      const startsAt = this.context.currentTime + delay;
       oscillator.frequency.value = frequency;
-      gain.gain.setValueAtTime(0.08, this.context.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, this.context.currentTime + duration);
+      gain.gain.setValueAtTime(0.08, startsAt);
+      gain.gain.exponentialRampToValueAtTime(0.001, startsAt + duration);
       oscillator.connect(gain);
       gain.connect(this.context.destination);
-      oscillator.start();
-      oscillator.stop(this.context.currentTime + duration);
+      oscillator.start(startsAt);
+      oscillator.stop(startsAt + duration);
     } catch {
       // Som é opcional e nunca deve interromper a rodada.
     }

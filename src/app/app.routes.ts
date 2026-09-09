@@ -35,6 +35,14 @@ export const routes: Routes = [
       import('./games/impostor/impostor.component').then((component) => component.ImpostorComponent),
   },
   {
+    path: 'jogar/batata-quente',
+    title: 'Batata Quente — Mesa',
+    loadComponent: () =>
+      import('./games/batata-quente/batata-quente.component').then(
+        (component) => component.BatataQuenteComponent,
+      ),
+  },
+  {
     path: 'jogar/:slug',
     loadComponent: () =>
       import('./games/game-unavailable/game-unavailable.component').then(

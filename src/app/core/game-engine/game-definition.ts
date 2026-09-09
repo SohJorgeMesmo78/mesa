@@ -1,11 +1,12 @@
-export type GameCategory = 'Adivinhação' | 'Cooperativo' | 'Dedução' | 'Blefe';
+export type GameCategory = 'Adivinhação' | 'Cooperativo' | 'Dedução' | 'Blefe' | 'Agilidade';
 
 export type GameComplexity = 'easy' | 'medium' | 'hard';
-export type GameEngineType = 'identity-reveal' | 'scale-ordering' | 'hidden-role';
+export type GameEngineType = 'identity-reveal' | 'scale-ordering' | 'hidden-role' | 'timed-turns';
 export type GameFeature =
   | 'countdown'
   | 'audio'
   | 'haptics'
+  | 'timer'
   | 'private-reveal'
   | 'player-setup';
 export type GameAvailability = 'available' | 'coming-soon';

@@ -1,0 +1,6 @@
+:host { display: block; }
+.timer { display: block; color: var(--color-text); font-size: clamp(4.5rem, 22vw, 8rem); font-weight: 800; line-height: .9; letter-spacing: -.07em; font-variant-numeric: tabular-nums; transition: color 180ms ease, scale 180ms ease; }
+.timer--attention { color: var(--game-accent); animation: timer-pulse 1s ease-in-out infinite; }
+.timer--final { color: #fff; text-shadow: 0 0 2rem color-mix(in srgb, var(--game-accent) 70%, transparent); animation: timer-pulse .45s ease-in-out infinite; }
+@keyframes timer-pulse { 50% { scale: 1.04; } }
+@media (prefers-reduced-motion: reduce) { .timer--attention, .timer--final { animation: none; } }

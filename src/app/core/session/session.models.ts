@@ -1,7 +1,8 @@
 import { ImpostorSession } from '../game-engine/impostor/impostor.models';
 import { ItoSession } from '../game-engine/ito/ito.models';
+import { HotPotatoSession } from '../game-engine/hot-potato/hot-potato.models';
 
-export const SESSION_SCHEMA_VERSION = 4 as const;
+export const SESSION_SCHEMA_VERSION = 5 as const;
 
 export interface ExperiencePreferences {
   readonly countdown: boolean;
@@ -16,7 +17,7 @@ export interface WhoAmISession {
   readonly round: number;
 }
 
-export type ActiveGameSession = WhoAmISession | ItoSession | ImpostorSession;
+export type ActiveGameSession = WhoAmISession | ItoSession | ImpostorSession | HotPotatoSession;
 
 export interface MesaSession {
   readonly version: typeof SESSION_SCHEMA_VERSION;
