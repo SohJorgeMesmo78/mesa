@@ -28,7 +28,7 @@
           </section>
         }
         @case ('result') {
-          <section class="result"><div class="result__burst" aria-hidden="true">✦</div><p class="eyebrow">Fim da rodada</p><h1>A batata explodiu!</h1>@if (loser(); as player) { <p class="result__loser"><strong [style.color]="player.color">{{ player.name }}</strong> ficou com ela.</p> }<div class="result__meta"><span>Tema<strong>{{ game.theme.text }}</strong></span><span>Duração<strong>{{ game.durationSeconds }} segundos</strong></span></div><button class="button button--primary button--large" type="button" (click)="playAgain()">Jogar novamente <span aria-hidden="true">↻</span></button></section>
+          <section class="result"><div class="result__burst" aria-hidden="true">✦</div><p class="eyebrow">Fim da rodada</p><h1>A batata explodiu!</h1>@if (loser(); as player) { <p class="result__loser"><strong [style.color]="player.color">{{ player.name }}</strong> ficou com ela.</p> }<div class="result__meta"><span>Tema<strong>{{ game.theme.text }}</strong></span><span>Duração<strong>{{ game.durationSeconds }} segundos</strong></span></div><button class="button button--primary button--large" type="button" (click)="playAgain()">Jogar novamente <span aria-hidden="true">↻</span></button><a class="button button--secondary button--large" routerLink="/" fragment="jogos" (click)="leaveGame()">Jogar outro jogo</a></section>
         }
       }
     }

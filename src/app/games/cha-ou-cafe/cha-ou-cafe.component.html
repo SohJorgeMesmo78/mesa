@@ -42,6 +42,7 @@
             </div>
             <p class="reveal__instruction">Comecem com “Chá ou café?” e respondam sempre com a opção que mais se aproxima da palavra.</p>
             <button class="button button--primary button--large" type="button" (click)="newRound()">Nova rodada <span aria-hidden="true">↻</span></button>
+            <a class="button button--secondary button--large" routerLink="/" fragment="jogos" (click)="leaveGame()">Jogar outro jogo</a>
             <button class="text-button" type="button" (click)="switchLeader()">Trocar pessoa</button>
             <a class="text-button" routerLink="/jogos/cha-ou-cafe" (click)="leaveGame()">Encerrar partida</a>
           </section>

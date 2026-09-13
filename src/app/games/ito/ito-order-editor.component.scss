@@ -4,6 +4,9 @@
 .order-editor__heading h2 { margin: 0; font-size: clamp(1.25rem, 5vw, 1.7rem); letter-spacing: -.04em; }
 .order-editor__heading > span { color: var(--color-text-muted); font-size: .68rem; white-space: nowrap; }
 .guess-list { display: grid; gap: .7rem; margin: 0; padding: 0; list-style: none; }
+.order-layout { display: grid; grid-template-columns: minmax(5.5rem, 7.5rem) minmax(0, 1fr); gap: .8rem; align-items: stretch; }
+.scale-rail { display: grid; grid-template-rows: auto 1fr auto; justify-items: center; gap: .55rem; min-width: 0; color: var(--color-text-secondary); font-size: .68rem; font-weight: 700; line-height: 1.25; text-align: center; overflow-wrap: anywhere; }
+.scale-rail span { display: grid; gap: .15rem; }.scale-rail b { color: var(--game-accent); font-size: .72rem; }.scale-rail i { width: 2px; min-height: 3rem; background: linear-gradient(var(--game-accent), color-mix(in srgb, var(--game-accent) 35%, var(--color-border))); border-radius: 999px; }
 .guess-list li { display: grid; grid-template-columns: 2.7rem .65rem 1fr auto; align-items: center; gap: .65rem; padding: .7rem; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-sm); text-align: left; }
 .drag-handle { align-self: stretch; min-height: 3.4rem; color: var(--color-text-muted); background: var(--color-surface-raised); border: 1px solid var(--color-border); border-radius: .6rem; font-size: 1.4rem; touch-action: none; cursor: grab; }
 .drag-handle:active { color: var(--game-accent); cursor: grabbing; }
@@ -15,4 +18,4 @@
 .move-controls { display: grid; gap: .3rem; }
 .move-controls button { width: 2.25rem; height: 2.25rem; color: var(--color-text-secondary); background: transparent; border: 1px solid var(--color-border); border-radius: .5rem; }
 .move-controls button:disabled { opacity: .22; cursor: not-allowed; }
-@media (max-width: 28rem) { .order-editor__heading { align-items: start; flex-direction: column; } .guess-list li { grid-template-columns: 2.5rem .55rem 1fr; } .move-controls { grid-column: 3; grid-auto-flow: column; justify-content: end; } }
+@media (max-width: 28rem) { .order-editor__heading { align-items: start; flex-direction: column; } .order-layout { grid-template-columns: minmax(4.8rem, 24vw) minmax(0, 1fr); gap: .55rem; } .guess-list li { grid-template-columns: 2.5rem .55rem 1fr; } .move-controls { grid-column: 3; grid-auto-flow: column; justify-content: end; } }

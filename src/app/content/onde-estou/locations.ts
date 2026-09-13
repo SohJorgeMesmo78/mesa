@@ -1,0 +1,28 @@
+import { LocationContent } from '../../core/game-engine/location/location.models';
+
+export const LOCATION_CONTENT = [
+  { location: 'Aeroporto', classicHints: ['Viagem', 'Bagagem', 'Embarque'], blindLocations: ['Rodoviária', 'Estação de trem'] },
+  { location: 'Biblioteca', classicHints: ['Silêncio', 'Leitura', 'Prateleiras'], blindLocations: ['Livraria', 'Sala de estudos'] },
+  { location: 'Cinema', classicHints: ['Pipoca', 'Escuro', 'Ingresso'], blindLocations: ['Teatro', 'Casa de shows'] },
+  { location: 'Supermercado', classicHints: ['Carrinho', 'Corredores', 'Compras'], blindLocations: ['Feira livre', 'Atacadista'] },
+  { location: 'Hospital', classicHints: ['Cuidado', 'Plantão', 'Emergência'], blindLocations: ['Clínica médica', 'Posto de saúde'] },
+  { location: 'Parque de diversões', classicHints: ['Fila', 'Adrenalina', 'Brinquedos'], blindLocations: ['Parque aquático', 'Circo'] },
+  { location: 'Estádio de futebol', classicHints: ['Torcida', 'Arquibancada', 'Apito'], blindLocations: ['Ginásio esportivo', 'Campo de futebol'] },
+  { location: 'Museu', classicHints: ['Exposição', 'História', 'Visita guiada'], blindLocations: ['Galeria de arte', 'Centro cultural'] },
+  { location: 'Acampamento', classicHints: ['Barraca', 'Fogueira', 'Céu estrelado'], blindLocations: ['Hotel fazenda', 'Chácara'] },
+  { location: 'Salão de beleza', classicHints: ['Espelho', 'Agendamento', 'Transformação'], blindLocations: ['Barbearia', 'Clínica de estética'] },
+  { location: 'Oficina mecânica', classicHints: ['Ferramentas', 'Graxa', 'Reparo'], blindLocations: ['Lava-jato', 'Autopeças'] },
+  { location: 'Feira livre', classicHints: ['Barracas', 'Barganha', 'Produtos frescos'], blindLocations: ['Supermercado', 'Quitanda'] },
+  { location: 'Jardim botânico', classicHints: ['Plantas', 'Caminhos', 'Natureza'], blindLocations: ['Parque', 'Zoológico'] },
+  { location: 'Parque aquático', classicHints: ['Tobogã', 'Piscina', 'Protetor solar'], blindLocations: ['Praia', 'Clube'] },
+  { location: 'Estúdio fotográfico', classicHints: ['Iluminação', 'Cenário', 'Retrato'], blindLocations: ['Estúdio de televisão', 'Agência de publicidade'] },
+  { location: 'Sala de reunião', classicHints: ['Pauta', 'Apresentação', 'Decisões'], blindLocations: ['Sala de aula', 'Escritório'] },
+  { location: 'Restaurante', classicHints: ['Cardápio', 'Garçom', 'Conta'], blindLocations: ['Cafeteria', 'Pizzaria'] },
+  { location: 'Escola', classicHints: ['Recreio', 'Aprendizado', 'Mochila'], blindLocations: ['Faculdade', 'Curso de idiomas'] },
+  { location: 'Hotel', classicHints: ['Recepção', 'Check-in', 'Serviço de quarto'], blindLocations: ['Pousada', 'Resort'] },
+  { location: 'Teatro', classicHints: ['Palco', 'Cortinas', 'Aplausos'], blindLocations: ['Cinema', 'Auditório'] },
+  { location: 'Academia', classicHints: ['Treino', 'Esteira', 'Vestiário'], blindLocations: ['Clube esportivo', 'Estúdio de dança'] },
+  { location: 'Delegacia', classicHints: ['Ocorrência', 'Depoimento', 'Autoridade'], blindLocations: ['Fórum', 'Quartel'] },
+  { location: 'Praia', classicHints: ['Areia', 'Maré', 'Bronzeador'], blindLocations: ['Piscina', 'Parque aquático'] },
+  { location: 'Fazenda', classicHints: ['Colheita', 'Cerca', 'Criação'], blindLocations: ['Sítio', 'Haras'] },
+] as const satisfies readonly LocationContent[];

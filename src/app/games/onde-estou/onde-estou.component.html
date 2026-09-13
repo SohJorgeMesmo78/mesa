@@ -1,7 +1,7 @@
-<div class="play-page play-page--impostor">
+<div class="play-page play-page--location">
   <header class="play-header shell">
     <app-brand-logo [compact]="true" />
-    <a routerLink="/jogos/impostor" (click)="leaveGame()">Sair</a>
+    <a routerLink="/jogos/onde-estou" (click)="leaveGame()">Sair</a>
   </header>
 
   <main class="play-main shell">
@@ -9,22 +9,20 @@
       @switch (game.phase) {
         @case ('setup') {
           <section class="intro">
-            <p class="eyebrow">Impostor</p>
-            <h1>Alguém está fora de sintonia.</h1>
-            <p>Todo mundo dá pistas. Quem estiver improvisando tenta passar despercebido.</p>
+            <p class="eyebrow">Onde Estou</p>
+            <h1>Todo mundo sabe onde está. Quase todo mundo.</h1>
+            <p>Façam perguntas sem entregar o local e descubram quem está tentando se localizar.</p>
           </section>
-
-          <app-impostor-config
+          <app-location-config
             [config]="game.config"
             [maxImpostors]="maxImpostors()"
             (impostorCountChange)="setImpostorCount($event)"
             (modeChange)="setMode($event)"
             (giveHintChange)="setGiveHint($event)"
           />
-
           <app-player-setup
             [players]="game.players"
-            [min]="playerLimits.min"
+            [min]="limits.min"
             [max]="maxPlayers"
             (playersChange)="updatePlayers($event)"
             (confirmed)="startRound($event)"
@@ -49,9 +47,9 @@
                   </article>
                 } @else {
                   <article class="role-card">
-                    <p>Sua palavra é</p>
-                    <strong>{{ info.word }}</strong>
-                    <span>Dê uma pista sem ser óbvio demais.</span>
+                    <p>Você está em</p>
+                    <strong [class.role-card__secret--long]="info.location.length > 18">{{ info.location }}</strong>
+                    <span>Responda sem entregar o local de graça.</span>
                   </article>
                 }
               }
@@ -60,13 +58,13 @@
         }
         @case ('discussion') {
           <section class="discussion">
-            <div class="discussion__icon" aria-hidden="true"><i></i><i></i></div>
+            <div class="discussion__mark" aria-hidden="true">?</div>
             <p class="eyebrow">Celular de lado</p>
-            <h1>{{ game.config.mode === 'classic' ? 'Todo mundo já sabe o que precisa saber.' : 'Todo mundo recebeu uma palavra.' }}</h1>
+            <h1>{{ game.config.mode === 'classic' ? 'Descubram quem não sabe onde está.' : 'Nem todo mundo recebeu o mesmo lugar.' }}</h1>
             @if (game.config.mode === 'classic') {
-              <p class="discussion__lead">Cada pessoa dá uma associação relacionada à palavra. Descubram quem está improvisando.</p>
+              <p>Façam perguntas uns aos outros sem entregar o local de graça. O impostor tenta se misturar — e talvez descobrir onde está antes de ser encontrado.</p>
             } @else {
-              <p class="discussion__lead">Conversem, deem pistas e tentem perceber quem recebeu algo diferente.</p>
+              <p>Façam perguntas, comparem as respostas e descubram quem está em outro lugar.</p>
             }
             <button class="button button--primary button--large" type="button" (click)="showResults()">Revelar resultado</button>
           </section>
@@ -74,19 +72,19 @@
         @case ('results') {
           <section class="result">
             <p class="eyebrow">Fim da rodada</p>
-            <h1>A palavra era <span>{{ game.word }}</span>.</h1>
+            <h1>O local era <span>{{ game.location }}</span>.</h1>
             @if (game.config.mode === 'classic' && game.hint) { <p class="result__hint">Dica recebida: <strong>{{ game.hint }}</strong></p> }
             @if (game.config.mode === 'blind') {
-              <div class="alternative-result"><p>A palavra diferente era</p><strong>{{ game.alternativeWord }}</strong></div>
+              <div class="alternative-result"><p>O local diferente era</p><strong>{{ game.alternativeLocation }}</strong></div>
             }
             <div class="impostor-list">
-              <h2>{{ game.config.mode === 'blind' ? 'Quem recebeu a palavra diferente' : (impostors().length === 1 ? 'O impostor era' : 'Os impostores eram') }}</h2>
+              <h2>{{ game.config.mode === 'blind' ? (impostors().length === 1 ? 'Quem recebeu o local diferente' : 'Quem recebeu o local diferente') : (impostors().length === 1 ? 'O impostor era' : 'Os impostores eram') }}</h2>
               @for (player of impostors(); track player.id) {
                 <article><i [style.background]="player.color" aria-hidden="true"></i><strong>{{ player.name }}</strong></article>
               }
             </div>
             @if (game.config.mode === 'blind') {
-              <p class="blind-explanation">{{ impostors().length === 1 ? 'Essa pessoa era a impostora — mesmo sem saber.' : 'Essas pessoas eram as impostoras — mesmo sem saber.' }}</p>
+              <p class="blind-explanation">{{ impostors().length === 1 ? 'Essa pessoa estava em outro lugar.' : 'Essas pessoas estavam em outro lugar.' }}</p>
             }
             <button class="button button--primary button--large" type="button" (click)="newRound()">Nova rodada <span aria-hidden="true">↻</span></button>
             <a class="button button--secondary button--large" routerLink="/" fragment="jogos" (click)="leaveGame()">Jogar outro jogo</a>

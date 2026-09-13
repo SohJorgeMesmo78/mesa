@@ -5,6 +5,7 @@ import { ItoSession } from '../game-engine/ito/ito.models';
 import { HOT_POTATO_DURATIONS, HotPotatoSession } from '../game-engine/hot-potato/hot-potato.models';
 import { ImpostorQuestionSession } from '../game-engine/impostor-question/impostor-question.models';
 import { TeaOrCoffeeSession } from '../game-engine/tea-or-coffee/tea-or-coffee.models';
+import { LocationSession } from '../game-engine/location/location.models';
 import { Player } from '../players/player.model';
 import {
   ExperiencePreferences,
@@ -52,6 +53,10 @@ export class SessionStore {
     const active = this.sessionState().activeGame;
     return active?.game === 'cha-ou-cafe' ? active : null;
   });
+  readonly activeLocation = computed(() => {
+    const active = this.sessionState().activeGame;
+    return active?.game === 'onde-estou' ? active : null;
+  });
 
   constructor() {
     if (isPlatformBrowser(this.platformId)) {
@@ -98,6 +103,10 @@ export class SessionStore {
     this.setActiveGame(session);
   }
 
+  setLocationSession(session: LocationSession): void {
+    this.setActiveGame(session);
+  }
+
   clearActiveGame(): void {
     this.sessionState.update((current) => ({ ...current, activeGame: null }));
   }
@@ -112,6 +121,10 @@ export class SessionStore {
       if (!raw) return DEFAULT_SESSION;
       const parsed: unknown = JSON.parse(raw);
       if (isMesaSession(parsed)) return parsed;
+      const migratedVersionNine = migrateVersionNine(parsed);
+      if (migratedVersionNine) return migratedVersionNine;
+      const migratedVersionEight = migrateVersionEight(parsed);
+      if (migratedVersionEight) return migratedVersionEight;
       const migratedVersionSeven = migrateVersionSeven(parsed);
       if (migratedVersionSeven) return migratedVersionSeven;
       const migratedVersionSix = migrateVersionSix(parsed);
@@ -254,6 +267,43 @@ function isImpostor(value: unknown): value is ImpostorSession {
     && Number(value['round']) > 0;
 }
 
+function isLocation(value: unknown): value is LocationSession {
+  if (!isRecord(value) || value['game'] !== 'onde-estou' || !isPlayerList(value['players'], 3, 12)) return false;
+  const phase = value['phase'];
+  const config = value['config'];
+  const impostorIds = value['impostorPlayerIds'];
+  const playerCount = value['players'].length;
+  if (!['setup', 'handoff', 'discussion', 'results'].includes(String(phase))) return false;
+  if (!isRecord(config)
+    || !Number.isInteger(config['impostorCount'])
+    || Number(config['impostorCount']) < 1
+    || Number(config['impostorCount']) > Math.floor((playerCount - 1) / 2)
+    || (config['mode'] !== 'classic' && config['mode'] !== 'blind')
+    || typeof config['giveHint'] !== 'boolean') return false;
+  if (!Number.isInteger(value['currentPlayerIndex']) || Number(value['currentPlayerIndex']) < 0) return false;
+  if (!Number.isInteger(value['round']) || Number(value['round']) < 0) return false;
+  if (phase === 'setup') {
+    return value['location'] === null && value['hint'] === null && value['alternativeLocation'] === null
+      && Array.isArray(impostorIds) && impostorIds.length === 0;
+  }
+  if (typeof value['location'] !== 'string' || value['location'].trim().length === 0) return false;
+  if (config['mode'] === 'classic') {
+    if (value['alternativeLocation'] !== null) return false;
+    if (config['giveHint']
+      ? typeof value['hint'] !== 'string' || String(value['hint']).trim().length === 0
+      : value['hint'] !== null) return false;
+  } else if (value['hint'] !== null
+    || typeof value['alternativeLocation'] !== 'string'
+    || value['alternativeLocation'].trim().length === 0
+    || value['alternativeLocation'] === value['location']) return false;
+  if (!Array.isArray(impostorIds) || impostorIds.length !== Number(config['impostorCount'])) return false;
+  const playerIds = new Set(value['players'].map((player) => player.id));
+  return new Set(impostorIds).size === impostorIds.length
+    && impostorIds.every((id) => typeof id === 'string' && playerIds.has(id))
+    && Number(value['currentPlayerIndex']) < playerCount
+    && Number(value['round']) > 0;
+}
+
 function isTeaOrCoffee(value: unknown): value is TeaOrCoffeeSession {
   return isRecord(value)
     && value['game'] === 'cha-ou-cafe'
@@ -341,7 +391,34 @@ function isMesaSession(value: unknown): value is MesaSession {
     return false;
   }
   const activeGame = value['activeGame'];
-  return activeGame === null || isWhoAmI(activeGame) || isIto(activeGame) || isImpostor(activeGame) || isHotPotato(activeGame) || isImpostorQuestion(activeGame) || isTeaOrCoffee(activeGame);
+  return activeGame === null || isWhoAmI(activeGame) || isIto(activeGame) || isImpostor(activeGame) || isHotPotato(activeGame) || isImpostorQuestion(activeGame) || isTeaOrCoffee(activeGame) || isLocation(activeGame);
+}
+
+function migrateVersionNine(value: unknown): MesaSession | null {
+  if (!isRecord(value) || value['version'] !== 9 || !isPreferences(value['preferences'])) return null;
+  const activeGame = value['activeGame'];
+  if (activeGame === null) return { version: SESSION_SCHEMA_VERSION, preferences: value['preferences'], activeGame };
+  if (isWhoAmI(activeGame) || isIto(activeGame) || isImpostor(activeGame) || isHotPotato(activeGame)
+    || isImpostorQuestion(activeGame) || isTeaOrCoffee(activeGame)) {
+    return { version: SESSION_SCHEMA_VERSION, preferences: value['preferences'], activeGame };
+  }
+  if (!isRecord(activeGame) || activeGame['game'] !== 'onde-estou' || !isRecord(activeGame['config'])) return null;
+  const candidate: unknown = {
+    ...activeGame,
+    config: { ...activeGame['config'], mode: 'classic' },
+    alternativeLocation: null,
+  };
+  return isLocation(candidate)
+    ? { version: SESSION_SCHEMA_VERSION, preferences: value['preferences'], activeGame: candidate }
+    : null;
+}
+
+function migrateVersionEight(value: unknown): MesaSession | null {
+  if (!isRecord(value) || value['version'] !== 8 || !isPreferences(value['preferences'])) return null;
+  const activeGame = value['activeGame'];
+  if (activeGame !== null && !isWhoAmI(activeGame) && !isIto(activeGame) && !isImpostor(activeGame)
+    && !isHotPotato(activeGame) && !isImpostorQuestion(activeGame) && !isTeaOrCoffee(activeGame)) return null;
+  return { version: SESSION_SCHEMA_VERSION, preferences: value['preferences'], activeGame };
 }
 
 function migrateVersionSix(value: unknown): MesaSession | null {

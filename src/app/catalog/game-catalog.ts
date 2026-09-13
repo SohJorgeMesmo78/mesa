@@ -157,6 +157,34 @@ export const GAME_CATALOG = [
     ],
     appResponsibility: 'O Mesa sorteia e distribui as perguntas e revela os papéis no final. Respostas, debate e votação ficam com a roda.',
   },
+  {
+    id: 'location',
+    slug: 'onde-estou',
+    name: 'Onde Estou',
+    shortDescription: 'Todo mundo conhece o lugar — menos quem precisa fingir que sabe.',
+    fullDescription: 'Façam perguntas para descobrir quem está fora do lugar. No Clássico, o impostor conhece seu papel; no escuro, todo mundo acredita que recebeu o local verdadeiro.',
+    players: { min: 3, max: 12 },
+    estimatedMinutes: 15,
+    categories: ['Blefe', 'Dedução'],
+    complexity: 'medium',
+    deviceMode: 'single-device',
+    vibe: ['mistério', 'conversa', 'suspeita'],
+    goodFor: ['amigos', 'festas', 'grupos competitivos'],
+    engine: 'hidden-role',
+    features: ['private-reveal', 'player-setup'],
+    availability: 'available',
+    accent: '#168F96',
+    instructions: [
+      'Cada pessoa revela em segredo se recebeu o local ou o papel de impostor.',
+      'Façam perguntas uns aos outros sem entregar o lugar de graça.',
+      'Descubram quem não sabe onde está antes que essa pessoa deduza o local.',
+    ],
+    appResponsibility: 'O Mesa conduz local, papéis, dicas, distribuição e resultado. Perguntas, respostas, acusações e a decisão de quem perdeu ficam com a Mesa.',
+    modes: [
+      { name: 'Clássico', description: 'O impostor sabe que não conhece o local e pode receber uma dica.' },
+      { name: 'No escuro', description: 'Todo mundo recebe um local — mas algumas pessoas recebem um lugar diferente sem saber.' },
+    ],
+  },
 ] as const satisfies readonly GameDefinition[];
 
 export function findGame(slug: string): GameDefinition | undefined {

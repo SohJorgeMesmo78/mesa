@@ -92,6 +92,11 @@ export class ItoComponent {
     if (session) this.sessionStore.setItoSession(this.engine.revealNumber(session, playerId));
   }
 
+  revealAll(): void {
+    const session = this.activeGame();
+    if (session) this.sessionStore.setItoSession(this.engine.revealAll(session));
+  }
+
   toggleCorrectOrder(): void {
     const session = this.activeGame();
     if (session) this.sessionStore.setItoSession(this.engine.toggleCorrectOrder(session));

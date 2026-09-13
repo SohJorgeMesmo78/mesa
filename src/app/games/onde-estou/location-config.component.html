@@ -1,0 +1,36 @@
+<section class="config" aria-label="Configuração do Onde Estou">
+  <div class="counter">
+    <div><strong>Impostores</strong><span>Quem não saberá o local</span></div>
+    <div class="counter__control">
+      <button type="button" aria-label="Diminuir impostores" [disabled]="config().impostorCount <= 1" (click)="impostorCountChange.emit(config().impostorCount - 1)">−</button>
+      <strong aria-live="polite">{{ config().impostorCount }}</strong>
+      <button type="button" aria-label="Aumentar impostores" [disabled]="config().impostorCount >= maxImpostors()" (click)="impostorCountChange.emit(config().impostorCount + 1)">＋</button>
+    </div>
+  </div>
+
+  <fieldset>
+    <legend>Modo</legend>
+    <label [class.is-selected]="config().mode === 'classic'">
+      <input type="radio" name="location-mode" [checked]="config().mode === 'classic'" (change)="modeChange.emit('classic')">
+      <span><strong>Clássico</strong><small>O impostor sabe que não conhece o local.</small></span>
+    </label>
+    <label [class.is-selected]="config().mode === 'blind'">
+      <input type="radio" name="location-mode" [checked]="config().mode === 'blind'" (change)="modeChange.emit('blind')">
+      <span><strong>No escuro</strong><small>Todos recebem um local. Algumas pessoas recebem um lugar diferente sem saber.</small></span>
+    </label>
+  </fieldset>
+
+  @if (config().mode === 'classic') {
+    <fieldset>
+      <legend>Dica para impostor</legend>
+    <label [class.is-selected]="config().giveHint">
+      <input type="radio" name="location-hint" [checked]="config().giveHint" (change)="giveHintChange.emit(true)">
+      <span><strong>Com dica</strong><small>Uma pista ajuda a pessoa a entrar na conversa.</small></span>
+    </label>
+    <label [class.is-selected]="!config().giveHint">
+      <input type="radio" name="location-hint" [checked]="!config().giveHint" (change)="giveHintChange.emit(false)">
+      <span><strong>Sem dica</strong><small>O impostor começa sem nenhuma informação.</small></span>
+    </label>
+    </fieldset>
+  }
+</section>

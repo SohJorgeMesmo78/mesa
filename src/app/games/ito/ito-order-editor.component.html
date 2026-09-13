@@ -7,7 +7,13 @@
     <span>Arraste pela alça</span>
   </div>
 
-  <ol class="guess-list">
+  <div class="order-layout">
+    <aside class="scale-rail" aria-label="Topo é o menor valor; base é o maior valor">
+      <span><b>1</b>{{ lowLabel() }}</span>
+      <i aria-hidden="true"></i>
+      <span><b>100</b>{{ highLabel() }}</span>
+    </aside>
+    <ol class="guess-list">
     @for (playerId of order(); track playerId; let index = $index) {
       @if (playerById().get(playerId); as player) {
         <li
@@ -42,5 +48,6 @@
         </li>
       }
     }
-  </ol>
+    </ol>
+  </div>
 </section>

@@ -54,6 +54,18 @@ img, svg { max-width: 100%; }
 
 :focus-visible { outline: 3px solid var(--color-primary); outline-offset: 3px; }
 
+.art--onde-estou { background: #168f96; }
+.art__location-map { position: absolute; inset: 13% 10%; border: .22rem solid rgb(255 255 255 / .7); border-radius: 1.1rem; rotate: -3deg; background: linear-gradient(115deg, transparent 31%, rgb(255 255 255 / .2) 32% 34%, transparent 35% 65%, rgb(255 255 255 / .18) 66% 68%, transparent 69%); }
+.art__location-map i { position: absolute; height: .2rem; border-radius: 999px; background: rgb(255 255 255 / .45); }
+.art__location-map i:first-child { width: 42%; left: 8%; top: 24%; rotate: 17deg; }
+.art__location-map i:nth-child(2) { width: 35%; right: 7%; top: 55%; rotate: -18deg; }
+.art__location-map i:last-child { width: 38%; left: 22%; bottom: 18%; rotate: 8deg; }
+.art__pin { position: absolute; z-index: 2; display: grid; place-items: center; width: clamp(3.6rem, 17%, 6rem); aspect-ratio: 1; border: .25rem solid #e8fffd; border-radius: 50% 50% 50% 8%; rotate: -45deg; background: #0a5358; box-shadow: 0 .8rem 1.5rem rgb(5 50 54 / .28); }
+.art__pin b { rotate: 45deg; color: #fff; font-size: clamp(1.25rem, 5vw, 2.4rem); }
+.art__pin--known { left: 24%; top: 25%; }
+.art__pin--known b { width: 30%; aspect-ratio: 1; border-radius: 50%; background: #79e4dd; }
+.art__pin--unknown { right: 21%; bottom: 18%; background: #123f43; }
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }

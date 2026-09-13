@@ -39,6 +39,7 @@
           </div>
           <p class="reveal__instruction">Faça perguntas que a mesa possa responder com “sim” ou “não”.</p>
           <button class="button button--primary button--large" type="button" (click)="startRound()">Nova rodada <span aria-hidden="true">↻</span></button>
+          <a class="button button--secondary button--large" routerLink="/" fragment="jogos" (click)="leaveGame()">Jogar outro jogo</a>
           <button class="text-button" type="button" (click)="leaveGame()">Encerrar partida</button>
         </section>
       }

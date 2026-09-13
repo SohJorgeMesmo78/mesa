@@ -51,6 +51,8 @@
                 [players]="game.players"
                 [clues]="game.clues"
                 [order]="game.guessedOrder"
+                [lowLabel]="theme.low"
+                [highLabel]="theme.high"
                 (clueChange)="updateClue($event)"
                 (orderMove)="movePlayer($event)"
               />
@@ -72,8 +74,10 @@
             [score]="score()"
             [showCorrectOrder]="game.showCorrectOrder"
             (revealPlayer)="revealNumber($event)"
+            (revealAll)="revealAll()"
             (correctOrderToggle)="toggleCorrectOrder()"
             (newRound)="newRound()"
+            (otherGame)="leaveGame()"
           />
         }
       }

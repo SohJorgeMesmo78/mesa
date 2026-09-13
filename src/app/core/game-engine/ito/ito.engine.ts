@@ -113,6 +113,12 @@ export class ItoEngine {
     return { ...session, revealedPlayerIds: [...session.revealedPlayerIds, playerId] };
   }
 
+  revealAll(session: ItoSession): ItoSession {
+    this.assertPhase(session, 'results');
+    if (session.revealedPlayerIds.length === session.players.length) return session;
+    return { ...session, revealedPlayerIds: session.guessedOrder.slice() };
+  }
+
   toggleCorrectOrder(session: ItoSession): ItoSession {
     this.assertPhase(session, 'results');
     if (session.revealedPlayerIds.length !== session.players.length) {

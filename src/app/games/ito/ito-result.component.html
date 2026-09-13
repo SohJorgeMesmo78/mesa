@@ -35,5 +35,9 @@
     <button class="button button--primary button--large" type="button" (click)="newRound.emit()">Nova rodada <span aria-hidden="true">↻</span></button>
   } @else {
     <p class="result__help">Toquem em cada “?” para revelar os números sem mudar a ordem.</p>
+    <button class="button button--secondary button--large" type="button" (click)="revealAll.emit()">Revelar todos</button>
+  }
+  @if (allRevealed()) {
+    <a class="button button--secondary button--large" routerLink="/" fragment="jogos" (click)="otherGame.emit()">Jogar outro jogo</a>
   }
 </section>

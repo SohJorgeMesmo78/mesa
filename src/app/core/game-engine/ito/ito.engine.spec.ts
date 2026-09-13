@@ -77,6 +77,19 @@ describe('ItoEngine', () => {
     expect(revealed.assignments).toBe(result.assignments);
   });
 
+  it('revela todos os números restantes sem alterar palpite, jogadores ou atribuições', () => {
+    const collective = engine.movePlayer(reachCollective(engine, 4), 'player-4', 0);
+    const result = engine.showResults(collective);
+    const partial = engine.revealNumber(result, 'player-2');
+    const revealed = engine.revealAll(partial);
+
+    expect(revealed.revealedPlayerIds).toEqual(revealed.guessedOrder);
+    expect(revealed.guessedOrder).toEqual(['player-4', 'player-1', 'player-2', 'player-3']);
+    expect(revealed.players).toBe(result.players);
+    expect(revealed.assignments).toBe(result.assignments);
+    expect(engine.score(revealed)).toEqual(engine.score(result));
+  });
+
   it('calcula 100, score parcial e zero pela ordem relativa entre pares', () => {
     const base = withKnownNumbers(reachCollective(engine, 4), [10, 20, 30, 40]);
     const perfect = engine.score(base);

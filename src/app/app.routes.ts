@@ -59,6 +59,14 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'jogar/onde-estou',
+    title: 'Onde Estou — Mesa',
+    loadComponent: () =>
+      import('./games/onde-estou/onde-estou.component').then(
+        (component) => component.OndeEstouComponent,
+      ),
+  },
+  {
     path: 'jogar/:slug',
     loadComponent: () =>
       import('./games/game-unavailable/game-unavailable.component').then(

@@ -275,6 +275,103 @@ describe('SessionStore', () => {
     expect(TestBed.inject(SessionStore).activeTeaOrCoffee()).toBeNull();
   });
 
+  for (const phase of ['handoff', 'discussion', 'results'] as const) {
+    it(`restaura Onde Estou durante ${phase}`, () => {
+      sessionStorage.setItem('mesa.session', JSON.stringify({
+        version: 9,
+        preferences: { countdown: true, sound: true, haptics: true },
+        activeGame: {
+          game: 'onde-estou', phase,
+          players: [
+            { id: 'p1', name: 'Ana', color: '#FFAA00' },
+            { id: 'p2', name: 'Beto', color: '#3B82F6' },
+            { id: 'p3', name: 'Caio', color: '#EF4444' },
+          ],
+          config: { impostorCount: 1, giveHint: true },
+          location: 'Aeroporto', hint: 'Viagem', impostorPlayerIds: ['p2'],
+          currentPlayerIndex: 1, round: 2,
+        },
+      }));
+
+      const restored = TestBed.inject(SessionStore).activeLocation();
+      expect(restored?.phase).toBe(phase);
+      expect(restored?.location).toBe('Aeroporto');
+      expect(restored?.impostorPlayerIds).toEqual(['p2']);
+    });
+  }
+
+  it('migra uma sessão v8 sem alterar a partida ativa', () => {
+    sessionStorage.setItem('mesa.session', JSON.stringify({
+      version: 8,
+      preferences: { countdown: false, sound: true, haptics: false },
+      activeGame: { game: 'cha-ou-cafe', phase: 'revealed', word: 'Praia', round: 3 },
+    }));
+    const store = TestBed.inject(SessionStore);
+    expect(store.session().version).toBe(10);
+    expect(store.activeTeaOrCoffee()?.word).toBe('Praia');
+  });
+
+  it('descarta sessão inválida de Onde Estou', () => {
+    sessionStorage.setItem('mesa.session', JSON.stringify({
+      version: 9,
+      preferences: { countdown: true, sound: true, haptics: true },
+      activeGame: {
+        game: 'onde-estou', phase: 'discussion',
+        players: [
+          { id: 'p1', name: 'Ana', color: '#FFAA00' },
+          { id: 'p2', name: 'Beto', color: '#3B82F6' },
+          { id: 'p3', name: 'Caio', color: '#EF4444' },
+        ],
+        config: { impostorCount: 1, giveHint: true },
+        location: 'Aeroporto', hint: 'Viagem', impostorPlayerIds: ['inexistente'],
+        currentPlayerIndex: 0, round: 1,
+      },
+    }));
+    expect(TestBed.inject(SessionStore).activeLocation()).toBeNull();
+  });
+
+  it('migra Onde Estou v9 para o modo Clássico preservando a dica', () => {
+    sessionStorage.setItem('mesa.session', JSON.stringify({
+      version: 9,
+      preferences: { countdown: true, sound: true, haptics: true },
+      activeGame: {
+        game: 'onde-estou', phase: 'discussion',
+        players: [
+          { id: 'p1', name: 'Ana', color: '#FFAA00' },
+          { id: 'p2', name: 'Beto', color: '#3B82F6' },
+          { id: 'p3', name: 'Caio', color: '#EF4444' },
+        ],
+        config: { impostorCount: 1, giveHint: true },
+        location: 'Aeroporto', hint: 'Viagem', impostorPlayerIds: ['p2'],
+        currentPlayerIndex: 2, round: 1,
+      },
+    }));
+    const restored = TestBed.inject(SessionStore).activeLocation();
+    expect(restored?.config).toEqual({ impostorCount: 1, mode: 'classic', giveHint: true });
+    expect(restored?.alternativeLocation).toBeNull();
+  });
+
+  it('restaura Onde Estou no escuro com o local alternativo', () => {
+    sessionStorage.setItem('mesa.session', JSON.stringify({
+      version: 10,
+      preferences: { countdown: true, sound: true, haptics: true },
+      activeGame: {
+        game: 'onde-estou', phase: 'results',
+        players: [
+          { id: 'p1', name: 'Ana', color: '#FFAA00' },
+          { id: 'p2', name: 'Beto', color: '#3B82F6' },
+          { id: 'p3', name: 'Caio', color: '#EF4444' },
+        ],
+        config: { impostorCount: 1, mode: 'blind', giveHint: true },
+        location: 'Aeroporto', alternativeLocation: 'Rodoviária', hint: null,
+        impostorPlayerIds: ['p2'], currentPlayerIndex: 2, round: 2,
+      },
+    }));
+    const restored = TestBed.inject(SessionStore).activeLocation();
+    expect(restored?.config.mode).toBe('blind');
+    expect(restored?.alternativeLocation).toBe('Rodoviária');
+  });
+
   it('descarta dados inválidos em vez de restaurar uma partida quebrada', () => {
     sessionStorage.setItem('mesa.session', JSON.stringify({ version: 2, activeGame: { game: 'ito' } }));
 

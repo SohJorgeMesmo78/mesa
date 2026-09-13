@@ -1,9 +1,11 @@
 import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { ItoAssignment, ItoScore } from '../../core/game-engine/ito/ito.models';
 import { Player } from '../../core/players/player.model';
 
 @Component({
   selector: 'app-ito-result',
+  imports: [RouterLink],
   templateUrl: './ito-result.component.html',
   styleUrl: './ito-result.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -18,8 +20,10 @@ export class ItoResultComponent {
   readonly score = input.required<ItoScore>();
   readonly showCorrectOrder = input.required<boolean>();
   readonly revealPlayer = output<string>();
+  readonly revealAll = output<void>();
   readonly correctOrderToggle = output<void>();
   readonly newRound = output<void>();
+  readonly otherGame = output<void>();
 
   readonly playerById = computed(() => new Map(this.players().map((player) => [player.id, player])));
   readonly numberById = computed(() => new Map(this.assignments().map((item) => [item.playerId, item.number])));

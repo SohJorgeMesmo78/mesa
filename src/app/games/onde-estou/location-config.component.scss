@@ -1,0 +1,8 @@
+.config { width: min(100%, 38rem); display: grid; gap: 1.25rem; margin-inline: auto; }
+.counter { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1rem; border: 1px solid var(--color-border); border-radius: 1rem; background: var(--color-surface); }
+.counter > div:first-child { display: grid; gap: .2rem; }.counter span, small { color: var(--color-text-secondary); font-size: .82rem; }
+.counter__control { display: flex; align-items: center; gap: .8rem; }.counter__control button { width: 2.75rem; aspect-ratio: 1; border: 1px solid var(--color-border); border-radius: .75rem; color: var(--color-text-primary); background: #191919; font-size: 1.25rem; }.counter__control button:disabled { opacity: .35; }
+fieldset { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; margin: 0; padding: 0; border: 0; } legend { width: 100%; margin-bottom: .7rem; font-size: .82rem; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; }
+label { display: flex; min-height: 7.25rem; padding: 1rem; border: 1px solid var(--color-border); border-radius: 1rem; background: var(--color-surface); cursor: pointer; } label.is-selected { border-color: var(--game-accent); box-shadow: inset 0 0 0 1px var(--game-accent); } input { position: absolute; opacity: 0; } label span { width: 100%; display: grid; align-content: center; gap: .35rem; } label strong { font-size: 1rem; }
+label:focus-within { outline: 3px solid color-mix(in srgb, var(--game-accent) 45%, transparent); outline-offset: 2px; }
+@media (max-width: 32rem) { .config { gap: 1rem; } fieldset { grid-template-columns: 1fr; } label { min-height: 5.75rem; } }

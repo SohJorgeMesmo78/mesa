@@ -24,6 +24,8 @@ export class ItoOrderEditorComponent {
   readonly players = input.required<readonly Player[]>();
   readonly clues = input.required<Readonly<Record<string, string>>>();
   readonly order = input.required<readonly string[]>();
+  readonly lowLabel = input.required<string>();
+  readonly highLabel = input.required<string>();
   readonly clueChange = output<ItoClueChange>();
   readonly orderMove = output<ItoOrderMove>();
   readonly playerById = computed(() => new Map(this.players().map((player) => [player.id, player])));
@@ -44,18 +46,24 @@ export class ItoOrderEditorComponent {
   startPointer(event: PointerEvent, playerId: string): void {
     if (event.button !== 0) return;
     this.draggedPlayerId = playerId;
-    (event.currentTarget as HTMLElement).setPointerCapture(event.pointerId);
+    try {
+      (event.currentTarget as HTMLElement).setPointerCapture(event.pointerId);
+    } catch {
+      // Ambientes de automação podem não registrar o ponteiro; o reorder continua funcional.
+    }
   }
 
   movePointer(event: PointerEvent): void {
     if (!this.draggedPlayerId) return;
     event.preventDefault();
     const cards = [...this.element.nativeElement.querySelectorAll<HTMLElement>('[data-guess-player]')];
-    const target = cards.find((card) => {
-      const bounds = card.getBoundingClientRect();
-      return event.clientY >= bounds.top && event.clientY <= bounds.bottom;
+    if (cards.length === 0) return;
+    const target = cards.reduce((closest, card) => {
+      const center = card.getBoundingClientRect().top + card.getBoundingClientRect().height / 2;
+      const closestCenter = closest.getBoundingClientRect().top + closest.getBoundingClientRect().height / 2;
+      return Math.abs(event.clientY - center) < Math.abs(event.clientY - closestCenter) ? card : closest;
     });
-    const targetPlayerId = target?.dataset['guessPlayer'];
+    const targetPlayerId = target.dataset['guessPlayer'];
     if (targetPlayerId) this.moveTo(this.draggedPlayerId, targetPlayerId);
   }
 
