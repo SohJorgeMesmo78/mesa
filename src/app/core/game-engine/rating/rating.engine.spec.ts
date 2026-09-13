@@ -1,0 +1,5 @@
+import { RATING_THEMES } from '../../../content/qual-e-a-nota/themes';
+import { createPlayers } from '../../players/player.model';
+import { RandomService } from '../../random/random.service';
+import { RatingEngine } from './rating.engine';
+describe('RatingEngine',()=>{const engine=new RatingEngine(new RandomService());it('distribui uma nota válida para cada dupla',()=>{const game=engine.start(engine.create(createPlayers(3)),RATING_THEMES);expect(game.assignments.length).toBe(3);expect(game.assignments.every(a=>a.grade>=1&&a.grade<=10)).toBeTrue();});it('1 x Todos cria exatamente uma nota e termina após uma revelação',()=>{const base=engine.configure(engine.create(createPlayers(2)),createPlayers(2),'one-vs-all');const game=engine.acceptTheme(engine.start(base,RATING_THEMES));expect(game.assignments.length).toBe(1);expect(engine.next(game).phase).toBe('discussion');});it('preserva participantes numa nova rodada',()=>{const game=engine.start(engine.create(createPlayers(2)),RATING_THEMES);expect(game.players.map(p=>p.id)).toEqual(['player-1','player-2']);});});

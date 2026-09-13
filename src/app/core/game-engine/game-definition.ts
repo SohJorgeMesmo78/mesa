@@ -1,7 +1,7 @@
 export type GameCategory = 'Adivinhação' | 'Cooperativo' | 'Dedução' | 'Blefe' | 'Agilidade' | 'Conversa';
 
 export type GameComplexity = 'easy' | 'medium' | 'hard';
-export type GameEngineType = 'identity-reveal' | 'scale-ordering' | 'hidden-role' | 'timed-turns' | 'question-pairs' | 'comparison-reveal';
+export type GameEngineType = 'identity-reveal' | 'scale-ordering' | 'hidden-role' | 'timed-turns' | 'question-pairs' | 'comparison-reveal' | 'contact-word' | 'rating' | 'word-list' | 'letter-chain';
 export type GameFeature =
   | 'countdown'
   | 'audio'

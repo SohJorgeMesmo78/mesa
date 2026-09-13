@@ -65,6 +65,10 @@ img, svg { max-width: 100%; }
 .art__pin--known { left: 24%; top: 25%; }
 .art__pin--known b { width: 30%; aspect-ratio: 1; border-radius: 50%; background: #79e4dd; }
 .art__pin--unknown { right: 21%; bottom: 18%; background: #123f43; }
+.art--contato{background:#a6bf3b}.art__contact{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:1.3rem;color:#243000;font-size:clamp(4rem,15vw,8rem);font-weight:900}.art__contact i{width:clamp(2rem,8vw,4rem);height:.35rem;background:#fff;border-radius:2rem;box-shadow:0 -1rem 0 rgba(255,255,255,.55),0 1rem 0 rgba(255,255,255,.55)}
+.art--qual-e-a-nota{background:#5968d8}.art__rating{position:absolute;left:18%;top:12%;color:#fff;font-size:clamp(7rem,24vw,12rem);font-weight:900}.art__rating-scale{position:absolute;left:15%;right:15%;bottom:18%;display:flex;align-items:center;gap:.7rem;color:#fff;font-weight:900}.art__rating-scale i{flex:1;height:.3rem;background:#fff;border-radius:2rem}
+.art--jogo-da-lista{background:#e8794f}.art__list{position:absolute;inset:18%;display:flex;flex-direction:column;justify-content:space-around;padding:1rem;border:.3rem solid #fff;border-radius:1rem;rotate:-5deg}.art__list i{height:.65rem;border-radius:2rem;background:#fff}.art__list i:nth-child(2){width:75%}.art__list i:nth-child(3){width:88%}
+.art--adivinhe-a-palavra{background:#38a889}.art__letters{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:.5rem}.art__letters b{display:grid;place-items:center;width:clamp(3.5rem,18%,6rem);aspect-ratio:.8;color:#174b3e;background:#e8fff8;border:.2rem solid #fff;border-radius:.7rem;font-size:clamp(2rem,8vw,4rem);rotate:-6deg}.art__letters b:nth-child(2){translate:0 -1rem;rotate:5deg;background:#fff0c9}.art__letters b:last-child{rotate:9deg}
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }

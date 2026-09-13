@@ -307,7 +307,7 @@ describe('SessionStore', () => {
       activeGame: { game: 'cha-ou-cafe', phase: 'revealed', word: 'Praia', round: 3 },
     }));
     const store = TestBed.inject(SessionStore);
-    expect(store.session().version).toBe(10);
+    expect(store.session().version).toBe(11);
     expect(store.activeTeaOrCoffee()?.word).toBe('Praia');
   });
 

@@ -66,6 +66,10 @@ export const routes: Routes = [
         (component) => component.OndeEstouComponent,
       ),
   },
+  { path: 'jogar/contato', title: 'Contato — Mesa', loadComponent: () => import('./games/contato/contato.component').then((component) => component.ContatoComponent) },
+  { path: 'jogar/qual-e-a-nota', title: 'Qual é a Nota — Mesa', loadComponent: () => import('./games/qual-e-a-nota/qual-e-a-nota.component').then((component) => component.QualEANotaComponent) },
+  { path: 'jogar/jogo-da-lista', title: 'Jogo da Lista — Mesa', loadComponent: () => import('./games/jogo-da-lista/jogo-da-lista.component').then((component) => component.JogoDaListaComponent) },
+  { path: 'jogar/adivinhe-a-palavra', title: 'Adivinhe a Palavra — Mesa', loadComponent: () => import('./games/adivinhe-a-palavra/adivinhe-a-palavra.component').then((component) => component.AdivinheAPalavraComponent) },
   {
     path: 'jogar/:slug',
     loadComponent: () =>

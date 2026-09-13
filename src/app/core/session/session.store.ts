@@ -6,6 +6,10 @@ import { HOT_POTATO_DURATIONS, HotPotatoSession } from '../game-engine/hot-potat
 import { ImpostorQuestionSession } from '../game-engine/impostor-question/impostor-question.models';
 import { TeaOrCoffeeSession } from '../game-engine/tea-or-coffee/tea-or-coffee.models';
 import { LocationSession } from '../game-engine/location/location.models';
+import { ContactSession } from '../game-engine/contact/contact.models';
+import { RatingSession } from '../game-engine/rating/rating.models';
+import { WordListSession } from '../game-engine/word-list/word-list.models';
+import { LetterChainSession } from '../game-engine/letter-chain/letter-chain.models';
 import { Player } from '../players/player.model';
 import {
   ExperiencePreferences,
@@ -57,6 +61,10 @@ export class SessionStore {
     const active = this.sessionState().activeGame;
     return active?.game === 'onde-estou' ? active : null;
   });
+  readonly activeContact = computed(() => { const active = this.sessionState().activeGame; return active?.game === 'contato' ? active : null; });
+  readonly activeRating = computed(() => { const active = this.sessionState().activeGame; return active?.game === 'qual-e-a-nota' ? active : null; });
+  readonly activeWordList = computed(() => { const active = this.sessionState().activeGame; return active?.game === 'jogo-da-lista' ? active : null; });
+  readonly activeLetterChain = computed(() => { const active = this.sessionState().activeGame; return active?.game === 'adivinhe-a-palavra' ? active : null; });
 
   constructor() {
     if (isPlatformBrowser(this.platformId)) {
@@ -106,6 +114,10 @@ export class SessionStore {
   setLocationSession(session: LocationSession): void {
     this.setActiveGame(session);
   }
+  setContactSession(session: ContactSession): void { this.setActiveGame(session); }
+  setRatingSession(session: RatingSession): void { this.setActiveGame(session); }
+  setWordListSession(session: WordListSession): void { this.setActiveGame(session); }
+  setLetterChainSession(session: LetterChainSession): void { this.setActiveGame(session); }
 
   clearActiveGame(): void {
     this.sessionState.update((current) => ({ ...current, activeGame: null }));
@@ -121,6 +133,8 @@ export class SessionStore {
       if (!raw) return DEFAULT_SESSION;
       const parsed: unknown = JSON.parse(raw);
       if (isMesaSession(parsed)) return parsed;
+      const migratedVersionTen = migrateVersionTen(parsed);
+      if (migratedVersionTen) return migratedVersionTen;
       const migratedVersionNine = migrateVersionNine(parsed);
       if (migratedVersionNine) return migratedVersionNine;
       const migratedVersionEight = migrateVersionEight(parsed);
@@ -391,7 +405,36 @@ function isMesaSession(value: unknown): value is MesaSession {
     return false;
   }
   const activeGame = value['activeGame'];
-  return activeGame === null || isWhoAmI(activeGame) || isIto(activeGame) || isImpostor(activeGame) || isHotPotato(activeGame) || isImpostorQuestion(activeGame) || isTeaOrCoffee(activeGame) || isLocation(activeGame);
+  return activeGame === null || isWhoAmI(activeGame) || isIto(activeGame) || isImpostor(activeGame) || isHotPotato(activeGame) || isImpostorQuestion(activeGame) || isTeaOrCoffee(activeGame) || isLocation(activeGame) || isContact(activeGame) || isRating(activeGame) || isWordList(activeGame) || isLetterChain(activeGame);
+}
+
+function migrateVersionTen(value: unknown): MesaSession | null {
+  if (!isRecord(value) || value['version'] !== 10 || !isPreferences(value['preferences'])) return null;
+  const activeGame = value['activeGame'];
+  if (activeGame !== null && !isWhoAmI(activeGame) && !isIto(activeGame) && !isImpostor(activeGame) && !isHotPotato(activeGame) && !isImpostorQuestion(activeGame) && !isTeaOrCoffee(activeGame) && !isLocation(activeGame)) return null;
+  return { version: SESSION_SCHEMA_VERSION, preferences: value['preferences'], activeGame };
+}
+
+function isContact(value: unknown): value is ContactSession {
+  return isRecord(value) && value['game'] === 'contato' && ['ready','countdown','revealed'].includes(String(value['phase'])) && typeof value['word'] === 'string' && value['word'].trim().length > 0 && isPositiveInteger(value['round']);
+}
+
+function isLetterChain(value: unknown): value is LetterChainSession {
+  return isRecord(value) && value['game'] === 'adivinhe-a-palavra' && typeof value['letter'] === 'string' && /^[A-Z]$/.test(value['letter']) && isPositiveInteger(value['round']);
+}
+
+function isWordList(value: unknown): value is WordListSession {
+  if (!isRecord(value) || value['game'] !== 'jogo-da-lista' || !['setup','ready','revealed'].includes(String(value['phase'])) || ![5,8,10].includes(Number(value['count'])) || !Number.isInteger(value['round']) || Number(value['round']) < 0 || !Array.isArray(value['words'])) return false;
+  return value['phase'] === 'setup' ? value['words'].length === 0 : value['words'].length === value['count'] && value['words'].every((word) => typeof word === 'string' && word.trim().length > 0) && new Set(value['words']).size === value['words'].length && Number(value['round']) > 0;
+}
+
+function isRating(value: unknown): value is RatingSession {
+  if (!isRecord(value) || value['game'] !== 'qual-e-a-nota' || !isPlayerList(value['players'], 1, 6) || !['setup','theme','handoff','discussion'].includes(String(value['phase'])) || !['pairs','one-vs-all'].includes(String(value['mode'])) || !Number.isInteger(value['currentPlayerIndex']) || !Number.isInteger(value['round'])) return false;
+  if (value['phase'] === 'setup') return value['theme'] === null && Array.isArray(value['assignments']) && value['assignments'].length === 0;
+  if (!isRecord(value['theme']) || typeof value['theme']['id'] !== 'string' || typeof value['theme']['prompt'] !== 'string' || typeof value['theme']['low'] !== 'string' || typeof value['theme']['high'] !== 'string' || !Array.isArray(value['assignments'])) return false;
+  const expected = value['mode'] === 'one-vs-all' ? 1 : value['players'].length;
+  const ids = new Set(value['players'].map((player) => player.id));
+  return value['assignments'].length === expected && value['assignments'].every((item) => isRecord(item) && typeof item['playerId'] === 'string' && ids.has(item['playerId']) && Number.isInteger(item['grade']) && Number(item['grade']) >= 1 && Number(item['grade']) <= 10) && Number(value['currentPlayerIndex']) >= 0 && Number(value['currentPlayerIndex']) < expected && Number(value['round']) > 0;
 }
 
 function migrateVersionNine(value: unknown): MesaSession | null {

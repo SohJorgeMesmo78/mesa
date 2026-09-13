@@ -1,0 +1,4 @@
+import { CONTACT_WORDS } from '../../../content/contato/words';
+import { RandomService } from '../../random/random.service';
+import { ContactEngine } from './contact.engine';
+describe('ContactEngine',()=>{const engine=new ContactEngine(new RandomService());it('sorteia conteúdo válido e protege a palavra',()=>{const game=engine.create(CONTACT_WORDS);expect(CONTACT_WORDS).toContain(game.word as never);expect(game.phase).toBe('ready');});it('evita repetição imediata e incrementa a rodada',()=>{spyOn(Math,'random').and.returnValue(0);const first=engine.create(['A','B']);const next=engine.newRound(first,['A','B']);expect(next.word).not.toBe(first.word);expect(next.round).toBe(2);});it('passa pela contagem até revelar',()=>{const game=engine.reveal(engine.create(CONTACT_WORDS),true);expect(game.phase).toBe('countdown');expect(engine.finishCountdown(game).phase).toBe('revealed');});});

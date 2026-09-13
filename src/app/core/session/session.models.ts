@@ -4,8 +4,12 @@ import { HotPotatoSession } from '../game-engine/hot-potato/hot-potato.models';
 import { ImpostorQuestionSession } from '../game-engine/impostor-question/impostor-question.models';
 import { TeaOrCoffeeSession } from '../game-engine/tea-or-coffee/tea-or-coffee.models';
 import { LocationSession } from '../game-engine/location/location.models';
+import { ContactSession } from '../game-engine/contact/contact.models';
+import { RatingSession } from '../game-engine/rating/rating.models';
+import { WordListSession } from '../game-engine/word-list/word-list.models';
+import { LetterChainSession } from '../game-engine/letter-chain/letter-chain.models';
 
-export const SESSION_SCHEMA_VERSION = 10 as const;
+export const SESSION_SCHEMA_VERSION = 11 as const;
 
 export interface ExperiencePreferences {
   readonly countdown: boolean;
@@ -20,7 +24,7 @@ export interface WhoAmISession {
   readonly round: number;
 }
 
-export type ActiveGameSession = WhoAmISession | ItoSession | ImpostorSession | HotPotatoSession | ImpostorQuestionSession | TeaOrCoffeeSession | LocationSession;
+export type ActiveGameSession = WhoAmISession | ItoSession | ImpostorSession | HotPotatoSession | ImpostorQuestionSession | TeaOrCoffeeSession | LocationSession | ContactSession | RatingSession | WordListSession | LetterChainSession;
 
 export interface MesaSession {
   readonly version: typeof SESSION_SCHEMA_VERSION;

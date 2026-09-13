@@ -185,6 +185,42 @@ export const GAME_CATALOG = [
       { name: 'No escuro', description: 'Todo mundo recebe um local — mas algumas pessoas recebem um lugar diferente sem saber.' },
     ],
   },
+  {
+    id: 'contact', slug: 'contato', name: 'Contato',
+    shortDescription: 'Uma palavra secreta, letras reveladas e conexões feitas em sintonia.',
+    fullDescription: 'O mestre conhece uma palavra. A roda cria conexões para conquistar novas letras e chegar ao segredo.',
+    players: { min: 3, max: 20 }, estimatedMinutes: 15, categories: ['Adivinhação', 'Cooperativo'], complexity: 'medium', deviceMode: 'single-device',
+    vibe: ['vocabulário','sintonia','dedução'], goodFor: ['amigos','família'], engine: 'contact-word', features: ['countdown','audio','haptics','private-reveal'], availability: 'available', accent: '#A6BF3B',
+    instructions: ['O mestre revela apenas a primeira letra da palavra.','A roda dá definições até duas pessoas fazerem Contato.','O mestre libera novas letras — ou bloqueia a conexão se descobrir a resposta antes.'],
+    appResponsibility: 'O Mesa sorteia e protege a palavra. Dicas, contatos, bloqueios e a vitória acontecem presencialmente.',
+  },
+  {
+    id: 'rating', slug: 'qual-e-a-nota', name: 'Qual é a Nota',
+    shortDescription: 'Uma nota secreta, uma pista subjetiva e um teste de sintonia.',
+    fullDescription: 'Uma pessoa recebe uma nota de 1 a 10 e dá uma pista dentro da escala proposta. O parceiro ou a roda tenta descobrir o valor.',
+    players: { min: 2, max: 12 }, estimatedMinutes: 10, categories: ['Conversa','Adivinhação'], complexity: 'easy', deviceMode: 'single-device',
+    vibe: ['sintonia','criativo','conversa'], goodFor: ['duplas','amigos'], engine: 'rating', features: ['private-reveal','player-setup'], availability: 'available', accent: '#5968D8',
+    instructions: ['Escolham jogar em duplas ou uma pessoa contra todos.','Quem dá a pista revela em segredo uma nota de 1 a 10.','A pista deve combinar com o tema; o resto da Mesa tenta descobrir a nota.'],
+    appResponsibility: 'O Mesa sorteia tema e notas. Pistas, palpites e a decisão de proximidade ficam com a roda.',
+  },
+  {
+    id: 'word-list', slug: 'jogo-da-lista', name: 'Jogo da Lista',
+    shortDescription: 'Uma lista secreta e muitas pistas para fazer a roda acertar.',
+    fullDescription: 'Uma pessoa recebe uma lista de palavras e conduz a rodada com pistas. O grupo tenta completar a lista sem ver a tela.',
+    players: { min: 2, max: 20 }, estimatedMinutes: 10, categories: ['Adivinhação'], complexity: 'easy', deviceMode: 'single-device',
+    vibe: ['rápido','vocabulário','grupo'], goodFor: ['amigos','família'], engine: 'word-list', features: ['private-reveal'], availability: 'available', accent: '#E8794F',
+    instructions: ['Escolham quantas palavras entram na rodada.','Só a pessoa que dá as pistas revela a lista.','O grupo tenta acertar todas; vocês decidem presencialmente o que vale.'],
+    appResponsibility: 'O Mesa monta e protege a lista. Pistas, acertos e o encerramento são decididos pela roda.',
+  },
+  {
+    id: 'letter-chain', slug: 'adivinhe-a-palavra', name: 'Adivinhe a Palavra',
+    shortDescription: 'Acrescente uma letra, evite completar a palavra e saiba a hora de duvidar.',
+    fullDescription: 'A partir de uma letra sorteada, a roda constrói uma palavra em sequência. Quem completar uma palavra perde — e qualquer pessoa pode desafiar uma sequência impossível.',
+    players: { min: 2, max: 20 }, estimatedMinutes: 10, categories: ['Conversa','Adivinhação'], complexity: 'easy', deviceMode: 'single-device',
+    vibe: ['vocabulário','rápido','desafio'], goodFor: ['amigos','família'], engine: 'letter-chain', features: [], availability: 'available', accent: '#38A889',
+    instructions: ['O Mesa sorteia a primeira letra.','Cada pessoa acrescenta uma letra pensando em uma palavra válida.','Quem completar uma palavra perde. Diga “Duvido” se a sequência parecer impossível.'],
+    appResponsibility: 'O Mesa escolhe o começo. Letras, desafios e validação das palavras acontecem presencialmente.',
+  },
 ] as const satisfies readonly GameDefinition[];
 
 export function findGame(slug: string): GameDefinition | undefined {

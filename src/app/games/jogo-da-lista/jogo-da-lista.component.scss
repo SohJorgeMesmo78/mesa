@@ -1,0 +1,2 @@
+@use '../simple-game';
+.word-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.65rem;width:100%;margin:0;padding:0;counter-reset:words;list-style:none}.word-list li{padding:1rem;border:1px solid var(--color-border);border-radius:.8rem;background:var(--color-surface);font-weight:800;overflow-wrap:anywhere}.word-list li::before{counter-increment:words;content:counter(words) '. ';color:#e8794f}@media(max-width:30rem){.word-list{grid-template-columns:1fr}}
