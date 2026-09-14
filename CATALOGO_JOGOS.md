@@ -96,7 +96,7 @@ Sim. Expressa diretamente a pergunta que orienta toda a rodada.
 
 Identidade, personagem, descoberta, “sim ou não” e espelho.
 
-## Ito
+## Na Escala
 
 ### Resumo
 
@@ -183,11 +183,11 @@ Média. A operação é simples, mas interpretar escalas subjetivas e ordenar pi
 
 ### Nome atual
 
-Ito
+Na Escala
 
 ### O nome comunica a mecânica?
 
-Não. Sem conhecer a referência externa, o nome não indica escala, números ou sintonia.
+Sim. Comunica diretamente que as pistas serão interpretadas e ordenadas dentro de uma escala.
 
 ### Direções possíveis de naming
 
@@ -383,7 +383,7 @@ Sim. É uma referência amplamente reconhecida para passar algo antes que o temp
 
 Pressão, explosão, passe a vez, contagem e resposta rápida.
 
-## Pergunta do Impostor
+## Pergunta Errada
 
 ### Resumo
 
@@ -470,17 +470,17 @@ Fácil. O app conduz a privacidade; a principal decisão é escolher como respon
 
 ### Nome atual
 
-Pergunta do Impostor
+Pergunta Errada
 
 ### O nome comunica a mecânica?
 
-Parcialmente. Indica pergunta e impostor, mas pode sugerir que o papel é conhecido ou que existe apenas uma pergunta especial.
+Sim. Comunica que existe uma pergunta diferente sem afirmar que quem a recebeu conhece o próprio papel.
 
 ### Direções possíveis de naming
 
 Perguntas parecidas, respostas suspeitas, diferença, desencontro e fora de contexto.
 
-## Chá ou Café
+## Um ou Outro
 
 ### Resumo
 
@@ -559,17 +559,17 @@ Fácil. A mecânica é repetida com novos pares até alguém chegar ao segredo.
 
 ### Pontos de atenção
 
-- O nome pode fazer o público imaginar um jogo literalmente sobre bebidas.
+- O nome comunica a escolha binária, mas a palavra secreta ainda precisa aparecer na explicação inicial.
 - Depende de palavras que aceitem comparações variadas.
 - O grupo precisa aprender a formular pares úteis sem entregar demais.
 
 ### Nome atual
 
-Chá ou Café
+Um ou Outro
 
 ### O nome comunica a mecânica?
 
-Parcialmente. Comunica escolha entre duas opções, mas não deixa claro que as comparações levam a uma palavra secreta.
+Sim. Comunica com clareza a escolha recorrente entre duas opções; a descrição completa explica o segredo.
 
 ### Direções possíveis de naming
 
@@ -861,7 +861,7 @@ Sim. Expõe diretamente o objetivo de inferir uma nota, embora não comunique a 
 
 Nota, escala, sintonia, intensidade, palpite e percepção.
 
-## Jogo da Lista
+## Tá na Lista
 
 ### Resumo
 
@@ -939,23 +939,23 @@ Fácil. Uma pessoa lê a lista e as demais tentam descobrir seus itens.
 
 ### Pontos de atenção
 
-- O nome é genérico e não explica que a lista é secreta ou baseada em pistas.
+- O nome comunica a presença da lista, mas a dinâmica de pistas ainda depende da descrição.
 - O Mesa não marca palavras acertadas; o grupo precisa manter esse controle.
 - A experiência depende da variedade do banco e da qualidade das pistas.
 
 ### Nome atual
 
-Jogo da Lista
+Tá na Lista
 
 ### O nome comunica a mecânica?
 
-Parcialmente. Informa que existe uma lista, mas não comunica segredo, pistas ou adivinhação.
+Sim. Comunica de forma informal que as respostas procuradas estão em uma lista.
 
 ### Direções possíveis de naming
 
 Lista secreta, pistas, palavras, completar, sequência e mestre.
 
-## Adivinhe a Palavra
+## Não Completa
 
 ### Resumo
 
@@ -1032,18 +1032,18 @@ Fácil segundo o catálogo. A dinâmica é curta, mas o desafio “Duvido” e a
 
 ### Pontos de atenção
 
-- O nome sugere uma adivinhação tradicional, não o risco de completar a palavra.
+- O nome comunica a condição principal de derrota, mas o desafio “Duvido” ainda exige explicação.
 - O grupo precisa memorizar corretamente a sequência.
 - Validade de palavras e flexões depende de consenso e honestidade.
 - A regra sobre onde acrescentar letras precisa ser entendida de forma consistente pelo grupo.
 
 ### Nome atual
 
-Adivinhe a Palavra
+Não Completa
 
 ### O nome comunica a mecânica?
 
-Parcialmente. Indica palavras, mas não comunica a construção coletiva, a condição de derrota ou o desafio “Duvido”.
+Sim. Comunica diretamente a regra mais importante: não ser a pessoa que completa a palavra.
 
 ### Direções possíveis de naming
 
@@ -1054,16 +1054,16 @@ Letras, sequência, palavra proibida, completar, duvido e corrente.
 | Jogo | Mecânica principal | Jogadores | Duração | Complexidade | Usa segredo? | Usa timer? | Usa pontuação? | Nome comunica bem? |
 |---|---|---:|---:|---|---|---|---|---|
 | Quem Sou Eu | Identidade e perguntas de sim/não | 2–20 | 10 min | Fácil | Sim | Não | Não | Sim |
-| Ito | Escala e ordenação cooperativa | 2–12 | 15 min | Média | Sim | Não | Sim | Não |
+| Na Escala | Escala e ordenação cooperativa | 2–12 | 15 min | Média | Sim | Não | Sim | Sim |
 | Impostor | Papéis ocultos e palavra diferente | 3–12 | 15 min | Média | Sim | Não | Não | Sim |
 | Batata Quente | Respostas rápidas e turno cronometrado | 2–12 | 5 min | Fácil | Não | Sim | Não | Sim |
-| Pergunta do Impostor | Perguntas diferentes e dedução | 3–12 | 10 min | Fácil | Sim | Não | Não | Parcialmente |
-| Chá ou Café | Comparações binárias e palavra secreta | 2–20 | 10 min | Fácil | Sim | Não | Não | Parcialmente |
+| Pergunta Errada | Perguntas diferentes e dedução | 3–12 | 10 min | Fácil | Sim | Não | Não | Sim |
+| Um ou Outro | Comparações binárias e palavra secreta | 2–20 | 10 min | Fácil | Sim | Não | Não | Sim |
 | Onde Estou | Local oculto, perguntas e impostores | 3–12 | 15 min | Média | Sim | Não | Não | Sim |
 | Contato | Prefixos, definições e conexão | 3–20 | 15 min | Média | Sim | Não | Não | Parcialmente |
 | Qual é a Nota | Escala de 1 a 10 e pista | 2–12 | 10 min | Fácil | Sim | Não | Não | Sim |
-| Jogo da Lista | Lista secreta e pistas | 2–20 | 10 min | Fácil | Sim | Não | Não | Parcialmente |
-| Adivinhe a Palavra | Corrente de letras e desafio | 2–20 | 10 min | Fácil | Não | Não | Não | Parcialmente |
+| Tá na Lista | Lista secreta e pistas | 2–20 | 10 min | Fácil | Sim | Não | Não | Sim |
+| Não Completa | Corrente de letras e desafio | 2–20 | 10 min | Fácil | Não | Não | Não | Sim |
 
 > Nesta tabela, “timer” significa um cronômetro que determina o fim da rodada. Countdowns curtos de preparação não foram classificados como timer. Em Quem Sou Eu, a identidade é secreta para quem adivinha, embora seja visível para o restante do grupo.
 
@@ -1072,18 +1072,18 @@ Letras, sequência, palavra proibida, completar, duvido e corrente.
 ## Revelação e adivinhação
 
 - **Quem Sou Eu:** identidade visível para a roda e oculta de quem adivinha.
-- **Chá ou Café:** palavra conhecida por uma pessoa e descoberta por comparações.
-- **Jogo da Lista:** lista conhecida por quem dá pistas e descoberta pelo grupo.
+- **Um ou Outro:** palavra conhecida por uma pessoa e descoberta por comparações.
+- **Tá na Lista:** lista conhecida por quem dá pistas e descoberta pelo grupo.
 
 ## Papéis secretos e informação diferente
 
 - **Impostor:** palavra principal, papel conhecido ou palavra alternativa sem papel explícito.
-- **Pergunta do Impostor:** perguntas parecidas distribuídas sem revelar os papéis.
+- **Pergunta Errada:** perguntas parecidas distribuídas sem revelar os papéis.
 - **Onde Estou:** local principal e impostores que desconhecem ou recebem outro lugar.
 
 ## Escala e sintonia
 
-- **Ito:** números de 1 a 100, pistas e ordenação cooperativa com pontuação.
+- **Na Escala:** números de 1 a 100, pistas e ordenação cooperativa com pontuação.
 - **Qual é a Nota:** nota de 1 a 10 interpretada por uma pista, sem pontuação digital.
 
 ## Pressão e turnos
@@ -1093,32 +1093,14 @@ Letras, sequência, palavra proibida, completar, duvido e corrente.
 ## Associação, palavras e vocabulário
 
 - **Contato:** definições e respostas em comum liberam letras.
-- **Adivinhe a Palavra:** participantes constroem uma sequência de letras e podem desafiar sua validade.
-- **Chá ou Café:** associações por contraste aproximam o grupo do segredo.
-- **Jogo da Lista:** pistas associativas levam às palavras da lista.
+- **Não Completa:** participantes constroem uma sequência de letras e podem desafiar sua validade.
+- **Um ou Outro:** associações por contraste aproximam o grupo do segredo.
+- **Tá na Lista:** pistas associativas levam às palavras da lista.
 
 # Oportunidades de naming
-
-## Ito
-
-O nome depende de uma referência externa e não comunica escala, números, ordenação ou sintonia para quem nunca viu o jogo.
-
-## Pergunta do Impostor
-
-O nome comunica os ingredientes gerais, mas pode dar a entender que o impostor conhece seu papel. A diferença entre perguntas e o desencontro das respostas são aspectos mais específicos da experiência.
-
-## Chá ou Café
-
-O nome expressa a estrutura de duas opções, porém pode parecer um jogo sobre bebidas. A palavra secreta e o processo de aproximação não ficam evidentes.
 
 ## Contato
 
 “Contato” é a expressão central usada durante a partida, mas exige que a pessoa já conheça a regra para entender a relação com letras, prefixos e definições.
 
-## Jogo da Lista
-
-É um nome funcional, porém genérico. Não diferencia uma lista secreta conduzida por pistas de qualquer outro jogo baseado em listas.
-
-## Adivinhe a Palavra
-
-O nome sugere que existe uma palavra pronta a ser descoberta. Na regra atual, o diferencial é construir uma sequência sem completar uma palavra e poder desafiar com “Duvido”.
+Os nomes Na Escala, Pergunta Errada, Um ou Outro, Tá na Lista e Não Completa já refletem as direções escolhidas para suas mecânicas. Contato permanece como a principal oportunidade de naming identificada neste catálogo.

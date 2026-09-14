@@ -72,7 +72,7 @@ export class ImpostorQuestionEngine {
   }
 
   private assertPlayers(players: readonly Player[]): void {
-    if (players.length < 3 || players.length > 12) throw new RangeError('Pergunta do Impostor precisa de 3 a 12 participantes.');
+    if (players.length < 3 || players.length > 12) throw new RangeError('Pergunta Errada precisa de 3 a 12 participantes.');
     if (new Set(players.map((player) => player.id)).size !== players.length) throw new Error('Os participantes precisam ter identificadores únicos.');
   }
 

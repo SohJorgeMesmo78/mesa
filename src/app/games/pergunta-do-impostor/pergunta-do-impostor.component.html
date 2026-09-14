@@ -4,7 +4,7 @@
     @if (activeGame(); as game) {
       @switch (game.phase) {
         @case ('setup') {
-          <section class="intro"><p class="eyebrow">Pergunta do Impostor</p><h1>Perguntas parecidas.<br>Respostas suspeitas.</h1><p>Algumas pessoas receberão uma pergunta diferente. Ninguém vai saber quem.</p></section>
+          <section class="intro"><p class="eyebrow">Pergunta Errada</p><h1>Perguntas parecidas.<br>Respostas suspeitas.</h1><p>Algumas pessoas receberão uma pergunta diferente. Ninguém vai saber quem.</p></section>
           <app-impostor-question-config [config]="game.config" [maxImpostors]="maxImpostors()" (configChange)="setConfig($event)" />
           <app-player-setup [players]="game.players" [min]="playerLimits.min" [max]="maxPlayers" (playersChange)="updatePlayers($event)" (confirmed)="startRound($event)" />
         }

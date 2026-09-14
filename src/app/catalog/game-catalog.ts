@@ -1,6 +1,6 @@
 import { GameDefinition } from '../core/game-engine/game-definition';
 
-export const GAME_CATALOG = [
+const GAME_CATALOG_ENTRIES = [
   {
     id: 'who-am-i',
     slug: 'quem-sou-eu',
@@ -26,11 +26,12 @@ export const GAME_CATALOG = [
     ],
     appResponsibility:
       'O Mesa sorteia e revela a identidade. Perguntas, respostas e acertos ficam com a roda.',
+    help: { summary: 'Descubra a identidade que todo mundo vê, menos você.', objective: 'Faça perguntas de “sim” ou “não” até descobrir quem você é.', steps: ['Prepare o celular sem olhar para a tela.', 'O Mesa revela uma identidade para o restante da roda.', 'Faça perguntas que possam ser respondidas com “sim” ou “não”.', 'Ao acertar ou desistir, comece uma nova rodada.'], important: ['Quem está adivinhando não pode ver a identidade.'] },
   },
   {
     id: 'tea-or-coffee',
     slug: 'cha-ou-cafe',
-    name: 'Chá ou Café',
+    name: 'Um ou Outro',
     shortDescription: 'Uma palavra secreta e escolhas entre duas opções para chegar cada vez mais perto.',
     fullDescription:
       'Uma pessoa recebe uma palavra secreta. O resto da Mesa cria perguntas com duas opções e tenta descobrir o segredo pelas escolhas.',
@@ -51,12 +52,13 @@ export const GAME_CATALOG = [
       'Quem conhece a palavra escolhe sempre a opção que considera mais próxima do segredo.',
     ],
     appResponsibility: 'O Mesa sorteia e protege a palavra. Comparações, escolhas e tentativas acontecem na conversa.',
+    help: { summary: 'Uma pessoa conhece o segredo; a roda se aproxima dele comparando duas opções.', objective: 'Descubra a palavra secreta pelas escolhas de quem está conduzindo.', steps: ['Uma pessoa revela a palavra sem mostrar para a roda.', 'Comecem perguntando “Chá ou café?”.', 'Continuem criando pares, como “praia ou montanha?”.', 'Quem conhece o segredo escolhe sempre a opção mais próxima.', 'Façam tentativas até alguém descobrir a palavra.'], important: ['Ao trocar quem conduz, use “Trocar pessoa” para proteger a próxima palavra.'] },
     example: ['Chá ou café?', 'Praia ou montanha?', 'Dia ou noite?'],
   },
   {
     id: 'ito',
     slug: 'ito',
-    name: 'Ito',
+    name: 'Na Escala',
     shortDescription: 'Dicas subjetivas, números secretos e uma missão: entrar na mesma sintonia.',
     fullDescription:
       'Cada pessoa recebe um número de 1 a 100 e dá uma dica dentro de uma escala. A mesa tenta ordenar as dicas sem conhecer os números.',
@@ -77,6 +79,7 @@ export const GAME_CATALOG = [
       'Em grupo, organizem as dicas antes de revelar os números.',
     ],
     appResponsibility: 'O Mesa distribui números e propõe a escala. A conversa e a ordem são do grupo.',
+    help: { summary: 'Transformem números secretos em pistas e coloquem tudo na ordem certa.', objective: 'Organize as pistas do menor para o maior valor da escala.', steps: ['Cada pessoa recebe um número secreto de 1 a 100.', 'Dê uma pista compatível com seu número e com o tema.', 'Conversem e ordenem as pistas do menor para o maior.', 'Revelem os números e confiram a sintonia.'], important: ['Não conte seu número para ninguém.'] },
   },
   {
     id: 'impostor',
@@ -102,6 +105,7 @@ export const GAME_CATALOG = [
       'Debatam e votem em quem parece estar improvisando.',
     ],
     appResponsibility: 'O Mesa distribui as informações privadas. Pistas, debate e votação são presenciais.',
+    help: { summary: 'Uma ou mais pessoas recebem informação diferente e tentam se misturar.', objective: 'Descubram quem está fora de sintonia antes do fim da conversa.', steps: ['Cada pessoa revela sua informação em segredo.', 'Dê uma associação relacionada ao que você recebeu.', 'Escutem as pistas e debatam quem parece improvisar.', 'Votem presencialmente e revelem o resultado no Mesa.'], important: ['No Clássico, o impostor conhece o papel. No escuro, ninguém sabe quem recebeu a palavra diferente.'] },
     modes: [
       { name: 'Clássico', description: 'O impostor sabe seu papel e pode ou não receber uma dica.' },
       { name: 'No escuro', description: 'Todos recebem uma palavra e ninguém sabe quem recebeu a diferente.' },
@@ -131,11 +135,12 @@ export const GAME_CATALOG = [
       'Quando o tempo acabar, perde quem estiver com a vez.',
     ],
     appResponsibility: 'Tema, tempo e turnos ficam com o Mesa. Vocês dizem as respostas e decidem presencialmente o que vale.',
+    help: { summary: 'Respondam rápido e passem a vez antes de a batata explodir.', objective: 'Não esteja com a vez quando o cronômetro chegar a zero.', steps: ['O Mesa sorteia um tema e inicia o tempo.', 'Diga um item relacionado ao tema.', 'Toque em “Passei a vez” para avançar ao próximo jogador.', 'Continuem até o timer terminar.'], important: ['Abrir esta ajuda não pausa o cronômetro. O grupo decide se cada resposta vale.'] },
   },
   {
     id: 'impostor-question',
     slug: 'pergunta-do-impostor',
-    name: 'Pergunta do Impostor',
+    name: 'Pergunta Errada',
     shortDescription: 'Perguntas parecidas, respostas suspeitas e alguém tentando se encaixar.',
     fullDescription:
       'Todo mundo recebe uma pergunta. Algumas pessoas recebem uma diferente, mas ninguém sabe quem. Respondam em voz alta e encontrem quem está fora de sintonia.',
@@ -156,6 +161,7 @@ export const GAME_CATALOG = [
       'Comparem as respostas e descubram quem recebeu algo diferente.',
     ],
     appResponsibility: 'O Mesa sorteia e distribui as perguntas e revela os papéis no final. Respostas, debate e votação ficam com a roda.',
+    help: { summary: 'Perguntas parecidas geram respostas suspeitas — e ninguém sabe quem recebeu a diferente.', objective: 'Descubra quem respondeu a partir da pergunta errada.', steps: ['Cada pessoa revela sua pergunta em segredo.', 'Respondam em voz alta ou registrem as respostas no Mesa.', 'Comparem as respostas sem revelar as perguntas.', 'Revelem primeiro a pergunta da maioria.', 'Depois revelem quem recebeu a pergunta diferente.'], important: ['A tela de cada pergunta é igual: ninguém sabe o próprio papel.'] },
   },
   {
     id: 'location',
@@ -180,6 +186,7 @@ export const GAME_CATALOG = [
       'Descubram quem não sabe onde está antes que essa pessoa deduza o local.',
     ],
     appResponsibility: 'O Mesa conduz local, papéis, dicas, distribuição e resultado. Perguntas, respostas, acusações e a decisão de quem perdeu ficam com a Mesa.',
+    help: { summary: 'Todo mundo sabe onde está — menos quem precisa fingir.', objective: 'Descubra quem não conhece o local antes que essa pessoa o deduza.', steps: ['Cada pessoa revela sua informação em segredo.', 'Façam perguntas uns aos outros sem entregar o lugar.', 'Observem quem responde de forma vaga ou deslocada.', 'Debatam, votem e revelem o resultado.'], important: ['No escuro, algumas pessoas recebem outro local sem saber.'] },
     modes: [
       { name: 'Clássico', description: 'O impostor sabe que não conhece o local e pode receber uma dica.' },
       { name: 'No escuro', description: 'Todo mundo recebe um local — mas algumas pessoas recebem um lugar diferente sem saber.' },
@@ -193,6 +200,7 @@ export const GAME_CATALOG = [
     vibe: ['vocabulário','sintonia','dedução'], goodFor: ['amigos','família'], engine: 'contact-word', features: ['countdown','audio','haptics','private-reveal'], availability: 'available', accent: '#A6BF3B',
     instructions: ['O mestre revela apenas a primeira letra da palavra.','A roda dá definições até duas pessoas fazerem Contato.','O mestre libera novas letras — ou bloqueia a conexão se descobrir a resposta antes.'],
     appResponsibility: 'O Mesa sorteia e protege a palavra. Dicas, contatos, bloqueios e a vitória acontecem presencialmente.',
+    help: { summary: 'Criem conexões para conquistar letras e descobrir a palavra do mestre.', objective: 'Chegue à palavra secreta fazendo Contato com outras pessoas.', steps: ['Só o mestre revela a palavra e anuncia a primeira letra.', 'A roda dá definições de palavras que começam com o prefixo conhecido.', 'Quando duas pessoas pensarem na mesma resposta, façam Contato.', 'Se o mestre não bloquear, revele mais uma letra.', 'Continuem até descobrir a palavra secreta.'], important: ['O mestre não deve mostrar a palavra nem aceitar uma conexão que consiga bloquear.'] },
   },
   {
     id: 'rating', slug: 'qual-e-a-nota', name: 'Qual é a Nota',
@@ -202,26 +210,38 @@ export const GAME_CATALOG = [
     vibe: ['sintonia','criativo','conversa'], goodFor: ['duplas','amigos'], engine: 'rating', features: ['private-reveal','player-setup'], availability: 'available', accent: '#5968D8',
     instructions: ['Escolham jogar em duplas ou uma pessoa contra todos.','Quem dá a pista revela em segredo uma nota de 1 a 10.','A pista deve combinar com o tema; o resto da Mesa tenta descobrir a nota.'],
     appResponsibility: 'O Mesa sorteia tema e notas. Pistas, palpites e a decisão de proximidade ficam com a roda.',
+    help: { summary: 'Uma nota secreta vira pista; o parceiro ou a roda tenta interpretar a escala.', objective: 'Descubra a nota de 1 a 10 a partir da pista recebida.', steps: ['Escolham jogar em duplas ou uma pessoa contra todos.', 'Quem dá a pista revela uma nota em segredo.', 'Crie uma pista compatível com o tema e a intensidade da nota.', 'O parceiro ou grupo faz o palpite presencialmente.'], important: ['Não diga a nota durante a pista.'] },
   },
   {
-    id: 'word-list', slug: 'jogo-da-lista', name: 'Jogo da Lista',
+    id: 'word-list', slug: 'jogo-da-lista', name: 'Tá na Lista',
     shortDescription: 'Uma lista secreta e muitas pistas para fazer a roda acertar.',
     fullDescription: 'Uma pessoa recebe uma lista de palavras e conduz a rodada com pistas. O grupo tenta completar a lista sem ver a tela.',
     players: { min: 2, max: 20 }, estimatedMinutes: 10, categories: ['Adivinhação'], complexity: 'easy', deviceMode: 'single-device',
     vibe: ['rápido','vocabulário','grupo'], goodFor: ['amigos','família'], engine: 'word-list', features: ['private-reveal'], availability: 'available', accent: '#E8794F',
     instructions: ['Escolham quantas palavras entram na rodada.','Só a pessoa que dá as pistas revela a lista.','O grupo tenta acertar todas; vocês decidem presencialmente o que vale.'],
     appResponsibility: 'O Mesa monta e protege a lista. Pistas, acertos e o encerramento são decididos pela roda.',
+    help: { summary: 'Uma pessoa conhece a lista; o grupo tenta descobrir cada palavra pelas pistas.', objective: 'Complete a lista de palavras sem olhar para a tela de quem dá as pistas.', steps: ['Escolham o tamanho da lista.', 'Só a pessoa que dará pistas revela as palavras.', 'Dê pistas sem falar parte da resposta.', 'O grupo tenta acertar todos os itens.', 'Comecem outra rodada quando a lista terminar.'], important: ['O grupo controla presencialmente quais palavras já foram acertadas.'] },
   },
   {
-    id: 'letter-chain', slug: 'adivinhe-a-palavra', name: 'Adivinhe a Palavra',
+    id: 'letter-chain', slug: 'adivinhe-a-palavra', name: 'Não Completa',
     shortDescription: 'Acrescente uma letra, evite completar a palavra e saiba a hora de duvidar.',
     fullDescription: 'A partir de uma letra sorteada, a roda constrói uma palavra em sequência. Quem completar uma palavra perde — e qualquer pessoa pode desafiar uma sequência impossível.',
     players: { min: 2, max: 20 }, estimatedMinutes: 10, categories: ['Conversa','Adivinhação'], complexity: 'easy', deviceMode: 'single-device',
     vibe: ['vocabulário','rápido','desafio'], goodFor: ['amigos','família'], engine: 'letter-chain', features: [], availability: 'available', accent: '#38A889',
     instructions: ['O Mesa sorteia a primeira letra.','Cada pessoa acrescenta uma letra pensando em uma palavra válida.','Quem completar uma palavra perde. Diga “Duvido” se a sequência parecer impossível.'],
     appResponsibility: 'O Mesa escolhe o começo. Letras, desafios e validação das palavras acontecem presencialmente.',
+    help: { summary: 'Construam uma palavra letra por letra — mas não seja quem vai completá-la.', objective: 'Mantenha uma palavra possível sem colocar sua última letra.', steps: ['O Mesa sorteia a primeira letra.', 'Na sua vez, acrescente uma letra pensando em uma palavra válida.', 'Se alguém completar uma palavra, perde a rodada.', 'Se a sequência parecer impossível, diga “Duvido”.', 'A pessoa anterior precisa provar uma palavra que poderia ser formada.'], important: ['A roda decide quais palavras e flexões são válidas.'] },
   },
 ] as const satisfies readonly GameDefinition[];
+
+const GAME_ORDER = [
+  'quem-sou-eu', 'ito', 'impostor', 'batata-quente', 'pergunta-do-impostor',
+  'cha-ou-cafe', 'onde-estou', 'contato', 'qual-e-a-nota', 'jogo-da-lista',
+  'adivinhe-a-palavra',
+] as const;
+
+export const GAME_CATALOG: readonly GameDefinition[] = [...GAME_CATALOG_ENTRIES]
+  .sort((first, second) => GAME_ORDER.indexOf(first.slug as typeof GAME_ORDER[number]) - GAME_ORDER.indexOf(second.slug as typeof GAME_ORDER[number]));
 
 export function findGame(slug: string): GameDefinition | undefined {
   return GAME_CATALOG.find((game) => game.slug === slug);

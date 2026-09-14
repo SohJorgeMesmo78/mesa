@@ -11,6 +11,13 @@ export type GameFeature =
   | 'player-setup';
 export type GameAvailability = 'available' | 'coming-soon';
 
+export interface GameHelp {
+  readonly summary: string;
+  readonly objective: string;
+  readonly steps: readonly string[];
+  readonly important?: readonly string[];
+}
+
 export interface GameDefinition {
   readonly id: string;
   readonly slug: string;
@@ -30,6 +37,7 @@ export interface GameDefinition {
   readonly accent: string;
   readonly instructions: readonly string[];
   readonly appResponsibility: string;
+  readonly help: GameHelp;
   readonly example?: readonly string[];
   readonly modes?: readonly {
     readonly name: string;

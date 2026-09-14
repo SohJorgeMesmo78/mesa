@@ -1,0 +1,27 @@
+@if (game(); as currentGame) {
+  <button #trigger class="help-trigger" type="button" aria-label="Como jogar" (click)="open()">
+    <span aria-hidden="true">?</span>
+  </button>
+
+  <dialog #dialog class="help-dialog" [attr.aria-labelledby]="'help-title-' + currentGame.slug" (cancel)="close()" (close)="restoreFocus()">
+    <div class="help-dialog__header">
+      <div>
+        <p>Como jogar</p>
+        <h2 [id]="'help-title-' + currentGame.slug">{{ currentGame.name }}</h2>
+      </div>
+      <button type="button" aria-label="Fechar como jogar" (click)="close()">×</button>
+    </div>
+    <div class="help-dialog__body">
+      <p class="help-dialog__summary">{{ currentGame.help.summary }}</p>
+      <p class="help-dialog__objective"><strong>Objetivo</strong>{{ currentGame.help.objective }}</p>
+      <ol>
+        @for (step of currentGame.help.steps; track $index) {
+          <li><span>{{ $index + 1 }}</span><p>{{ step }}</p></li>
+        }
+      </ol>
+      @if (currentGame.help.important?.length) {
+        <aside><strong>Importante</strong>@for (note of currentGame.help.important; track note) { <p>{{ note }}</p> }</aside>
+      }
+    </div>
+  </dialog>
+}

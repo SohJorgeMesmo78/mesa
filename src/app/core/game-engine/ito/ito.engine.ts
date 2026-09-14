@@ -174,7 +174,7 @@ export class ItoEngine {
   }
 
   private pickTheme(themes: readonly ItoTheme[], previousId?: string): ItoTheme {
-    if (themes.length === 0) throw new Error('Nenhum tema de Ito foi cadastrado.');
+    if (themes.length === 0) throw new Error('Nenhum tema de Na Escala foi cadastrado.');
     const candidates = themes.length > 1 && previousId
       ? themes.filter((theme) => theme.id !== previousId)
       : themes;
@@ -183,7 +183,7 @@ export class ItoEngine {
 
   private assertPlayers(players: readonly Player[]): void {
     if (players.length < ITO_MIN_PLAYERS || players.length > ITO_MAX_PLAYERS) {
-      throw new RangeError(`Ito precisa de ${ITO_MIN_PLAYERS} a ${ITO_MAX_PLAYERS} participantes.`);
+      throw new RangeError(`Na Escala precisa de ${ITO_MIN_PLAYERS} a ${ITO_MAX_PLAYERS} participantes.`);
     }
     if (new Set(players.map((player) => player.id)).size !== players.length) {
       throw new Error('Os participantes precisam ter identificadores únicos.');

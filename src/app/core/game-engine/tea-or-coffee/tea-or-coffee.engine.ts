@@ -42,7 +42,7 @@ export class TeaOrCoffeeEngine {
 
   private pickWord(words: readonly string[], previous?: string): string {
     const validWords = words.map((word) => word.trim()).filter(Boolean);
-    if (validWords.length === 0) throw new Error('Nenhuma palavra foi cadastrada para Chá ou Café.');
+    if (validWords.length === 0) throw new Error('Nenhuma palavra foi cadastrada para Um ou Outro.');
     return this.random.pick(validWords, previous);
   }
 }
