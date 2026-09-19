@@ -19,7 +19,6 @@ import { PrivateRevealComponent } from '../../shared/private-reveal/private-reve
 export class CidadeDormeComponent {
   readonly engine = inject(CitySleepsEngine);
   private readonly store = inject(SessionStore);
-  private holdTimer: ReturnType<typeof setTimeout> | null = null;
   readonly game = this.store.activeCitySleeps;
   readonly roles = CITY_SLEEPS_ROLES;
   readonly limits = findGame('cidade-dorme')!.players;
@@ -57,9 +56,7 @@ export class CidadeDormeComponent {
   }
   acknowledgeInvestigation(): void { const game = this.game(); if (game) this.save(this.engine.acknowledgeInvestigation(game)); }
   investigationText(): string { const game = this.game(); const player = this.currentPlayer(); return game && player && this.engine.investigationTeam(game, player.id) === 'city' ? 'É do time da cidade' : 'Não é do time da cidade'; }
-  startHold(): void { this.cancelHold(); this.holdTimer = setTimeout(() => this.finishPrivateTurn(), 1100); }
-  cancelHold(): void { if (this.holdTimer) clearTimeout(this.holdTimer); this.holdTimer = null; }
-  finishPrivateTurn(): void { this.cancelHold(); const game = this.game(); if (!game) return; this.resetPrivate(); this.save(game.phase === 'night-confirm' ? this.engine.finishNightTurn(game) : this.engine.finishVoteTurn(game)); }
+  finishPrivateTurn(): void { const game = this.game(); if (!game) return; this.resetPrivate(); this.save(game.phase === 'night-confirm' ? this.engine.finishNightTurn(game) : this.engine.finishVoteTurn(game)); }
   startDay(): void { const game = this.game(); if (game) this.save(this.engine.startDay(game)); }
   startVoting(): void { const game = this.game(); if (game) { this.resetPrivate(); this.save(this.engine.startVoting(game)); } }
   beginVoteTurn(): void { const game = this.game(); if (game) { this.resetPrivate(); this.save(this.engine.beginVoteTurn(game)); } }
