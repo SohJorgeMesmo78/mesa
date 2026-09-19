@@ -1,6 +1,6 @@
 # Catálogo de Jogos — Mesa
 
-Este documento descreve o funcionamento atual dos 11 jogos implementados no Mesa. Ele registra as regras, os fluxos, as configurações e a divisão de responsabilidades entre o aplicativo e as pessoas, servindo como referência para revisão de produto, naming e conteúdo. As descrições abaixo refletem a implementação atual, sem propor mudanças de regra.
+Este documento descreve o funcionamento atual dos 12 jogos implementados no Mesa. Ele registra as regras, os fluxos, as configurações e a divisão de responsabilidades entre o aplicativo e as pessoas, servindo como referência para revisão de produto, naming e conteúdo. As descrições abaixo refletem a implementação atual, sem propor mudanças de regra.
 
 ## Quem Sou Eu
 
@@ -1049,6 +1049,99 @@ Sim. Comunica diretamente a regra mais importante: não ser a pessoa que complet
 
 Letras, sequência, palavra proibida, completar, duvido e corrente.
 
+## Cidade Dorme
+
+### Resumo
+
+Cidade Dorme é um jogo de dedução social sem mestre humano. O Mesa distribui os papéis, conduz ações privadas, resolve noite e votação e anuncia a equipe vencedora.
+
+### Objetivo
+
+A cidade tenta eliminar todos os assassinos. Os assassinos tentam sobreviver até serem tantos quanto os demais jogadores vivos.
+
+### Como funciona
+
+Após a configuração, cada pessoa revela seu papel em segredo. A partida alterna entre noite, quando ações privadas são registradas, e dia, quando o grupo discute e vota. O Mesa elimina jogadores, verifica a vitória e inicia o próximo ciclo.
+
+### O que cada pessoa sabe
+
+- Cada pessoa conhece apenas o próprio papel.
+- O Detetive descobre somente o time de quem investigou.
+- Ações, votos e papéis de jogadores mortos permanecem privados, salvo quando a revelação ao morrer está habilitada.
+- No fim, todos os papéis são mostrados.
+
+### O que o Mesa controla
+
+- Distribuição dos papéis.
+- Ritual de privacidade e circulação do celular.
+- Ações noturnas e sua resolução.
+- Jogadores vivos e mortos.
+- Votação e empates.
+- Condições e anúncio de vitória.
+
+### O que acontece presencialmente
+
+- Discussão, blefe, suspeitas e acusações.
+- Leitura do comportamento do grupo.
+- Decisão sobre os argumentos antes de votar.
+
+### Configurações
+
+- 5 a 12 participantes, com nomes opcionais e cores.
+- Quantidade de assassinos.
+- Médico ligado ou desligado.
+- Detetive ligado ou desligado.
+- Revelar ou preservar o papel de quem morre.
+
+### Modos e variações
+
+Não possui modos separados. A composição dos papéis e a revelação ao morrer variam na configuração.
+
+### Exemplo de rodada
+
+À noite, o Assassino escolhe Mari, o Médico protege Mari e o Detetive investiga Jooj. A cidade acorda sem mortes, discute e vota. Se houver empate, ninguém é eliminado e uma nova noite começa.
+
+### Número de jogadores
+
+Mínimo de 5 e máximo de 12.
+
+### Duração aproximada
+
+30 minutos, com faixa esperada de 20 a 40 minutos conforme o grupo.
+
+### Categoria / sensação
+
+Dedução, blefe, papéis secretos, estratégia e conversa.
+
+### Complexidade
+
+Média. O Mesa conduz as regras, mas os papéis e o ciclo noite/dia exigem atenção inicial.
+
+### Pontos fortes
+
+- Todo mundo participa; não existe mestre humano.
+- O ciclo completo é conduzido pelo Mesa.
+- Papéis simples criam decisões diferentes.
+- Ritual reduz pistas físicas durante ações privadas.
+
+### Pontos de atenção
+
+- Funciona melhor quando o grupo respeita a privacidade do celular.
+- O ritual acrescenta tempo a cada noite e deve ser validado presencialmente.
+- Grupos iniciantes podem precisar consultar a ajuda dos papéis.
+
+### Nome atual
+
+Cidade Dorme
+
+### O nome comunica a mecânica?
+
+Sim. É uma referência reconhecível à fase noturna central do jogo.
+
+### Direções possíveis de naming
+
+Cidade, noite, suspeita, papéis, silêncio, maioria e sobrevivência.
+
 # Comparativo final
 
 | Jogo | Mecânica principal | Jogadores | Duração | Complexidade | Usa segredo? | Usa timer? | Usa pontuação? | Nome comunica bem? |
@@ -1064,6 +1157,7 @@ Letras, sequência, palavra proibida, completar, duvido e corrente.
 | Qual é a Nota | Escala de 1 a 10 e pista | 2–12 | 10 min | Fácil | Sim | Não | Não | Sim |
 | Tá na Lista | Lista secreta e pistas | 2–20 | 10 min | Fácil | Sim | Não | Não | Sim |
 | Não Completa | Corrente de letras e desafio | 2–20 | 10 min | Fácil | Não | Não | Não | Sim |
+| Cidade Dorme | Dedução social, papéis e votação | 5–12 | 30 min | Média | Sim | Não | Não | Sim |
 
 > Nesta tabela, “timer” significa um cronômetro que determina o fim da rodada. Countdowns curtos de preparação não foram classificados como timer. Em Quem Sou Eu, a identidade é secreta para quem adivinha, embora seja visível para o restante do grupo.
 
@@ -1080,6 +1174,7 @@ Letras, sequência, palavra proibida, completar, duvido e corrente.
 - **Impostor:** palavra principal, papel conhecido ou palavra alternativa sem papel explícito.
 - **Pergunta Errada:** perguntas parecidas distribuídas sem revelar os papéis.
 - **Onde Estou:** local principal e impostores que desconhecem ou recebem outro lugar.
+- **Cidade Dorme:** times ocultos, ações noturnas e eliminação por votação.
 
 ## Escala e sintonia
 

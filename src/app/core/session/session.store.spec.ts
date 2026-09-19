@@ -9,6 +9,31 @@ describe('SessionStore', () => {
 
   afterEach(() => sessionStorage.clear());
 
+  it('restaura uma ação privada de Cidade Dorme na tela protegida sem duplicá-la', () => {
+    const players = Array.from({ length: 5 }, (_, index) => ({ id: `p${index + 1}`, name: `Pessoa ${index + 1}`, color: '#FFAA00' }));
+    sessionStorage.setItem('mesa.session', JSON.stringify({
+      version: 12,
+      preferences: { countdown: true, sound: true, haptics: true },
+      activeGame: {
+        game: 'cidade-dorme', phase: 'detective-result', players,
+        config: { killerCount: 1, doctorEnabled: true, detectiveEnabled: true, revealRoleOnDeath: false },
+        playerStates: [
+          { playerId: 'p1', role: 'killer', team: 'evil', alive: true },
+          { playerId: 'p2', role: 'doctor', team: 'city', alive: true },
+          { playerId: 'p3', role: 'detective', team: 'city', alive: true },
+          { playerId: 'p4', role: 'citizen', team: 'city', alive: true },
+          { playerId: 'p5', role: 'citizen', team: 'city', alive: true },
+        ],
+        currentPlayerIndex: 2, ritualStep: 2, roleRevealIndex: 4, nightNumber: 1,
+        actions: { p3: { kind: 'detective', targetPlayerId: 'p1' } }, votes: {},
+        lastNightResult: null, lastVoteResult: null, winner: null,
+      },
+    }));
+    const store = TestBed.inject(SessionStore);
+    expect(store.activeCitySleeps()?.phase).toBe('night-handoff');
+    expect(store.activeCitySleeps()?.actions['p3']).toEqual({ kind: 'detective', targetPlayerId: 'p1' });
+  });
+
   it('restaura uma sessão v2 válida após recarregar a aplicação', () => {
     sessionStorage.setItem('mesa.session', JSON.stringify({
       version: 2,
@@ -307,7 +332,7 @@ describe('SessionStore', () => {
       activeGame: { game: 'cha-ou-cafe', phase: 'revealed', word: 'Praia', round: 3 },
     }));
     const store = TestBed.inject(SessionStore);
-    expect(store.session().version).toBe(11);
+    expect(store.session().version).toBe(12);
     expect(store.activeTeaOrCoffee()?.word).toBe('Praia');
   });
 

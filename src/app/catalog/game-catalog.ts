@@ -232,12 +232,22 @@ const GAME_CATALOG_ENTRIES = [
     appResponsibility: 'O Mesa escolhe o começo. Letras, desafios e validação das palavras acontecem presencialmente.',
     help: { summary: 'Construam uma palavra letra por letra — mas não seja quem vai completá-la.', objective: 'Mantenha uma palavra possível sem colocar sua última letra.', steps: ['O Mesa sorteia a primeira letra.', 'Na sua vez, acrescente uma letra pensando em uma palavra válida.', 'Se alguém completar uma palavra, perde a rodada.', 'Se a sequência parecer impossível, diga “Duvido”.', 'A pessoa anterior precisa provar uma palavra que poderia ser formada.'], important: ['A roda decide quais palavras e flexões são válidas.'] },
   },
+  {
+    id: 'city-sleeps', slug: 'cidade-dorme', name: 'Cidade Dorme',
+    shortDescription: 'Papéis secretos, noites perigosas e uma cidade inteira tentando sobreviver.',
+    fullDescription: 'Cidade e assassinos disputam a partida sem mestre humano. O Mesa distribui papéis, conduz ações secretas, votação e vitória para que todo mundo possa jogar.',
+    players: { min: 5, max: 12 }, estimatedMinutes: 30, categories: ['Dedução', 'Blefe'], complexity: 'medium', deviceMode: 'single-device',
+    vibe: ['mistério', 'estratégia', 'conversa'], goodFor: ['grupos maiores', 'amigos', 'festas'], engine: 'social-deduction', features: ['private-reveal', 'player-setup'], availability: 'available', accent: '#6476A8',
+    instructions: ['Os papéis iniciais são Cidadão, Assassino, Médico e Detetive; cada pessoa revela o seu em segredo.', 'À noite, o celular circula para registrar ações privadas.', 'De dia, conversem e votem em quem parece ser assassino.', 'A cidade vence ao eliminar os assassinos; eles vencem quando dominam os sobreviventes.'],
+    appResponsibility: 'O Mesa conduz papéis, ações, noite, mortes, votação e vitória. Discussão, blefe, suspeitas e acusações acontecem na roda.',
+    help: { summary: 'Cidade contra assassinos, sem ninguém precisar ficar de mestre.', objective: 'A cidade tenta eliminar os assassinos; eles tentam sobreviver até dominar os jogadores vivos.', steps: ['Cada pessoa revela seu papel em segredo.', 'À noite, todos passam por um ritual e registram suas ações.', 'A cidade acorda e descobre o que aconteceu.', 'Conversem, levantem suspeitas e votem.', 'Repitam noite e dia até uma equipe vencer.'], important: ['Não deixe ninguém ver sua tela quando estiver com o celular.', 'Cidadão, Assassino, Médico e Detetive têm objetivos e ações diferentes.'] },
+  },
 ] as const satisfies readonly GameDefinition[];
 
 const GAME_ORDER = [
   'quem-sou-eu', 'ito', 'impostor', 'batata-quente', 'pergunta-do-impostor',
   'cha-ou-cafe', 'onde-estou', 'contato', 'qual-e-a-nota', 'jogo-da-lista',
-  'adivinhe-a-palavra',
+  'adivinhe-a-palavra', 'cidade-dorme',
 ] as const;
 
 export const GAME_CATALOG: readonly GameDefinition[] = [...GAME_CATALOG_ENTRIES]

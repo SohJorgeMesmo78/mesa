@@ -10,6 +10,7 @@ import { ContactSession } from '../game-engine/contact/contact.models';
 import { RatingSession } from '../game-engine/rating/rating.models';
 import { WordListSession } from '../game-engine/word-list/word-list.models';
 import { LetterChainSession } from '../game-engine/letter-chain/letter-chain.models';
+import { CitySleepsSession } from '../game-engine/city-sleeps/city-sleeps.models';
 import { Player } from '../players/player.model';
 import {
   ExperiencePreferences,
@@ -65,6 +66,7 @@ export class SessionStore {
   readonly activeRating = computed(() => { const active = this.sessionState().activeGame; return active?.game === 'qual-e-a-nota' ? active : null; });
   readonly activeWordList = computed(() => { const active = this.sessionState().activeGame; return active?.game === 'jogo-da-lista' ? active : null; });
   readonly activeLetterChain = computed(() => { const active = this.sessionState().activeGame; return active?.game === 'adivinhe-a-palavra' ? active : null; });
+  readonly activeCitySleeps = computed(() => { const active = this.sessionState().activeGame; return active?.game === 'cidade-dorme' ? active : null; });
 
   constructor() {
     if (isPlatformBrowser(this.platformId)) {
@@ -118,6 +120,7 @@ export class SessionStore {
   setRatingSession(session: RatingSession): void { this.setActiveGame(session); }
   setWordListSession(session: WordListSession): void { this.setActiveGame(session); }
   setLetterChainSession(session: LetterChainSession): void { this.setActiveGame(session); }
+  setCitySleepsSession(session: CitySleepsSession): void { this.setActiveGame(session); }
 
   clearActiveGame(): void {
     this.sessionState.update((current) => ({ ...current, activeGame: null }));
@@ -132,7 +135,9 @@ export class SessionStore {
       const raw = sessionStorage.getItem(STORAGE_KEY);
       if (!raw) return DEFAULT_SESSION;
       const parsed: unknown = JSON.parse(raw);
-      if (isMesaSession(parsed)) return parsed;
+      if (isMesaSession(parsed)) return protectPrivateCityState(parsed);
+      const migratedVersionEleven = migrateVersionEleven(parsed);
+      if (migratedVersionEleven) return migratedVersionEleven;
       const migratedVersionTen = migrateVersionTen(parsed);
       if (migratedVersionTen) return migratedVersionTen;
       const migratedVersionNine = migrateVersionNine(parsed);
@@ -405,7 +410,34 @@ function isMesaSession(value: unknown): value is MesaSession {
     return false;
   }
   const activeGame = value['activeGame'];
-  return activeGame === null || isWhoAmI(activeGame) || isIto(activeGame) || isImpostor(activeGame) || isHotPotato(activeGame) || isImpostorQuestion(activeGame) || isTeaOrCoffee(activeGame) || isLocation(activeGame) || isContact(activeGame) || isRating(activeGame) || isWordList(activeGame) || isLetterChain(activeGame);
+  return activeGame === null || isWhoAmI(activeGame) || isIto(activeGame) || isImpostor(activeGame) || isHotPotato(activeGame) || isImpostorQuestion(activeGame) || isTeaOrCoffee(activeGame) || isLocation(activeGame) || isContact(activeGame) || isRating(activeGame) || isWordList(activeGame) || isLetterChain(activeGame) || isCitySleeps(activeGame);
+}
+
+function migrateVersionEleven(value: unknown): MesaSession | null {
+  if (!isRecord(value) || value['version'] !== 11 || !isPreferences(value['preferences'])) return null;
+  const activeGame = value['activeGame'];
+  if (activeGame !== null && !isWhoAmI(activeGame) && !isIto(activeGame) && !isImpostor(activeGame) && !isHotPotato(activeGame) && !isImpostorQuestion(activeGame) && !isTeaOrCoffee(activeGame) && !isLocation(activeGame) && !isContact(activeGame) && !isRating(activeGame) && !isWordList(activeGame) && !isLetterChain(activeGame)) return null;
+  return { version: SESSION_SCHEMA_VERSION, preferences: value['preferences'], activeGame };
+}
+
+function isCitySleeps(value: unknown): value is CitySleepsSession {
+  if (!isRecord(value) || value['game'] !== 'cidade-dorme' || !isPlayerList(value['players'], 5, 12)) return false;
+  const phases = ['setup','role-handoff','night-intro','night-handoff','night-ritual','night-action','detective-result','night-confirm','night-result','day','vote-handoff','vote-ritual','vote-action','vote-confirm','vote-result','game-over'];
+  if (!phases.includes(String(value['phase'])) || !isRecord(value['config']) || !Array.isArray(value['playerStates']) || !isRecord(value['actions']) || !isRecord(value['votes'])) return false;
+  const config = value['config']; const count = value['players'].length;
+  if (!Number.isInteger(config['killerCount']) || Number(config['killerCount']) < 1 || Number(config['killerCount']) > Math.floor((count - 1) / 2) || typeof config['doctorEnabled'] !== 'boolean' || typeof config['detectiveEnabled'] !== 'boolean' || typeof config['revealRoleOnDeath'] !== 'boolean') return false;
+  if (!Number.isInteger(value['currentPlayerIndex']) || Number(value['currentPlayerIndex']) < 0 || Number(value['currentPlayerIndex']) >= count || !Number.isInteger(value['roleRevealIndex']) || Number(value['roleRevealIndex']) < 0 || Number(value['roleRevealIndex']) >= count || !Number.isInteger(value['ritualStep']) || Number(value['ritualStep']) < 0 || !Number.isInteger(value['nightNumber']) || Number(value['nightNumber']) < 0) return false;
+  if (value['phase'] === 'setup') return value['playerStates'].length === 0 && value['winner'] === null;
+  const ids = new Set(value['players'].map((player) => player.id)); const states = value['playerStates'];
+  return states.length === count && new Set(states.map((state) => isRecord(state) ? state['playerId'] : null)).size === count && states.every((state) => isRecord(state) && typeof state['playerId'] === 'string' && ids.has(state['playerId']) && ['citizen','killer','doctor','detective'].includes(String(state['role'])) && ['city','evil'].includes(String(state['team'])) && typeof state['alive'] === 'boolean') && [null,'city','evil'].includes(value['winner'] as null | string);
+}
+
+function protectPrivateCityState(session: MesaSession): MesaSession {
+  const active = session.activeGame;
+  if (!active || active.game !== 'cidade-dorme') return session;
+  if (['night-ritual','night-action','detective-result','night-confirm'].includes(active.phase)) return { ...session, activeGame: { ...active, phase: 'night-handoff', ritualStep: 0 } };
+  if (['vote-ritual','vote-action','vote-confirm'].includes(active.phase)) return { ...session, activeGame: { ...active, phase: 'vote-handoff', ritualStep: 0 } };
+  return session;
 }
 
 function migrateVersionTen(value: unknown): MesaSession | null {

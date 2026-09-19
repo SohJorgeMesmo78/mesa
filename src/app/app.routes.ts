@@ -70,6 +70,7 @@ export const routes: Routes = [
   { path: 'jogar/qual-e-a-nota', title: 'Qual é a Nota — Mesa', loadComponent: () => import('./games/qual-e-a-nota/qual-e-a-nota.component').then((component) => component.QualEANotaComponent) },
   { path: 'jogar/jogo-da-lista', title: 'Tá na Lista — Mesa', loadComponent: () => import('./games/jogo-da-lista/jogo-da-lista.component').then((component) => component.JogoDaListaComponent) },
   { path: 'jogar/adivinhe-a-palavra', title: 'Não Completa — Mesa', loadComponent: () => import('./games/adivinhe-a-palavra/adivinhe-a-palavra.component').then((component) => component.AdivinheAPalavraComponent) },
+  { path: 'jogar/cidade-dorme', title: 'Cidade Dorme — Mesa', loadComponent: () => import('./games/cidade-dorme/cidade-dorme.component').then((component) => component.CidadeDormeComponent) },
   {
     path: 'jogar/:slug',
     loadComponent: () =>

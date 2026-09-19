@@ -16,6 +16,7 @@ export const serverRoutes: ServerRoute[] = [
       { slug: 'qual-e-a-nota' },
       { slug: 'jogo-da-lista' },
       { slug: 'adivinhe-a-palavra' },
+      { slug: 'cidade-dorme' },
     ],
   },
   {

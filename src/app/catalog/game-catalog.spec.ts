@@ -1,10 +1,10 @@
 import { GAME_CATALOG, findGame } from './game-catalog';
 
 describe('GAME_CATALOG', () => {
-  it('mantém os 11 nomes públicos finais', () => {
+  it('mantém os 12 nomes públicos finais', () => {
     expect(GAME_CATALOG.map((game) => game.name)).toEqual([
       'Quem Sou Eu', 'Na Escala', 'Impostor', 'Batata Quente', 'Pergunta Errada',
-      'Um ou Outro', 'Onde Estou', 'Contato', 'Qual é a Nota', 'Tá na Lista', 'Não Completa',
+      'Um ou Outro', 'Onde Estou', 'Contato', 'Qual é a Nota', 'Tá na Lista', 'Não Completa', 'Cidade Dorme',
     ]);
   });
 
@@ -17,7 +17,7 @@ describe('GAME_CATALOG', () => {
   });
 
   it('oferece ajuda curta e completa para todos os jogos', () => {
-    expect(GAME_CATALOG.length).toBe(11);
+    expect(GAME_CATALOG.length).toBe(12);
     for (const game of GAME_CATALOG) {
       expect(game.help.summary.trim().length).toBeGreaterThan(0);
       expect(game.help.objective.trim().length).toBeGreaterThan(0);
